@@ -3,4 +3,4 @@ Repositório destinado a documentação do projeto da disciplina de ENGENHARIA D
 
 
 ### Documento de requisitos
-https://docs.google.com/document/d/1Fd6RyTUlhWYXfbjjtbgccmZ9v-ROIYjbHZtpDSzHNng/edit?usp=sharing"
+https://docs.google.com/document/d/1Fd6RyTUlhWYXfbjjtbgccmZ9v-ROIYjbHZtpDSzHNng/edit?usp=sharing

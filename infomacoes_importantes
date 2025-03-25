@@ -1,0 +1,9 @@
+-- CONSULTA DE PRODUTOS
+- Consulta de produtos: VPRODUTOS
+- VPRODUTOS: É uma view, que junta as tabelas PRODUTOS E PRODLOJAS
+- Colunas que vão poder ser consultadas: NOME, ALTERNATI, CBARRA, CBARRA2, CBARRA3, ORIGINAL
+- RETORNO: Nome do produto, preço e estoque
+- Na busca, usar o campo CODLOJA para definir qual a loja (pode ser 1, mas é preciso definir e mandar junto na hora da consulta)
+- Criar usuário e senha padrão
+
+-- ETIQUETAS

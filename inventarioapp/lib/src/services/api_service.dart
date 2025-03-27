@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
           title: Text('Flutter & Spring Boot'),
         ),
         body: Center(
-          child: FutureBuilder<String>(
+          child: FutureBuilder<Object>(
             future: fetchGreeting(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -30,8 +30,8 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Future<String> fetchGreeting() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8080/api/hello'));
+  Future<Object> fetchGreeting() async {
+    final response = await http.get(Uri.parse('http://10.0.2.2:8080/produtos')); //TESTAR DEPOIS
     if (response.statusCode == 200) {
       return json.decode(response.body)['message']; 
     } else {

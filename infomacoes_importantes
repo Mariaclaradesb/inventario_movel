@@ -14,5 +14,6 @@
 - Pode imprimir na impressora só as diferenças e e/ou em um arquivo pdf
 - Tabela do inventario: INVENTARIO_DATA e ITEM_INVENTARIO_DATA
 - CODINVENTARIO pode ser incremental
+- Mostre o NOME, QT, EST_ATUAL, PCO_REMAR
 - O que pode ser digitado ao criar o inventário: QT e PCO_REMAR
 - Quando entrar no inventário, botão criar novo (cria um novo na tabela INVENTARIO_DATA), aparecerá na lista de inventários, entra nele e clica em adicionar itens

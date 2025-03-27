@@ -17,3 +17,9 @@
 - Mostre o NOME, QT, EST_ATUAL, PCO_REMAR
 - O que pode ser digitado ao criar o inventário: QT e PCO_REMAR
 - Quando entrar no inventário, botão criar novo (cria um novo na tabela INVENTARIO_DATA), aparecerá na lista de inventários, entra nele e clica em adicionar itens
+
+
+-- TABELAS E CAMPOS A SEREM UTILIZADOS NOS MVC
+-VPRODUTOS: CODIGO, CODLOJA, NOME, QT, ALTERNATI, CBARRA, CBARRA2, CBARRA3, ORIGINAL, EST_ATUAL, PCO_REMAR
+-INVENTARIO_DATA:
+-ITEM_INVENTARIO_DATA:

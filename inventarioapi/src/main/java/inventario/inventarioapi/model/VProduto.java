@@ -38,6 +38,9 @@ public class VProduto {
     @Column(name = "ORIGINAL")
     private String original;
 
+    @Column(name = "PCO_REMAR")
+    private String pcoRemar;
+
 
 
     public VProduto() {
@@ -149,6 +152,18 @@ public class VProduto {
 
     public void setOriginal(String original) {
         this.original = original;
+    }
+
+
+
+    public String getPcoRemar() {
+        return pcoRemar;
+    }
+
+
+
+    public void setPcoRemar(String pcoRemar) {
+        this.pcoRemar = pcoRemar;
     }
 
 }

@@ -21,7 +21,11 @@ public interface VprodutosRepository extends JpaRepository<VProduto, Long> {
     "OR v.cbarra2 LIKE %:termo% " +
     "OR v.cbarra3 LIKE %:termo% " +  
     "OR LOWER(v.original) LIKE LOWER(CONCAT('%', :termo, '%'))" +
-    "OR LOWER(v.pcoRemar) LIKE LOWER(CONCAT('%', :termo, '%'))")
+    "OR LOWER(v.pcoRemar) LIKE LOWER(CONCAT('%', :termo, '%'))" +
+    "OR LOWER(v.unidade) LIKE LOWER(CONCAT('%', :termo, '%'))" +
+    "OR LOWER(v.marca.nome) LIKE LOWER(CONCAT('%', :termo, '%'))")
 List<VProduto> buscarPorTodosOsCampos(@Param("termo") String termo);
+
+
 }
 

@@ -2,7 +2,10 @@ package inventario.inventarioapi.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 //VPRODUTOS: CODIGO, CODLOJACDASTRO, NOME, QT, ALTERNATI, CBARRA, CBARRA2, CBARRA3, ORIGINAL, EST_ATUAL, PCO_REMAR
@@ -41,7 +44,12 @@ public class VProduto {
     @Column(name = "PCO_REMAR")
     private String pcoRemar;
 
+    @Column(name = "UNIDADE")
+    private String unidade;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "MARCA", referencedColumnName = "CODIGO", nullable = false) 
+    private Marcas marca;
 
     public VProduto() {
     }
@@ -164,6 +172,30 @@ public class VProduto {
 
     public void setPcoRemar(String pcoRemar) {
         this.pcoRemar = pcoRemar;
+    }
+
+
+
+    public String getUnidade() {
+        return unidade;
+    }
+
+
+
+    public void setUnidade(String unidade) {
+        this.unidade = unidade;
+    }
+
+
+
+    public Marcas getMarca() {
+        return marca;
+    }
+
+
+
+    public void setMarca(Marcas marca) {
+        this.marca = marca;
     }
 
 }

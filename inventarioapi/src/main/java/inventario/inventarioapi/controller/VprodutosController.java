@@ -28,5 +28,4 @@ public class VprodutosController {
     {
         return vprodutosService.buscarProdutos(termo);
     }
-
 }

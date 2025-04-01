@@ -9,12 +9,16 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.grey[300],
         body: Column(children: [
           //Logo
+          Icon(
+            Icons.lock,
+            size: 136
+          )
 
           //Username campo
 
           //Password campo
 
-          //sign buttom
+          //sign buttomd
         ])
 
       );

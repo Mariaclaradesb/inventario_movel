@@ -17,8 +17,9 @@ public class VProduto {
     @Column(name = "CODIGO")
     private Long codigo;
 
-    @Column(name = "CODLOJACADASTRO")
-    private Long codlojacadastro;
+    @ManyToOne
+    @JoinColumn(name = "CODLOJACADASTRO") 
+    private LojaFisica loja;
 
     @Column(name = "NOME")
     private String nome;
@@ -65,19 +66,6 @@ public class VProduto {
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
-
-
-
-    public Long getCodlojacadastro() {
-        return codlojacadastro;
-    }
-
-
-
-    public void setCodlojacadastro(Long codlojacadastro) {
-        this.codlojacadastro = codlojacadastro;
-    }
-
 
 
     public String getNome() {
@@ -196,6 +184,16 @@ public class VProduto {
 
     public void setMarca(Marcas marca) {
         this.marca = marca;
+    }
+
+
+
+    public LojaFisica getLoja() {
+        return loja;
+    }
+
+    public void setLoja(LojaFisica loja) {
+        this.loja = loja;
     }
 
 }

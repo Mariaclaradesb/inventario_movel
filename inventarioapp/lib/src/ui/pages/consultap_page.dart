@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:inventarioapp/src/services/consultap_service.dart';
+import 'package:inventarioapp/src/services/shared_prefs_service.dart';
+import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
+import 'package:inventarioapp/src/ui/widgets/loja_nao_selecionada.dart';
 
 class ConsultapPage extends StatefulWidget {
   @override
@@ -15,6 +18,12 @@ class _ConsultapPageState extends State<ConsultapPage> {
   void _buscarProdutos() async {
     setState(() => _isLoading = true);
     try {
+      final codLoja =  await SharedPrefsService.obterLojaSelecionada(); // Obtém a loja selecionada
+    if (codLoja == null) {
+      LojaNaoSelecionada.mostrarErro(context);
+      return;
+    }
+
       List<dynamic> produtos = await _consultapService.buscarProdutos(_searchController.text);
       setState(() => _produtos = produtos);
     } catch (e) {
@@ -113,7 +122,8 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Consulta de Produtos")),
+      appBar: MyAppBar(),
+      drawer: CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

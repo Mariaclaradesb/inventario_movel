@@ -1,5 +1,7 @@
 package inventario.inventarioapi.model;
 
+import org.apache.logging.log4j.message.StringFormattedMessage;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -47,6 +49,40 @@ public class VProduto {
 
     @Column(name = "UNIDADE")
     private String unidade;
+
+    @Column(name = "PCO_COMPRA")
+    private String pcoCompra;
+
+    @Column(name = "C_AQUIS")
+    private String cAquis;
+
+
+    @Column(name = "PCO_LIQ")
+    private String pcoLiq;
+
+    @Column(name = "PCO_VENDA")
+    private String pcoVenda;
+
+    @Column(name = "PCO_02")
+    private String pco02;
+
+    @Column(name = "PCO_03")
+    private String pco03;
+
+    @Column(name = "PCO_04")    
+    private String pco04;
+
+    @Column(name = "PCO_AVENDA")
+    private String pcoAVenda;
+
+    @Column(name = "PCO_AREMAR")
+    private String pcoARemar;
+
+    @Column(name = "EST_DEPOSITO")
+    private String estDeposito;
+
+    @Column(name = "EST_LOJA")
+    private String estLoja;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MARCA", referencedColumnName = "CODIGO", nullable = false) 

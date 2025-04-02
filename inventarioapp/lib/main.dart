@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/initial_screen.dart';
-import 'package:inventarioapp/task.dart';
+import 'package:inventarioapp/screens/form_screen.dart';
+import 'package:inventarioapp/screens/initial_screen.dart';
+
+
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  MyApp({super.key});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -17,11 +19,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: InitialScreen(),
+      home: FormScreen(),
       debugShowCheckedModeBanner: false,
     );
   }

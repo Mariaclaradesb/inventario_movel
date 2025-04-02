@@ -5,12 +5,10 @@ class MyFirstWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Text("TOME TOME")
-        ],
-      ),
+    return Column(
+      children: [
+        Text("TOME TOME")
+      ],
     );
   }
 }

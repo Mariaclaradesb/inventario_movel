@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventarioapp/components/task.dart';
+import 'package:inventarioapp/screens/form_screen.dart';
 
 class InitialScreen extends StatefulWidget {
   //Informações que estou recebendo
@@ -10,34 +11,28 @@ class InitialScreen extends StatefulWidget {
 }
 
 class _InitialScreenState extends State<InitialScreen> {
-  bool opacidade = true; //Estado que estou alterando
+  // bool opacidade = true; //Estado que estou alterando
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Tela Principal')),
-      body: AnimatedOpacity(
-        opacity: opacidade ? 1 : 0,
-        duration: Duration(milliseconds: 500),
-        child: ListView(
-          children: [
-            Task(
-                'Aprender Flutter',
-                'assets/images/flutter.png',
-                5
-            ),
-            Task('Ler', 'assets/images/ler.jpg', 1),
-            Task('Andar de Bike', 'assets/images/bike.webp', 2),
-          ],
-        ),
+      body: ListView(
+        children: [
+          Task('Aprender Flutter', 'assets/images/flutter.png', 5),
+          Task('Ler', 'assets/images/ler.jpg', 1),
+          Task('Andar de Bike', 'assets/images/bike.webp', 2),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        setState(() {
-          opacidade = !opacidade;
-        });
-      },
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FormScreen()),
+          );
+        },
         backgroundColor: Colors.blue[100],
-        child: Icon(Icons.remove_red_eye),
+        child: Icon(Icons.add),
       ),
     );
   }

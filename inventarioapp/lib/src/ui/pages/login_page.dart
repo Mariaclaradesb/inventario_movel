@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:inventario_movel/components/textfield.dart';
+import 'package:inventarioapp/components/textfield.dart';
+import 'package:inventarioapp/components/mybutton.dart';
 
 class LoginPage extends StatelessWidget {
     LoginPage({super.key});
@@ -15,7 +16,7 @@ class LoginPage extends StatelessWidget {
         body: SafeArea(
           child: Center(
             child: Column(
-              children: const [
+              children: [
                 SizedBox(height: 50),
                 //Logo
                  Icon(
@@ -53,6 +54,8 @@ class LoginPage extends StatelessWidget {
                 ), // Campo senha
 
                 //sign buttom
+                const SizedBox(height:30),
+                MyButton(),
               ],
             )
 

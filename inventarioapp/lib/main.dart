@@ -3,6 +3,8 @@ import 'package:inventarioapp/src/ui/pages/configuracoes_page.dart';
 import 'package:inventarioapp/src/ui/pages/consultap_page.dart';
 import 'package:inventarioapp/src/ui/pages/tela_inicial_page.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
+import 'package:inventarioapp/src/ui/pages/login_page.dart';
+
 
 
 void main() {
@@ -14,12 +16,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/telaInicial', 
+      initialRoute: '/login',
       routes: {
         '/telaInicial': (context) => TelaInicialPage(),
         '/configuracoes': (context) => ConfiguracoesPage(),
         '/appBar': (context) => MyAppBar(),
-        '/consultaProdutos': (context) => ConsultapPage()
+        '/consultaProdutos': (context) => ConsultapPage(),
+        '/login': (context) => LoginPage()
       },
     );
   }

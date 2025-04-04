@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/components/task.dart';
+import 'package:inventarioapp/data/task_inherited.dart';
 import 'package:inventarioapp/screens/form_screen.dart';
 
 class InitialScreen extends StatefulWidget {
@@ -18,17 +18,14 @@ class _InitialScreenState extends State<InitialScreen> {
     return Scaffold(
       appBar: AppBar(title: Text('Tela Principal')),
       body: ListView(
-        children: [
-          Task('Aprender Flutter', 'assets/images/flutter.png', 5),
-          Task('Ler', 'assets/images/ler.jpg', 1),
-          Task('Andar de Bike', 'assets/images/bike.webp', 2),
-        ],
+        padding: EdgeInsets.only(top: 8, bottom: 70),
+        children: TaskInherited.of(context).taskList,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => FormScreen()),
+            MaterialPageRoute(builder: (contextNew) => FormScreen(taskContext: context)),
           );
         },
         backgroundColor: Colors.blue[100],

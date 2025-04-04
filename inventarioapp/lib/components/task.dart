@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:inventarioapp/components/difficulty.dart';
 
 class Task extends StatefulWidget {
-  final String nome;
+  final String nome; // informaçoes que estou usando
   final String image;
   final int dificuldade;
 
-  const Task(this.nome, this.image, this.dificuldade, {super.key});
+  Task(this.nome, this.image, this.dificuldade, {super.key});
+
+  int nivel = 0; //Informações que estou recebendo
 
   @override
   State<Task> createState() => _TaskState();
 }
 
 class _TaskState extends State<Task> {
-  int nivel = 0; //Informações que estou recebendo
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,7 @@ class _TaskState extends State<Task> {
                         ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              nivel++;
+                              widget.nivel++;
                             });
                           },
                           child: Icon(Icons.arrow_drop_up),
@@ -93,14 +95,14 @@ class _TaskState extends State<Task> {
                   SizedBox(
                     width: 200,
                     child: LinearProgressIndicator(
-                      value: widget.dificuldade > 0 ? ((nivel / widget.dificuldade) / 10) : 1,
+                      value: widget.dificuldade > 0 ? ((widget.nivel / widget.dificuldade) / 10) : 1,
                       color: Colors.white,
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Text(
-                      'Level $nivel',
+                      'Level ${widget.nivel}',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                   ),

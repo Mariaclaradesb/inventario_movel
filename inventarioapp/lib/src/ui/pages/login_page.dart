@@ -9,6 +9,11 @@ class LoginPage extends StatelessWidget {
     final usernameController = TextEditingController();
     final passwordController = TextEditingController();
 
+    //função signuserin
+    void signUser() {
+      print('Usuario clico tlgd dps vemos a função não tem pra que agr');
+    }
+
     @override
     Widget build(BuildContext context) {
       return Scaffold(
@@ -55,7 +60,9 @@ class LoginPage extends StatelessWidget {
 
                 //sign buttom
                 const SizedBox(height:30),
-                MyButton(),
+                MyButton(
+                  onTap: signUser
+                ),
               ],
             )
 

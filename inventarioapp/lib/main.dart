@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventarioapp/src/ui/pages/configuracoes_page.dart';
 import 'package:inventarioapp/src/ui/pages/consultap_page.dart';
+import 'package:inventarioapp/src/ui/pages/path_screen.dart';
 import 'package:inventarioapp/src/ui/pages/tela_inicial_page.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 import 'package:inventarioapp/src/ui/pages/login_page.dart';
@@ -20,9 +21,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/telaInicial': (context) => TelaInicialPage(),
         '/configuracoes': (context) => ConfiguracoesPage(),
-        '/appBar': (context) => MyAppBar(),
         '/consultaProdutos': (context) => ConsultapPage(),
-        '/login': (context) => LoginPage()
+        '/login': (context) => LoginPage(),
+        '/pathScreen': (context) => PathScreen(),
       },
     );
   }

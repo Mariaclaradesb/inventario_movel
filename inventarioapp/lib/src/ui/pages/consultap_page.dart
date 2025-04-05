@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:inventarioapp/src/models/vproduto.dart';
 import 'package:inventarioapp/src/services/consultap_service.dart';
+import 'package:inventarioapp/src/services/price_tag/price_tag_service.dart';
+import 'package:inventarioapp/src/ui/pages/price_tag_screen.dart';
+
+import '../../config/injection_container.dart';
 
 class ConsultapPage extends StatefulWidget {
   @override
@@ -25,6 +30,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
   }
 
 void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto) {
+  VProduto product = VProduto.fromJson(produto);
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -78,7 +84,11 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                   ),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) =>
+                          PriceTagScreen(product: product, priceTagService: locator<PriceTagService>(),)
+                      ),
+                  ),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white, // Cor do texto
                     backgroundColor: const Color.fromARGB(255, 7, 79, 139), // Cor de fundo do botão

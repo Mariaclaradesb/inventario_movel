@@ -41,6 +41,8 @@ dependencies:
 
   # Barcode and QR Code Scanner
   mobile_scanner: ^6.0.7
+  
+  get_it: ^8.0.3
 
 dev_dependencies:
   flutter_test:

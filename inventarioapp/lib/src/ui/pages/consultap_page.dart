@@ -5,6 +5,9 @@ import 'package:inventarioapp/src/services/price_tag/price_tag_service.dart';
 import 'package:inventarioapp/src/ui/pages/price_tag_screen.dart';
 
 import '../../config/injection_container.dart';
+import 'package:inventarioapp/src/services/shared_prefs_service.dart';
+import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
+import 'package:inventarioapp/src/ui/widgets/loja_nao_selecionada.dart';
 
 class ConsultapPage extends StatefulWidget {
   @override
@@ -20,6 +23,12 @@ class _ConsultapPageState extends State<ConsultapPage> {
   void _buscarProdutos() async {
     setState(() => _isLoading = true);
     try {
+      final codLoja =  await SharedPrefsService.obterLojaSelecionada(); // Obtém a loja selecionada
+    if (codLoja == null) {
+      LojaNaoSelecionada.mostrarErro(context);
+      return;
+    }
+
       List<dynamic> produtos = await _consultapService.buscarProdutos(_searchController.text);
       setState(() => _produtos = produtos);
     } catch (e) {
@@ -48,22 +57,31 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
           children: [
             Text(
               "Quantidade: ${produto['qt']}",
-              style: TextStyle(fontSize: 20.0),
+              style: TextStyle(fontSize: 20.0)
             ),
             Text(
               "Preço: R\$${produto['pcoRemar']}",
+              style: TextStyle(fontSize: 20.0)
+            ),
+            Text(
+              "Unidade: ${produto['unidade']}",
               style: TextStyle(fontSize: 20.0),
             ),
+            Text(
+              "Marca: ${produto['marca']?['nome'] ?? 'Sem Marca'}",
+              style: TextStyle(fontSize: 20.0),
+            ),
+
           ],
         ),
         actions: [
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start, // Alinha os itens à esquerda
               children: [
                 Padding(
-                  padding: EdgeInsets.only(right: 5), // Ajusta a distância entre o ícone e os botões
+                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0), // Ajusta a distância entre o ícone e os botões
                   child: IconButton(
                     onPressed: () => Navigator.of(context).pop(),
                     icon: Icon(Icons.shopping_cart),
@@ -73,9 +91,9 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                   onPressed: () => Navigator.of(context).pop(),
                   style: TextButton.styleFrom(
                     foregroundColor: const Color.fromARGB(255, 7, 79, 139), // Cor do texto // Cor de fundo do botão
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), 
+                    padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Borda arredondada
+                      borderRadius: BorderRadius.circular(10) // Borda arredondada
                     ),
                   ),
                   child: Text(
@@ -92,7 +110,7 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white, // Cor do texto
                     backgroundColor: const Color.fromARGB(255, 7, 79, 139), // Cor de fundo do botão
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12), // Espaçamento interno
+                    padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3), // Espaçamento interno
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10), // Borda arredondada
                     ),
@@ -114,7 +132,8 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Consulta de Produtos")),
+      appBar: MyAppBar(),
+      drawer: CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

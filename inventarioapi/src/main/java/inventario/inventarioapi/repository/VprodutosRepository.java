@@ -13,15 +13,18 @@ public interface VprodutosRepository extends JpaRepository<VProduto, Long> {
     Optional<VProduto> findById(Long codigo);
 
 
-    @Query("SELECT v FROM VProduto v WHERE " +
+    @Query("SELECT v FROM VProduto v WHERE ( " +
     "CAST(v.codigo AS string) LIKE %:termo% " +
     "OR LOWER(v.nome) LIKE LOWER(CONCAT('%', :termo, '%')) " +
     "OR LOWER(v.alternati) LIKE LOWER(CONCAT('%', :termo, '%')) " +
     "OR v.cbarra LIKE %:termo% " +
     "OR v.cbarra2 LIKE %:termo% " +
     "OR v.cbarra3 LIKE %:termo% " +  
-    "OR LOWER(v.original) LIKE LOWER(CONCAT('%', :termo, '%'))" +
-    "OR LOWER(v.pcoRemar) LIKE LOWER(CONCAT('%', :termo, '%'))")
-List<VProduto> buscarPorTodosOsCampos(@Param("termo") String termo);
-}
+    "OR LOWER(v.original) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+    "OR LOWER(v.pcoRemar) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+    "OR LOWER(v.unidade) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+    "OR LOWER(v.marca.nome) LIKE LOWER(CONCAT('%', :termo, '%')) ) " +  
+    "AND v.loja.codigo = :codLoja")
+List<VProduto> buscarPorTodosOsCampos(@Param("termo") String termo, @Param("codLoja") Long codLoja);
 
+}

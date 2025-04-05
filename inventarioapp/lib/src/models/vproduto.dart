@@ -1,6 +1,10 @@
+import 'package:inventarioapp/src/models/loja_fisica.dart';
+
+import 'marca.dart';
+
 class VProduto {
   int _codigo;
-  int _codLojaCadastro;
+  LojaFisica _loja;
   String _nome;
   String? _alternati;
   String? _codigoDeBarrasPrincipal;
@@ -9,17 +13,19 @@ class VProduto {
   String? _original;
   double? _pcoRemar;
   int? _qt;
+  String? _unidade;
+  Marca? _marca;
 
 
-  VProduto(this._codigo, this._codLojaCadastro, this._nome, this._alternati,
+  VProduto(this._codigo, this._loja, this._nome, this._alternati,
       this._codigoDeBarrasPrincipal, this._codigoDeBarrasSecundario,
       this._codigoDeBarrasAlternativo, this._original, this._pcoRemar,
-      this._qt);
+      this._qt, this._unidade, this._marca);
 
   factory VProduto.fromJson(Map<String, dynamic> json) {
     return VProduto(
       json['codigo'] as int,
-      json['codlojacadastro'] as int,
+      LojaFisica.fromJson(json['loja']),
       json['nome'] as String,
       json['alternati'] as String,
       json['cbarra'] as String?,
@@ -28,6 +34,8 @@ class VProduto {
       json['original'] as String?,
       json['pcoRemar'] as double,
       json['qt'] as int,
+      json['unidade'] as String?,
+      Marca.fromJson(json['marca']) as Marca?
     );
   }
 
@@ -50,7 +58,7 @@ class VProduto {
 
   int get codigo => _codigo;
 
-  int get codLojaCadastro => _codLojaCadastro;
+  LojaFisica get loja => _loja;
 
   String get nome => _nome;
 
@@ -66,6 +74,13 @@ class VProduto {
 
   double? get pcoRemar => _pcoRemar;
 
+  String? get pcoRemarFormatado => (_pcoRemar == null) ? "Sem preço" : _pcoRemar?.toStringAsFixed(2);
+
   int? get qt => _qt;
+
+  Marca? get marca => _marca;
+
+  String? get unidade => _unidade;
+
 
 }

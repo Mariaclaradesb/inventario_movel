@@ -1,21 +1,28 @@
 package inventario.inventarioapi.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "ITEM_INVENTARIO_DATA")
 public class ItemInventario {
 
+    @EmbeddedId
+    private InventarioProduto codigo;
+
     @ManyToOne
-    @JoinColumn(name = "CODINVENTARIO")
+    @MapsId("codInventario")
+    @JoinColumn(name = "CODINVENTARIO", referencedColumnName = "CODIGO" )
     private InventarioData inventarioData;
 
     @ManyToOne
-    @JoinColumn(name = "CODPRODUTO")
+    @MapsId("codProduto")
+    @JoinColumn(name = "CODPRODUTO", referencedColumnName = "CODIGO" )
     private VProduto produto;
 
     @Column(name = "EST_ATUAL")
@@ -31,6 +38,15 @@ public class ItemInventario {
         this.produto = vProduto;
         this.estAtual = (double) estAtual;
         this.estLoja = (double) estLoja;
+    }
+
+
+    public InventarioProduto getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(InventarioProduto codigo) {
+        this.codigo = codigo;
     }
 
     public InventarioData getInventarioData() {

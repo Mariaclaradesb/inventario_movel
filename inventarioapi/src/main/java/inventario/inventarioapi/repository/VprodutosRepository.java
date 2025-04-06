@@ -14,8 +14,8 @@ public interface VprodutosRepository extends JpaRepository<VProduto, Long> {
 
 
     @Query("SELECT v FROM VProduto v WHERE ( " +
-    "CAST(v.codigo AS string) LIKE %:termo% " +
-    "OR LOWER(v.nome) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+    // "CAST(v.codigo AS string) LIKE %:termo% " +
+    "LOWER(v.nome) LIKE LOWER(CONCAT('%', :termo, '%')) " +
     "OR LOWER(v.alternati) LIKE LOWER(CONCAT('%', :termo, '%')) " +
     "OR v.cbarra LIKE %:termo% " +
     "OR v.cbarra2 LIKE %:termo% " +
@@ -23,18 +23,18 @@ public interface VprodutosRepository extends JpaRepository<VProduto, Long> {
     "OR LOWER(v.original) LIKE LOWER(CONCAT('%', :termo, '%')) " +
     "OR LOWER(v.pcoRemar) LIKE LOWER(CONCAT('%', :termo, '%')) " +
     "OR LOWER(v.unidade) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-    "OR LOWER(v.pcoCompra) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-    "OR LOWER(v.cAquis) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-    "OR LOWER(v.pcoLiq) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-    "OR LOWER(v.pcoVenda) LIKE LOWER(CONCAT('%', :termo, '%'))" + 
-    "OR LOWER(v.pco02) LIKE LOWER(CONCAT('%', :termo, '%'))" + 
-    "OR LOWER(v.pco03) LIKE LOWER(CONCAT('%', :termo, '%'))" +    
-    "OR LOWER(v.pco04) LIKE LOWER(CONCAT('%', :termo, '%'))" +  
-    "OR LOWER(v.pcoAVenda) LIKE LOWER(CONCAT('%', :termo, '%'))" + 
-    "OR LOWER(v.pcoARemar) LIKE LOWER(CONCAT('%', :termo, '%'))" +   
-    "OR LOWER(v.estAtual) LIKE LOWER(CONCAT('%', :termo, '%'))" + 
-    "OR LOWER(v.estDeposito) LIKE LOWER(CONCAT('%', :termo, '%'))" +  
-    "OR LOWER(v.estLoja) LIKE LOWER(CONCAT('%', :termo, '%'))" +   
+    // "OR LOWER(v.pcoCompra) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+    // "OR LOWER(v.cAquis) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+    // "OR LOWER(v.pcoLiq) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+    // "OR LOWER(v.pcoVenda) LIKE LOWER(CONCAT('%', :termo, '%'))" + 
+    // "OR LOWER(v.pco02) LIKE LOWER(CONCAT('%', :termo, '%'))" + 
+    // "OR LOWER(v.pco03) LIKE LOWER(CONCAT('%', :termo, '%'))" +    
+    // "OR LOWER(v.pco04) LIKE LOWER(CONCAT('%', :termo, '%'))" +  
+    // "OR LOWER(v.pcoAVenda) LIKE LOWER(CONCAT('%', :termo, '%'))" + 
+    // "OR LOWER(v.pcoARemar) LIKE LOWER(CONCAT('%', :termo, '%'))" +   
+    // "OR (v.estAtual) LIKE '%', :termo, '%'" + 
+    // "OR (v.estDeposito) LIKE '%', :termo, '%'" +  
+    // "OR (v.estLoja) LIKE '%', :termo, '%'" +   
     "OR LOWER(v.marca.nome) LIKE LOWER(CONCAT('%', :termo, '%')) ) " +  
     "AND v.loja.codigo = :codLoja")
 List<VProduto> buscarPorTodosOsCampos(@Param("termo") String termo, @Param("codLoja") Long codLoja);

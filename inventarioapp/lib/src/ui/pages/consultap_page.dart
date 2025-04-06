@@ -9,6 +9,8 @@ import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 import 'package:inventarioapp/src/ui/widgets/loja_nao_selecionada.dart';
 
+import 'barcode_scanner_screen.dart';
+
 class ConsultapPage extends StatefulWidget {
   @override
   _ConsultapPageState createState() => _ConsultapPageState();
@@ -151,7 +153,7 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                     ),
                     IconButton(
                       icon: Icon(Icons.barcode_reader),
-                      onPressed: _buscarProdutos, // MUDAR PARA LEITURA DE CODIGO DE BARRAS
+                      onPressed: _readBarcode,
                     ),
                   ],
                 ),
@@ -178,4 +180,14 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
       ),
     );
   }
+
+  void _readBarcode() async {
+    final barcode = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => BarcodeScannerScreen())
+    );
+
+    _searchController.text = barcode;
+    _buscarProdutos();
+  }
+
 }

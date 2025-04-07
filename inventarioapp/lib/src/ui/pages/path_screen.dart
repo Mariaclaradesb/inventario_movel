@@ -19,7 +19,7 @@ class PathScreen extends StatelessWidget {
                 padding: EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/inventoryScreen");
+                    Navigator.pushNamed(context, "/inventoryListScreen");
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(360, 60),

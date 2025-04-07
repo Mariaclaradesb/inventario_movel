@@ -19,19 +19,19 @@ class ConsultapPage extends StatefulWidget {
 class _ConsultapPageState extends State<ConsultapPage> {
   final ConsultapService _consultapService = ConsultapService();
   final TextEditingController _searchController = TextEditingController();
-  List<dynamic> _produtos = [];
+  List<VProduto> _produtos = <VProduto>[];
   bool _isLoading = false;
 
   void _buscarProdutos() async {
     setState(() => _isLoading = true);
     try {
       final codLoja =  await SharedPrefsService.obterLojaSelecionada(); // Obtém a loja selecionada
-    if (codLoja == null) {
-      LojaNaoSelecionada.mostrarErro(context);
-      return;
-    }
+      if (codLoja == null) {
+        LojaNaoSelecionada.mostrarErro(context);
+        return;
+      }
 
-      List<dynamic> produtos = await _consultapService.buscarProdutos(_searchController.text);
+      List<VProduto> produtos = await _consultapService.buscarProdutos(_searchController.text);
       setState(() => _produtos = produtos);
     } catch (e) {
       print("Erro: $e");
@@ -40,14 +40,13 @@ class _ConsultapPageState extends State<ConsultapPage> {
     }
   }
 
-void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto) {
-  VProduto product = VProduto.fromJson(produto);
+void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          produto['nome'],
+          produto.nome,
           style: TextStyle(
             fontSize: 25.0,
             fontWeight: FontWeight.bold,
@@ -58,19 +57,19 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Quantidade: ${produto['qt']}",
+              "Quantidade: ${produto.qt}",
               style: TextStyle(fontSize: 20.0)
             ),
             Text(
-              "Preço: R\$${produto['pcoRemar']}",
+              "Preço: R\$${produto.pcoRemar}",
               style: TextStyle(fontSize: 20.0)
             ),
             Text(
-              "Unidade: ${produto['unidade']}",
+              "Unidade: ${produto.unidade}",
               style: TextStyle(fontSize: 20.0),
             ),
             Text(
-              "Marca: ${produto['marca']?['nome'] ?? 'Sem Marca'}",
+              "Marca: ${produto.marca?.nome ?? 'Sem Marca'}",
               style: TextStyle(fontSize: 20.0),
             ),
 
@@ -106,7 +105,7 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                 TextButton(
                   onPressed: () => Navigator.push(context,
                       MaterialPageRoute(builder: (context) =>
-                          PriceTagScreen(product: product, priceTagService: locator<PriceTagService>(),)
+                          PriceTagScreen(product: produto, priceTagService: locator<PriceTagService>(),)
                       ),
                   ),
                   style: TextButton.styleFrom(
@@ -168,8 +167,8 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                       itemBuilder: (context, index) {
                         final produto = _produtos[index];
                         return ListTile(
-                          title: Text(produto['nome']),
-                          subtitle: Text("Qtd: ${produto['qt']} - Preço: R\$${produto['pcoRemar']}"),
+                          title: Text(produto.nome),
+                          subtitle: Text("Qtd: ${produto.qt} - Preço: R\$${produto.pcoRemar}"),
                           onTap: () => _mostrarDetalhesProduto(context, produto),
                         );
                       },

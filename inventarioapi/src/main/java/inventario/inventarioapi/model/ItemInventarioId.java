@@ -1,18 +1,17 @@
 package inventario.inventarioapi.model;
 
-import java.io.Serializable;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
-@Embeddable
-public class InventarioProduto implements Serializable {
+import java.io.Serializable;
 
-    @Column(name = "CODINVENTARIO")
+@Embeddable
+public class ItemInventarioId implements Serializable {
+
     private Long codInventario;
 
-    @Column(name = "CODPRODUTO")
     private Long codProduto;
+
+    private Long codLoja;
 
     public Long getCodInventario() {
         return codInventario;
@@ -30,5 +29,12 @@ public class InventarioProduto implements Serializable {
         this.codProduto = codProduto;
     }
 
-    
+    public Long getCodLoja() {
+        return codLoja;
+    }
+
+    public void setCodLoja(Long codLoja) {
+        this.codLoja = codLoja;
+    }
+
 }

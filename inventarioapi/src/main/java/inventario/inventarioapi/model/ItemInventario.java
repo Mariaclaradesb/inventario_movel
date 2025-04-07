@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 public class ItemInventario {
 
     @EmbeddedId
-    private InventarioProduto codigo;
+    private ItemInventarioId codigo;
 
     @ManyToOne
     @MapsId("codInventario")
@@ -30,7 +30,7 @@ public class ItemInventario {
     @JsonIgnore
     @ManyToOne
     @MapsId("codLoja")
-    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODIGO")
+    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA_FISICA")
     private LojaFisica loja;
 
     @Column(name = "EST_ATUAL")
@@ -49,11 +49,11 @@ public class ItemInventario {
     }
 
 
-    public InventarioProduto getCodigo() {
+    public ItemInventarioId getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(InventarioProduto codigo) {
+    public void setCodigo(ItemInventarioId codigo) {
         this.codigo = codigo;
     }
 
@@ -89,4 +89,11 @@ public class ItemInventario {
         this.estLoja = estLoja;
     }
 
+    public LojaFisica getLoja() {
+        return loja;
+    }
+
+    public void setLoja(LojaFisica loja) {
+        this.loja = loja;
+    }
 }

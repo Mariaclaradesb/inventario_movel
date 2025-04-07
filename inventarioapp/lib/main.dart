@@ -9,6 +9,7 @@ import 'package:inventarioapp/src/ui/pages/login_page.dart';
 
 
 void main() {
+  setup();
   runApp(MyApp());
 }
 
@@ -29,5 +30,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

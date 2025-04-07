@@ -11,8 +11,7 @@ import java.util.Optional;
 @Repository
 public interface VprodutosRepository extends JpaRepository<VProduto, Long> {
     Optional<VProduto> findById(Long codigo);
-
-
+    
     @Query("SELECT v FROM VProduto v WHERE ( " +
     // "CAST(v.codigo AS string) LIKE %:termo% " +
     "LOWER(v.nome) LIKE LOWER(CONCAT('%', :termo, '%')) " +
@@ -37,6 +36,6 @@ public interface VprodutosRepository extends JpaRepository<VProduto, Long> {
     // "OR (v.estLoja) LIKE '%', :termo, '%'" +   
     "OR LOWER(v.marca.nome) LIKE LOWER(CONCAT('%', :termo, '%')) ) " +  
     "AND v.loja.codigo = :codLoja")
-List<VProduto> buscarPorTodosOsCampos(@Param("termo") String termo, @Param("codLoja") Long codLoja);
+    List<VProduto> buscarPorTodosOsCampos(@Param("termo") String termo, @Param("codLoja") Long codLoja);
 
 }

@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:inventarioapp/src/models/vproduto.dart';
 import 'package:inventarioapp/src/services/consultap_service.dart';
+import 'package:inventarioapp/src/services/price_tag/price_tag_service.dart';
+import 'package:inventarioapp/src/ui/pages/price_tag_screen.dart';
+
+import '../../config/injection_container.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 import 'package:inventarioapp/src/ui/widgets/loja_nao_selecionada.dart';
+
+import 'barcode_scanner_screen.dart';
 
 class ConsultapPage extends StatefulWidget {
   @override
@@ -12,19 +19,19 @@ class ConsultapPage extends StatefulWidget {
 class _ConsultapPageState extends State<ConsultapPage> {
   final ConsultapService _consultapService = ConsultapService();
   final TextEditingController _searchController = TextEditingController();
-  List<dynamic> _produtos = [];
+  List<VProduto> _produtos = <VProduto>[];
   bool _isLoading = false;
 
   void _buscarProdutos() async {
     setState(() => _isLoading = true);
     try {
       final codLoja =  await SharedPrefsService.obterLojaSelecionada(); // Obtém a loja selecionada
-    if (codLoja == null) {
-      LojaNaoSelecionada.mostrarErro(context);
-      return;
-    }
+      if (codLoja == null) {
+        LojaNaoSelecionada.mostrarErro(context);
+        return;
+      }
 
-      List<dynamic> produtos = await _consultapService.buscarProdutos(_searchController.text);
+      List<VProduto> produtos = await _consultapService.buscarProdutos(_searchController.text);
       setState(() => _produtos = produtos);
     } catch (e) {
       print("Erro: $e");
@@ -33,13 +40,13 @@ class _ConsultapPageState extends State<ConsultapPage> {
     }
   }
 
-void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto) {
+void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          produto['nome'],
+          produto.nome,
           style: TextStyle(
             fontSize: 25.0,
             fontWeight: FontWeight.bold,
@@ -50,19 +57,19 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Quantidade: ${produto['qt']}",
+              "Quantidade: ${produto.qt}",
               style: TextStyle(fontSize: 20.0)
             ),
             Text(
-              "Preço: R\$${produto['pcoRemar']}",
+              "Preço: R\$${produto.pcoRemar}",
               style: TextStyle(fontSize: 20.0)
             ),
             Text(
-              "Unidade: ${produto['unidade']}",
+              "Unidade: ${produto.unidade}",
               style: TextStyle(fontSize: 20.0),
             ),
             Text(
-              "Marca: ${produto['marca']?['nome'] ?? 'Sem Marca'}",
+              "Marca: ${produto.marca?.nome ?? 'Sem Marca'}",
               style: TextStyle(fontSize: 20.0),
             ),
 
@@ -85,7 +92,7 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                   onPressed: () => Navigator.of(context).pop(),
                   style: TextButton.styleFrom(
                     foregroundColor: const Color.fromARGB(255, 7, 79, 139), // Cor do texto // Cor de fundo do botão
-                    padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3), 
+                    padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10) // Borda arredondada
                     ),
@@ -96,7 +103,11 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                   ),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) =>
+                          PriceTagScreen(product: produto, priceTagService: locator<PriceTagService>(),)
+                      ),
+                  ),
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.white, // Cor do texto
                     backgroundColor: const Color.fromARGB(255, 7, 79, 139), // Cor de fundo do botão
@@ -141,7 +152,7 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                     ),
                     IconButton(
                       icon: Icon(Icons.barcode_reader),
-                      onPressed: _buscarProdutos, // MUDAR PARA LEITURA DE CODIGO DE BARRAS
+                      onPressed: _readBarcode,
                     ),
                   ],
                 ),
@@ -156,8 +167,8 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
                       itemBuilder: (context, index) {
                         final produto = _produtos[index];
                         return ListTile(
-                          title: Text(produto['nome']),
-                          subtitle: Text("Qtd: ${produto['qt']} - Preço: R\$${produto['pcoRemar']}"),
+                          title: Text(produto.nome),
+                          subtitle: Text("Qtd: ${produto.qt} - Preço: R\$${produto.pcoRemar}"),
                           onTap: () => _mostrarDetalhesProduto(context, produto),
                         );
                       },
@@ -168,4 +179,14 @@ void _mostrarDetalhesProduto(BuildContext context, Map<String, dynamic> produto)
       ),
     );
   }
+
+  void _readBarcode() async {
+    final barcode = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => BarcodeScannerScreen())
+    );
+
+    _searchController.text = barcode;
+    _buscarProdutos();
+  }
+
 }

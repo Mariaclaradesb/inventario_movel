@@ -1,14 +1,6 @@
 package inventario.inventarioapi.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-
-import java.math.BigDecimal;
+import jakarta.persistence.*;
 
 //VPRODUTOS: CODIGO, CODLOJACDASTRO, NOME, QT, ALTERNATI, CBARRA, CBARRA2, CBARRA3, ORIGINAL, EST_ATUAL, PCO_REMAR
 
@@ -27,7 +19,7 @@ public class VProduto {
     private String nome;
 
     @Column(name = "EST_ATUAL")
-    private Long qt;
+    private Double estAtual;
 
     @Column(name = "ALTERNATI")
     private String alternati;
@@ -45,10 +37,44 @@ public class VProduto {
     private String original;
 
     @Column(name = "PCO_REMAR")
-    private BigDecimal pcoRemar;
+    private String pcoRemar;
 
     @Column(name = "UNIDADE")
     private String unidade;
+
+    @Column(name = "PCO_COMPRA")
+    private String pcoCompra;
+
+    @Column(name = "C_AQUIS")
+    private String cAquis;
+
+
+    @Column(name = "PCO_LIQ")
+    private String pcoLiq;
+
+    @Column(name = "PCO_VENDA")
+    private String pcoVenda;
+
+    @Column(name = "PCO_02")
+    private String pco02;
+
+    @Column(name = "PCO_03")
+    private String pco03;
+
+    @Column(name = "PCO_04")
+    private String pco04;
+
+    @Column(name = "PCO_AVENDA")
+    private String pcoAVenda;
+
+    @Column(name = "PCO_AREMAR")
+    private String pcoARemar;
+
+    @Column(name = "EST_DEPOSITO")
+    private Double estDeposito;
+
+    @Column(name = "EST_LOJA")
+    private Double estLoja;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MARCA", referencedColumnName = "CODIGO", nullable = false) 
@@ -73,13 +99,9 @@ public class VProduto {
         this.nome = nome;
     }
 
-    public Long getQt() {
-        return qt;
-    }
 
-    public void setQt(Long qt) {
-        this.qt = qt;
-    }
+
+
 
     public String getAlternati() {
         return alternati;
@@ -122,11 +144,14 @@ public class VProduto {
     }
 
 
-    public BigDecimal getPcoRemar() {
+
+    public String getPcoRemar() {
         return pcoRemar;
     }
 
-    public void setPcoRemar(BigDecimal pcoRemar) {
+
+
+    public void setPcoRemar(String pcoRemar) {
         this.pcoRemar = pcoRemar;
     }
 
@@ -153,5 +178,150 @@ public class VProduto {
     public void setLoja(LojaFisica loja) {
         this.loja = loja;
     }
+
+
+
+    public double getEstAtual() {
+        return estAtual;
+    }
+
+
+
+    public void setEstAtual(double estAtual) {
+        this.estAtual = estAtual;
+    }
+
+
+
+    public String getPcoCompra() {
+        return pcoCompra;
+    }
+
+
+
+    public void setPcoCompra(String pcoCompra) {
+        this.pcoCompra = pcoCompra;
+    }
+
+
+
+    public String getcAquis() {
+        return cAquis;
+    }
+
+
+
+    public void setcAquis(String cAquis) {
+        this.cAquis = cAquis;
+    }
+
+
+
+    public String getPcoLiq() {
+        return pcoLiq;
+    }
+
+
+
+    public void setPcoLiq(String pcoLiq) {
+        this.pcoLiq = pcoLiq;
+    }
+
+
+
+    public String getPcoVenda() {
+        return pcoVenda;
+    }
+
+
+
+    public void setPcoVenda(String pcoVenda) {
+        this.pcoVenda = pcoVenda;
+    }
+
+
+
+    public String getPco02() {
+        return pco02;
+    }
+
+
+
+    public void setPco02(String pco02) {
+        this.pco02 = pco02;
+    }
+
+
+
+    public String getPco03() {
+        return pco03;
+    }
+
+
+
+    public void setPco03(String pco03) {
+        this.pco03 = pco03;
+    }
+
+
+
+    public String getPco04() {
+        return pco04;
+    }
+
+
+
+    public void setPco04(String pco04) {
+        this.pco04 = pco04;
+    }
+
+
+
+    public String getPcoAVenda() {
+        return pcoAVenda;
+    }
+
+
+
+    public void setPcoAVenda(String pcoAVenda) {
+        this.pcoAVenda = pcoAVenda;
+    }
+
+
+
+    public String getPcoARemar() {
+        return pcoARemar;
+    }
+
+
+
+    public void setPcoARemar(String pcoARemar) {
+        this.pcoARemar = pcoARemar;
+    }
+
+
+
+    public double getEstDeposito() {
+        return estDeposito;
+    }
+
+
+
+    public void setEstDeposito(double estDeposito) {
+        this.estDeposito = estDeposito;
+    }
+
+
+
+    public double getEstLoja() {
+        return estLoja;
+    }
+
+
+
+    public void setEstLoja(double estLoja) {
+        this.estLoja = estLoja;
+    }
+
 
 }

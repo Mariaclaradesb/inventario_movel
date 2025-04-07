@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventarioapp/src/services/consultap_service.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
+import 'package:inventarioapp/src/ui/widgets/drawer_widgets.dart';
 import 'package:inventarioapp/src/ui/widgets/loja_nao_selecionada.dart';
 
 class ConsultapPage extends StatefulWidget {

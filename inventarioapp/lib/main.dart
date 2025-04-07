@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:inventarioapp/src/ui/pages/configuracoes_page.dart';
 import 'package:inventarioapp/src/ui/pages/consultap_page.dart';
+import 'package:inventarioapp/src/ui/pages/inventory_screen.dart';
 import 'package:inventarioapp/src/ui/pages/path_screen.dart';
 import 'package:inventarioapp/src/ui/pages/tela_inicial_page.dart';
-import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 import 'package:inventarioapp/src/ui/pages/login_page.dart';
 
 
@@ -17,13 +17,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/login',
+      initialRoute: '/inventoryScreen',
       routes: {
         '/telaInicial': (context) => TelaInicialPage(),
         '/configuracoes': (context) => ConfiguracoesPage(),
         '/consultaProdutos': (context) => ConsultapPage(),
-        '/login': (context) => LoginPage(),
+        '/loginScreen': (context) => LoginPage(),
         '/pathScreen': (context) => PathScreen(),
+        '/inventoryScreen': (context) => InventoryScreen(),
       },
     );
   }

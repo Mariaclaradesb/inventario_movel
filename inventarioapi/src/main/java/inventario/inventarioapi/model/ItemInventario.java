@@ -1,5 +1,7 @@
 package inventario.inventarioapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -24,6 +26,12 @@ public class ItemInventario {
     @MapsId("codProduto")
     @JoinColumn(name = "CODPRODUTO", referencedColumnName = "CODIGO" )
     private VProduto produto;
+
+    @JsonIgnore
+    @ManyToOne
+    @MapsId("codLoja")
+    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODIGO")
+    private LojaFisica loja;
 
     @Column(name = "EST_ATUAL")
     private Double estAtual;

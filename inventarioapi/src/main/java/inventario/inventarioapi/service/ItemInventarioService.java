@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import inventario.inventarioapi.model.InventarioData;
 import inventario.inventarioapi.model.ItemInventario;
-import inventario.inventarioapi.model.NovoItemInventario;
+import inventario.inventarioapi.model.ItemInventarioDTO;
 import inventario.inventarioapi.model.VProduto;
 import inventario.inventarioapi.repository.InventarioDataRepository;
 import inventario.inventarioapi.repository.ItemInventarioRepository;
@@ -23,7 +23,7 @@ public class ItemInventarioService {
     @Autowired
     private VprodutosRepository vprodutosRepository;
 
-    public ItemInventario adicionarItem(NovoItemInventario dados) {
+    public ItemInventario adicionarItem(ItemInventarioDTO dados) {
         InventarioData inventarioData = inventarioDataRepository.findById(dados.codInventario())
         .orElseThrow(() -> new RuntimeException("Inventário não encontrado"));
 

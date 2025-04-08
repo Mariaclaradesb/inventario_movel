@@ -28,4 +28,20 @@ class InventarioDataService {
     return InventarioData.fromJson(json.decode(response.body));
   }
 
+  Future<List<InventarioData>> findAll() async {
+    final codLoja = await SharedPrefsService.obterLojaSelecionada();
+
+    if (codLoja == null) {
+      throw Exception("Loja não selecionada");
+    }
+
+    final uri = Uri.parse("$baseUrl/buscar?codLoja=$codLoja");
+
+    final response = await http.get(uri);
+
+    Iterable list = json.decode(response.body);
+    List<InventarioData> inventories = List<InventarioData>.from(list.map((i) => InventarioData.fromJson(i)));
+    return inventories;
+  }
+
 }

@@ -61,7 +61,7 @@ void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
               style: TextStyle(fontSize: 20.0)
             ),
             Text(
-              "Preço: R\$${produto.pcoRemar}",
+              "Preço: R\$${produto.pcoRemarFormatado}",
               style: TextStyle(fontSize: 20.0)
             ),
             Text(
@@ -168,7 +168,7 @@ void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
                         final produto = _produtos[index];
                         return ListTile(
                           title: Text(produto.nome),
-                          subtitle: Text("Qtd: ${produto.qt} - Preço: R\$${produto.pcoRemar}"),
+                          subtitle: Text("Qtd: ${produto.qt} - Preço: R\$${produto.pcoRemarFormatado}"),
                           onTap: () => _mostrarDetalhesProduto(context, produto),
                         );
                       },

@@ -57,7 +57,7 @@ void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Quantidade: ${produto.qt}",
+              "Quantidade: ${produto.estAtual}",
               style: TextStyle(fontSize: 20.0)
             ),
             Text(
@@ -168,7 +168,7 @@ void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
                         final produto = _produtos[index];
                         return ListTile(
                           title: Text(produto.nome),
-                          subtitle: Text("Qtd: ${produto.qt} - Preço: R\$${produto.pcoRemarFormatado}"),
+                          subtitle: Text("Qtd: ${produto.estAtual} - Preço: R\$${produto.pcoRemarFormatado}"),
                           onTap: () => _mostrarDetalhesProduto(context, produto),
                         );
                       },

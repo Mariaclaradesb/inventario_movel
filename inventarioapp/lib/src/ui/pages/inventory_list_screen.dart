@@ -73,10 +73,47 @@ class InventoryListScreen extends StatelessWidget {
                         Expanded(
                           flex: 1,
                           child: Container(
-                            padding: EdgeInsets.only(left: 16),
+                            color: Colors.blue, // Fundo azul da área
+                            padding: const EdgeInsets.only(left: 16),
                             alignment: Alignment.centerLeft,
-                            color: Colors.blue,
-                            child: Icon(Icons.more_vert, color: Colors.white,),
+                            child: Material(
+                              color: Colors.transparent,
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(50), // Efeito redondo
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+                                    ),
+                                    backgroundColor: Colors.blue[700],
+                                    builder: (context) {
+                                      return Container(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ListTile(
+                                              leading: Icon(Icons.close, color: Colors.redAccent),
+                                              title: Text('Encerrar',
+                                                  style: TextStyle(color: Colors.white)),
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                print("Encerrar clicado!");
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0), // Espaço ao redor do ícone
+                                  child: Icon(Icons.more_vert, color: Colors.white),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],

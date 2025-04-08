@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class InventarioDataService {
@@ -23,6 +24,10 @@ public class InventarioDataService {
     public InventarioData create(Long storeId, NovoInventarioData newInventoryDate) {
         InventarioData object = createNewInventoryDate(storeId, newInventoryDate);
         return repository.save(object);
+    }
+
+    public List<InventarioData> findAllByStore(Long storeId) {
+        return repository.findByLojaCodigo(storeId);
     }
 
     private InventarioData createNewInventoryDate(Long storeId, NovoInventarioData newInventoryDate) {

@@ -19,7 +19,12 @@ class InventarioDataService {
 
     final uri = Uri.parse("$baseUrl/criar?codLoja=$codLoja");
 
-    final response = await http.post(uri, body: newInventoryDate);
+    final response = await http.post(uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(newInventoryDate.toJson()),
+    );
 
     if (response.statusCode != 201) {
       throw Exception("Erro ao criar inventário");

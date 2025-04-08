@@ -20,7 +20,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
   @override
   void initState(){
     super.initState();
-    // futureInventarios = service.findAll();
+    futureInventarios = service.findAll();
   }
 
   @override

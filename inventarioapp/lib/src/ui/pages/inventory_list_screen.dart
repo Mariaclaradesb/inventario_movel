@@ -15,13 +15,15 @@ class InventoryListScreen extends StatefulWidget {
 
 class _InventoryListScreenState extends State<InventoryListScreen> {
   final InventarioDataService service = InventarioDataService();
-  late Future<List<InventarioData>> futureInventarios;
+  late Future<List<InventarioData>> futureInventaries;
 
   @override
   void initState(){
     super.initState();
-    // futureInventarios = service.findAll();
+    futureInventaries = service.findAll();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
       appBar: MyAppBar(),
       drawer: CustomDrawer(),
       body: FutureBuilder<List<InventarioData>>(
-        future: futureInventarios,
+        future: futureInventaries,
         builder: (context, response) {
           if (response.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
           if (response.hasError) return Center(child: Text('Erro ao carregar inventários'));
@@ -48,8 +50,13 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showMenuAddInventory(context);
+        onPressed: () async {
+          final result = await showMenuAddInventory(context);
+          if(result == true){
+            setState(() {
+              futureInventaries = service.findAll();
+            });
+          }
         },
         backgroundColor: const Color(0xFF006989),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),

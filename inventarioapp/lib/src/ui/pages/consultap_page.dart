@@ -1,6 +1,11 @@
+import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
+
 import 'package:flutter/material.dart';
+import 'package:inventarioapp/src/models/inventario_data.dart';
+import 'package:inventarioapp/src/models/item_inventario.dart';
 import 'package:inventarioapp/src/models/vproduto.dart';
 import 'package:inventarioapp/src/services/consultap_service.dart';
+import 'package:inventarioapp/src/services/inventario/item_inventario_service.dart';
 import 'package:inventarioapp/src/services/price_tag/price_tag_service.dart';
 import 'package:inventarioapp/src/ui/pages/price_tag_screen.dart';
 
@@ -13,17 +18,39 @@ import 'package:inventarioapp/src/ui/widgets/loja_nao_selecionada.dart';
 import 'barcode_scanner_screen.dart';
 
 class ConsultapPage extends StatefulWidget {
+
   @override
   _ConsultapPageState createState() => _ConsultapPageState();
 }
 
 class _ConsultapPageState extends State<ConsultapPage> {
+  String? origem;
+  InventarioData? inventory;
+
+  var pQuantityStore = TextEditingController();
+  var pQuantityStock = TextEditingController();
+
+  final ItemInventarioService service = ItemInventarioService();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments as Map?;
+
+
+    if(args != null){
+      // inventory = args['inventario'] as InventarioData;
+      origem = args['origem'] as String;
+    }
+  }
+
   final ConsultapService _consultapService = ConsultapService();
   final TextEditingController _searchController = TextEditingController();
   List<VProduto> _produtos = <VProduto>[];
   bool _isLoading = false;
 
   void _buscarProdutos() async {
+
     setState(() => _isLoading = true);
     try {
       final codLoja =  await SharedPrefsService.obterLojaSelecionada(); // Obtém a loja selecionada
@@ -73,7 +100,21 @@ void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
               "Marca: ${produto.marca?.nome ?? 'Sem Marca'}",
               style: TextStyle(fontSize: 20.0),
             ),
-
+            if(origem == 'inventoryProductsScreen')
+              TextField(
+                controller: pQuantityStock,
+                decoration: InputDecoration(
+                  hintText: 'Quantidade no estoque',
+                  hintStyle: TextStyle(color: Colors.white)
+                ),
+              ),
+              TextField(
+                controller: pQuantityStore,
+                decoration: InputDecoration(
+                  hintText: 'Quantidade na loja',
+                  hintStyle: TextStyle(color: Colors.white)
+                ),
+              ),
           ],
         ),
         actions: [
@@ -122,6 +163,14 @@ void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
+                if(origem == 'inventoryProductsScreen')
+                  TextButton(onPressed: (){
+                    var quantityStore = double.parse(pQuantityStore.text);
+                    var quantityStock = double.parse(pQuantityStock.text);
+                    var item = ItemInventario(inventory!.codigo!, produto.codigo, quantityStock, quantityStore);
+                    service.saveInventoryItem(item);
+                    Navigator.pop(context, true);
+                  }, child: Text('Adicionar', style: TextStyle(color: Colors.white),))
               ],
             ),
           ),

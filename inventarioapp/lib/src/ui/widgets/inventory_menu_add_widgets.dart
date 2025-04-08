@@ -3,11 +3,11 @@ import 'package:inventarioapp/src/models/inventario_data.dart';
 import 'package:inventarioapp/src/models/novo_inventario_data.dart';
 import 'package:inventarioapp/src/services/inventario/inventario_data_service.dart';
 
-void showMenuAddInventory(BuildContext context) {
+Future<bool> showMenuAddInventory(BuildContext context) async {
   var inventoryNameController = TextEditingController();
   var service = InventarioDataService();
 
-  showDialog(
+  final result = await showDialog(
     context: context,
     builder: (context) {
       return AlertDialog(
@@ -36,7 +36,7 @@ void showMenuAddInventory(BuildContext context) {
             children: [
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).pop(false);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFFB00020),
@@ -50,7 +50,7 @@ void showMenuAddInventory(BuildContext context) {
                     //salvar o inventario no back e redirecionar
                     var inventario = NovoInventarioData(nomeInventario);
                     service.create(inventario);
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(true);
                   }
                 },
                 style: ElevatedButton.styleFrom(
@@ -64,4 +64,5 @@ void showMenuAddInventory(BuildContext context) {
       );
     },
   );
+  return result ?? false;
 }

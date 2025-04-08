@@ -3,8 +3,8 @@ import 'dart:ffi';
 class ItemInventario {
   int _codInventario;
   int _codProduto;
-  Double? _estAtual;
-  Double? _estLoja;
+  double? _estAtual;
+  double? _estLoja;
 
   ItemInventario(
     this._codInventario,
@@ -17,8 +17,8 @@ class ItemInventario {
     return ItemInventario(
       json['codInventario'] as int,
       json['codProduto'] as int,
-      json['estAtual'] as Double,
-      json['estLoja'] as Double
+      json['estAtual'] as double,
+      json['estLoja'] as double
     );
   }
 
@@ -31,15 +31,15 @@ class ItemInventario {
     };
   }
 
-  Double? get estLoja => _estLoja;
+  double? get estLoja => _estLoja;
 
-  set estLoja(Double? value) {
+  set estLoja(double? value) {
     _estLoja = value;
   }
 
-  Double? get estAtual => _estAtual;
+  double? get estAtual => _estAtual;
 
-  set estAtual(Double? value) {
+  set estAtual(double? value) {
     _estAtual = value;
   }
 

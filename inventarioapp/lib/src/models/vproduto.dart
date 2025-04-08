@@ -22,6 +22,27 @@ class VProduto {
       this._codigoDeBarrasAlternativo, this._original, this._pcoRemar,
       this._estAtual, this._unidade, this._marca);
 
+  VProduto.mock({
+    required int codigo,
+    required LojaFisica loja,
+    required String nome,
+    double? preco,
+    int? estoque,
+    String? unidade,
+    Marca? marca,
+  })  : _codigo = codigo,
+        _loja = loja,
+        _nome = nome,
+        _pcoRemar = preco,
+        _estAtual = estoque,
+        _unidade = unidade,
+        _marca = marca,
+        _alternati = null,
+        _codigoDeBarrasPrincipal = null,
+        _codigoDeBarrasSecundario = null,
+        _codigoDeBarrasAlternativo = null,
+        _original = null;
+
   factory VProduto.fromJson(Map<String, dynamic> json) {
     return VProduto(
       json['codigo'] as int,

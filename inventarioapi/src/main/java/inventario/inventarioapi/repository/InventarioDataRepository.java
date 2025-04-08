@@ -13,7 +13,7 @@ import java.util.List;
 public interface InventarioDataRepository  extends JpaRepository<InventarioData, Long> {
     
     @Query("""
-        SELECT MAX(i.codigo) + 1
+        SELECT COALESCE(MAX(i.codigo) + 1, 1)
         FROM InventarioData i
     """)
     Long findNewId();

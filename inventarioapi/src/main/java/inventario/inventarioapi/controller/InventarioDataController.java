@@ -20,7 +20,7 @@ public class InventarioDataController {
     }
 
     @PostMapping("/criar")
-    ResponseEntity<InventarioData> create(@RequestParam Long codLoja, NovoInventarioData newInventoryDate) {
+    ResponseEntity<InventarioData> create(@RequestParam Long codLoja, @RequestBody NovoInventarioData newInventoryDate) {
         var inventoryDate = service.create(codLoja, newInventoryDate);
         return ResponseEntity.status(HttpStatus.CREATED).body(inventoryDate);
     }

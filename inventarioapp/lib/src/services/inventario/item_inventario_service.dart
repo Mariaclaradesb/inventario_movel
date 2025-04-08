@@ -14,7 +14,7 @@ class ItemInventarioService {
       throw Exception("Loja não selecionada");
     }
 
-    final uri = Uri.parse("$baseUrl/item/salvar");
+    final uri = Uri.parse("$baseUrl/item/salvar?codLoja=$codLoja");
 
     final response = await http.post(uri, body: inventoryItem);
 

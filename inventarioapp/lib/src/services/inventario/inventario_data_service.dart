@@ -17,7 +17,7 @@ class InventarioDataService {
       throw Exception("Loja não selecionada");
     }
 
-    final uri = Uri.parse("$baseUrl/criar");
+    final uri = Uri.parse("$baseUrl/criar?codLoja=$codLoja");
 
     final response = await http.post(uri, body: newInventoryDate);
 

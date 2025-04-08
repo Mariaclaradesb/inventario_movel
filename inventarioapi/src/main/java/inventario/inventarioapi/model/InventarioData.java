@@ -1,11 +1,8 @@
 package inventario.inventarioapi.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "INVENTARIO_DATA")
@@ -19,7 +16,7 @@ public class InventarioData {
     private LojaFisica loja;
 
     @Column(name = "DATA")
-    private String data;
+    private LocalDateTime data;
 
     @Column(name = "HORA")
     private String hora;
@@ -28,7 +25,19 @@ public class InventarioData {
     private String nome;
 
     @Column(name= "DISPONIVEL_EFD")
-    private String disponivelEfd;
+    private int disponivelEfd;
+
+    public InventarioData() {
+    }
+
+    public InventarioData(Long codigo, LojaFisica loja, LocalDateTime data, String hora, String nome, int disponivelEfd) {
+        this.codigo = codigo;
+        this.loja = loja;
+        this.data = data;
+        this.hora = hora;
+        this.nome = nome;
+        this.disponivelEfd = disponivelEfd;
+    }
 
     public Long getCodigo() {
         return codigo;
@@ -46,11 +55,11 @@ public class InventarioData {
         this.loja = loja;
     }
 
-    public String getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 
@@ -70,11 +79,11 @@ public class InventarioData {
         this.nome = nome;
     }
 
-    public String getDisponivelEfd() {
+    public int getDisponivelEfd() {
         return disponivelEfd;
     }
 
-    public void setDisponivelEfd(String disponivelEfd) {
+    public void setDisponivelEfd(int disponivelEfd) {
         this.disponivelEfd = disponivelEfd;
     }
 

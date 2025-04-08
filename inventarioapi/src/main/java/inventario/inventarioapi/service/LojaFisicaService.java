@@ -15,4 +15,10 @@ public class LojaFisicaService {
     public List<LojaFisica> listarTodas() {
         return lojaRepository.findAll();
     }
+
+    public LojaFisica findById(Long id) {
+        return lojaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Loja não encontrada"));
+    }
+
 }

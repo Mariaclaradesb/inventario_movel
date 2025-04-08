@@ -1,156 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:inventarioapp/src/models/inventario_data.dart';
+import 'package:inventarioapp/src/services/inventario/inventario_data_service.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 import 'package:inventarioapp/src/ui/widgets/drawer_widgets.dart';
+import 'package:inventarioapp/src/ui/widgets/inventory_card.dart';
 import 'package:inventarioapp/src/ui/widgets/inventory_menu_add_widgets.dart';
 
 class InventoryListScreen extends StatefulWidget {
   const InventoryListScreen({super.key});
 
   @override
-  _InventoryListScreenState createState() => _InventoryListScreenState();
+  State<InventoryListScreen> createState() => _InventoryListScreenState();
 }
 
 class _InventoryListScreenState extends State<InventoryListScreen> {
-  bool showHeader = true;
+  final InventarioDataService service = InventarioDataService();
+  late Future<List<InventarioData>> futureInventarios;
+
+  @override
+  void initState(){
+    super.initState();
+    // futureInventarios = service.findAll();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(),
       drawer: CustomDrawer(),
-      body: ListView(
-        children: [
-          if (showHeader)
-            Column(
-              children: [
-                Stack(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(color: Colors.blue),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              padding: EdgeInsets.all(8),
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: Colors.white38,
-                                borderRadius: BorderRadius.circular(100),
-                              ),
-                              child: Text(
-                                "10",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 32,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 4,
-                            child: Container(
-                              padding: EdgeInsets.all(8.0),
-                              decoration: BoxDecoration(
-                                color: Colors.white38,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Inventário 1",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    'Data: 04/04/2025',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              color: Colors.blue,
-                              padding: const EdgeInsets.only(left: 16),
-                              alignment: Alignment.centerLeft,
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(50),
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.vertical(
-                                          top: Radius.circular(20),
-                                        ),
-                                      ),
-                                      backgroundColor: Colors.blue[700],
-                                      builder: (context) {
-                                        return Container(
-                                          padding: const EdgeInsets.all(16),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              ListTile(
-                                                leading: Icon(Icons.close,
-                                                    color: Colors.redAccent),
-                                                title: Text('Encerrar',
-                                                    style: TextStyle(
-                                                        color: Colors.white)),
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  setState(() {
-                                                    showHeader = false;
-                                                  });
-                                                  print("Encerrar clicado!");
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Icon(
-                                      Icons.more_vert,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-        ],
+      body: FutureBuilder<List<InventarioData>>(
+        future: futureInventarios,
+        builder: (context, response) {
+          if (response.connectionState == ConnectionState.waiting) return const Center(child: CircularProgressIndicator());
+          if (response.hasError) return Center(child: Text('Erro ao carregar inventários'));
+          if (!response.hasData || response.data!.isEmpty)  return Center(child: Text('Nenhum inventário encontrado'));
+
+          final inventarios = response.data!; //adicionar verificação depois
+          return ListView.builder(
+            itemCount: inventarios.length,
+            itemBuilder: (context, index) {
+              return InventoryCard(
+                inventario: inventarios[index],
+                index: index,
+              );
+            },
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showMenuAddInventory(context);
         },
-        backgroundColor: Color(0xFF006989),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(100)),
-        child: Icon(Icons.add, color: Colors.white),
+        backgroundColor: const Color(0xFF006989),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:inventarioapp/src/models/inventario_data.dart';
+import 'package:inventarioapp/src/models/novo_inventario_data.dart';
+import 'package:inventarioapp/src/services/inventario/inventario_data_service.dart';
 
 void showMenuAddInventory(BuildContext context) {
   var inventoryNameController = TextEditingController();
+  var service = InventarioDataService();
 
   showDialog(
     context: context,
@@ -44,6 +48,8 @@ void showMenuAddInventory(BuildContext context) {
                   String nomeInventario = inventoryNameController.text.trim();
                   if (nomeInventario.isNotEmpty) {
                     //salvar o inventario no back e redirecionar
+                    var inventario = NovoInventarioData(nomeInventario);
+                    service.create(inventario);
                     Navigator.of(context).pop();
                   }
                 },

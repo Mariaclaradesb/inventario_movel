@@ -17,10 +17,13 @@ class InventarioData {
     this._disponivelEfd,
   );
 
+
   factory InventarioData.fromJson(Map<String, dynamic> json) {
     return InventarioData(
       json['codigo'] as int,
-      json['loja'] != null ? LojaFisica.fromJson(json['loja']) : null as LojaFisica?,
+      json['loja'] != null
+          ? LojaFisica.fromJson(json['loja'])
+          : null as LojaFisica?,
       json['data'] != null ? DateTime.parse(json['data']) : null as DateTime?,
       json['hora'] as String?,
       json['nome'] as String?,
@@ -74,5 +77,4 @@ class InventarioData {
   set codigo(int? value) {
     _codigo = value;
   }
-
 }

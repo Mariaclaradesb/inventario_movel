@@ -7,5 +7,11 @@ class LojaFisica {
     return LojaFisica(json['codigo'] as int);
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'codigo': codigo
+    };
+  }
+
   int get codigo => _codigo;
 }

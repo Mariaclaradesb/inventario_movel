@@ -8,6 +8,9 @@ https://docs.google.com/document/d/1Rd2h-vuhFjpcO2xDYEzJyUBQwxaKWaDNvDtyTd9APZ8/
 ### Fluxo de usuário
 https://miro.com/welcomeonboard/TU5KVWlqRWt4b3JLTXlzTDl5TUlRSGMva1hOTXVtMnhoeTV6d0hFVGZKcTMvRGhsK3FXWE14b0d4SjJuUHl2eUo4SnNnZWF0YTdwNFhYRm9XVCs4SE5hM3lMaVZZN3A2cUwzYVArWVdkZjc1b2JpT2lWMEhqRjZuSDRadXA1NGdNakdSWkpBejJWRjJhRnhhb1UwcS9BPT0hdjE=?share_link_id=215092444504
 
+### Protótipos do figma
+https://www.figma.com/design/9utntKgJF5KfwCzF9skXhN/Invent%C3%A1rio-m%C3%B3vel?node-id=0-1&p=f&t=YxtmxUz3Ga2Gnenm-0
+
 # 📱 Configuração do Ambiente de Desenvolvimento Flutter - VEJAM ALGUM VÍDEO
 
 - Android Studio

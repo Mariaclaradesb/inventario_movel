@@ -1,12 +1,43 @@
 package inventario.inventarioapi.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import inventario.inventarioapi.model.InventarioData;
+import inventario.inventarioapi.model.LojaFisica;
+import inventario.inventarioapi.model.NovoInventarioData;
+import inventario.inventarioapi.repository.InventarioDataRepository;
 import org.springframework.stereotype.Service;
 
-import inventario.inventarioapi.repository.InventarioDataRepository;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 public class InventarioDataService {
-    @Autowired
-    private InventarioDataRepository inventarioDataRepository;  
+
+    private final InventarioDataRepository repository;
+    private final LojaFisicaService lojaFisicaService;
+
+    public InventarioDataService(InventarioDataRepository repository, LojaFisicaService lojaFisicaService) {
+        this.repository = repository;
+        this.lojaFisicaService = lojaFisicaService;
+    }
+
+    public InventarioData create(Long storeId, NovoInventarioData newInventoryDate) {
+        InventarioData object = createNewInventoryDate(storeId, newInventoryDate);
+        return repository.save(object);
+    }
+
+    public List<InventarioData> findAllByStore(Long storeId) {
+        return repository.findByLojaCodigo(storeId);
+    }
+
+    private InventarioData createNewInventoryDate(Long storeId, NovoInventarioData newInventoryDate) {
+        Long id = repository.findNewId();
+        LojaFisica store = lojaFisicaService.findById(storeId);
+        LocalDateTime date = LocalDateTime.now();
+        String hour = date.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        String name = newInventoryDate.nome();
+
+        return new InventarioData(id, store, date, hour, name, 0);
+    }
+
 }

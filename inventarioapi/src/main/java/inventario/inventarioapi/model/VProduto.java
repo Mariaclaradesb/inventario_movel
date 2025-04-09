@@ -1,14 +1,6 @@
 package inventario.inventarioapi.model;
 
-import org.apache.logging.log4j.message.StringFormattedMessage;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
@@ -29,7 +21,7 @@ public class VProduto {
     private String nome;
 
     @Column(name = "EST_ATUAL")
-    private Double estAtual;
+    private Long estAtual;
 
     @Column(name = "ALTERNATI")
     private String alternati;
@@ -53,38 +45,38 @@ public class VProduto {
     private String unidade;
 
     @Column(name = "PCO_COMPRA")
-    private String pcoCompra;
+    private BigDecimal pcoCompra;
 
     @Column(name = "C_AQUIS")
-    private String cAquis;
+    private BigDecimal cAquis;
 
 
     @Column(name = "PCO_LIQ")
-    private String pcoLiq;
+    private BigDecimal pcoLiq;
 
     @Column(name = "PCO_VENDA")
-    private String pcoVenda;
+    private BigDecimal pcoVenda;
 
     @Column(name = "PCO_02")
-    private String pco02;
+    private BigDecimal pco02;
 
     @Column(name = "PCO_03")
-    private String pco03;
+    private BigDecimal pco03;
 
-    @Column(name = "PCO_04")    
-    private String pco04;
+    @Column(name = "PCO_04")
+    private BigDecimal pco04;
 
     @Column(name = "PCO_AVENDA")
-    private String pcoAVenda;
+    private BigDecimal pcoAVenda;
 
     @Column(name = "PCO_AREMAR")
-    private String pcoARemar;
+    private BigDecimal pcoARemar;
 
     @Column(name = "EST_DEPOSITO")
-    private Double estDeposito;
+    private Long estDeposito;
 
     @Column(name = "EST_LOJA")
-    private Double estLoja;
+    private Long estLoja;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MARCA", referencedColumnName = "CODIGO", nullable = false) 
@@ -101,6 +93,14 @@ public class VProduto {
         this.codigo = codigo;
     }
 
+    public LojaFisica getLoja() {
+        return loja;
+    }
+
+    public void setLoja(LojaFisica loja) {
+        this.loja = loja;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -109,9 +109,13 @@ public class VProduto {
         this.nome = nome;
     }
 
+    public Long getEstAtual() {
+        return estAtual;
+    }
 
-
-
+    public void setEstAtual(Long estAtual) {
+        this.estAtual = estAtual;
+    }
 
     public String getAlternati() {
         return alternati;
@@ -153,7 +157,6 @@ public class VProduto {
         this.original = original;
     }
 
-
     public BigDecimal getPcoRemar() {
         return pcoRemar;
     }
@@ -170,6 +173,94 @@ public class VProduto {
         this.unidade = unidade;
     }
 
+    public BigDecimal getPcoCompra() {
+        return pcoCompra;
+    }
+
+    public void setPcoCompra(BigDecimal pcoCompra) {
+        this.pcoCompra = pcoCompra;
+    }
+
+    public BigDecimal getcAquis() {
+        return cAquis;
+    }
+
+    public void setcAquis(BigDecimal cAquis) {
+        this.cAquis = cAquis;
+    }
+
+    public BigDecimal getPcoLiq() {
+        return pcoLiq;
+    }
+
+    public void setPcoLiq(BigDecimal pcoLiq) {
+        this.pcoLiq = pcoLiq;
+    }
+
+    public BigDecimal getPcoVenda() {
+        return pcoVenda;
+    }
+
+    public void setPcoVenda(BigDecimal pcoVenda) {
+        this.pcoVenda = pcoVenda;
+    }
+
+    public BigDecimal getPco02() {
+        return pco02;
+    }
+
+    public void setPco02(BigDecimal pco02) {
+        this.pco02 = pco02;
+    }
+
+    public BigDecimal getPco03() {
+        return pco03;
+    }
+
+    public void setPco03(BigDecimal pco03) {
+        this.pco03 = pco03;
+    }
+
+    public BigDecimal getPco04() {
+        return pco04;
+    }
+
+    public void setPco04(BigDecimal pco04) {
+        this.pco04 = pco04;
+    }
+
+    public BigDecimal getPcoAVenda() {
+        return pcoAVenda;
+    }
+
+    public void setPcoAVenda(BigDecimal pcoAVenda) {
+        this.pcoAVenda = pcoAVenda;
+    }
+
+    public BigDecimal getPcoARemar() {
+        return pcoARemar;
+    }
+
+    public void setPcoARemar(BigDecimal pcoARemar) {
+        this.pcoARemar = pcoARemar;
+    }
+
+    public Long getEstDeposito() {
+        return estDeposito;
+    }
+
+    public void setEstDeposito(Long estDeposito) {
+        this.estDeposito = estDeposito;
+    }
+
+    public Long getEstLoja() {
+        return estLoja;
+    }
+
+    public void setEstLoja(Long estLoja) {
+        this.estLoja = estLoja;
+    }
+
     public Marcas getMarca() {
         return marca;
     }
@@ -177,158 +268,4 @@ public class VProduto {
     public void setMarca(Marcas marca) {
         this.marca = marca;
     }
-
-    public LojaFisica getLoja() {
-        return loja;
-    }
-
-    public void setLoja(LojaFisica loja) {
-        this.loja = loja;
-    }
-
-
-
-    public double getEstAtual() {
-        return estAtual;
-    }
-
-
-
-    public void setEstAtual(double estAtual) {
-        this.estAtual = estAtual;
-    }
-
-
-
-    public String getPcoCompra() {
-        return pcoCompra;
-    }
-
-
-
-    public void setPcoCompra(String pcoCompra) {
-        this.pcoCompra = pcoCompra;
-    }
-
-
-
-    public String getcAquis() {
-        return cAquis;
-    }
-
-
-
-    public void setcAquis(String cAquis) {
-        this.cAquis = cAquis;
-    }
-
-
-
-    public String getPcoLiq() {
-        return pcoLiq;
-    }
-
-
-
-    public void setPcoLiq(String pcoLiq) {
-        this.pcoLiq = pcoLiq;
-    }
-
-
-
-    public String getPcoVenda() {
-        return pcoVenda;
-    }
-
-
-
-    public void setPcoVenda(String pcoVenda) {
-        this.pcoVenda = pcoVenda;
-    }
-
-
-
-    public String getPco02() {
-        return pco02;
-    }
-
-
-
-    public void setPco02(String pco02) {
-        this.pco02 = pco02;
-    }
-
-
-
-    public String getPco03() {
-        return pco03;
-    }
-
-
-
-    public void setPco03(String pco03) {
-        this.pco03 = pco03;
-    }
-
-
-
-    public String getPco04() {
-        return pco04;
-    }
-
-
-
-    public void setPco04(String pco04) {
-        this.pco04 = pco04;
-    }
-
-
-
-    public String getPcoAVenda() {
-        return pcoAVenda;
-    }
-
-
-
-    public void setPcoAVenda(String pcoAVenda) {
-        this.pcoAVenda = pcoAVenda;
-    }
-
-
-
-    public String getPcoARemar() {
-        return pcoARemar;
-    }
-
-
-
-    public void setPcoARemar(String pcoARemar) {
-        this.pcoARemar = pcoARemar;
-    }
-
-
-
-    public double getEstDeposito() {
-        return estDeposito;
-    }
-
-
-
-    public void setEstDeposito(double estDeposito) {
-        this.estDeposito = estDeposito;
-    }
-
-
-
-    public double getEstLoja() {
-        return estLoja;
-    }
-
-
-
-    public void setEstLoja(double estLoja) {
-        this.estLoja = estLoja;
-    }
-
-    
 }

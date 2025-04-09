@@ -13,7 +13,7 @@ public interface ItemInventarioRepository extends JpaRepository<ItemInventario, 
 
     @Query("""
         SELECT i FROM ItemInventario i
-        WHERE i.loja.codigo = :storeId
+        WHERE i.codigo.codLoja = :storeId
         AND i.inventarioData.codigo = :inventoryId
     """)
     List<ItemInventario> findByInventoryId(Long storeId, Long inventoryId);

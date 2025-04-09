@@ -1,12 +1,9 @@
 package inventario.inventarioapi.service;
 
+import inventario.inventarioapi.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import inventario.inventarioapi.model.InventarioData;
-import inventario.inventarioapi.model.ItemInventario;
-import inventario.inventarioapi.model.ItemInventarioDTO;
-import inventario.inventarioapi.model.VProduto;
 import inventario.inventarioapi.repository.InventarioDataRepository;
 import inventario.inventarioapi.repository.ItemInventarioRepository;
 import inventario.inventarioapi.repository.VprodutosRepository;
@@ -32,12 +29,14 @@ public class ItemInventarioService {
         VProduto vproduto = vprodutosRepository.findById(dados.codProduto())
         .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        ItemInventario item = new ItemInventario(inventarioData, vproduto, dados.estAtual(), dados.estLoja());
-        
+        LojaFisica lojaFisica = inventarioData.getLoja();
+
+        ItemInventario item = new ItemInventario(inventarioData, vproduto, dados.estAtual(), dados.estLoja(), lojaFisica);
+
         return itemInventarioRepository.save(item);
     }
 
     public List<ItemInventario> findAllByInventory(Long storeId, Long inventoryId) {
-        return findAllByInventory(storeId, inventoryId);
+        return itemInventarioRepository.findByInventoryId(storeId, inventoryId);
     }
 }

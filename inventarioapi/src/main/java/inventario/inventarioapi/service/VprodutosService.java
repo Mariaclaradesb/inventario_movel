@@ -17,6 +17,7 @@ public class VprodutosService {
     private VprodutosRepository vprodutosRepository;
 
     public List<VProduto> buscarProdutos(String termo, Long codLoja) {
+    
         if (termo == null || termo.trim().isEmpty()) {
             throw new IllegalArgumentException("O campo de pesquisa não pode estar vazio.");
         }

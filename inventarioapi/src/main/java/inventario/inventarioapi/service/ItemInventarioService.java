@@ -11,6 +11,8 @@ import inventario.inventarioapi.repository.InventarioDataRepository;
 import inventario.inventarioapi.repository.ItemInventarioRepository;
 import inventario.inventarioapi.repository.VprodutosRepository;
 
+import java.util.List;
+
 @Service
 public class ItemInventarioService {
 
@@ -34,5 +36,8 @@ public class ItemInventarioService {
         
         return itemInventarioRepository.save(item);
     }
-    
+
+    public List<ItemInventario> findAllByInventory(Long storeId, Long inventoryId) {
+        return findAllByInventory(storeId, inventoryId);
+    }
 }

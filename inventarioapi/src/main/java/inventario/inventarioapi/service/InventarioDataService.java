@@ -1,6 +1,7 @@
 package inventario.inventarioapi.service;
 
 import inventario.inventarioapi.model.InventarioData;
+import inventario.inventarioapi.model.ItemInventario;
 import inventario.inventarioapi.model.LojaFisica;
 import inventario.inventarioapi.model.NovoInventarioData;
 import inventario.inventarioapi.repository.InventarioDataRepository;
@@ -14,10 +15,12 @@ import java.util.List;
 public class InventarioDataService {
 
     private final InventarioDataRepository repository;
+    private final ItemInventarioService itemInventarioService;
     private final LojaFisicaService lojaFisicaService;
 
-    public InventarioDataService(InventarioDataRepository repository, LojaFisicaService lojaFisicaService) {
+    public InventarioDataService(InventarioDataRepository repository, ItemInventarioService itemInventarioService, LojaFisicaService lojaFisicaService) {
         this.repository = repository;
+        this.itemInventarioService = itemInventarioService;
         this.lojaFisicaService = lojaFisicaService;
     }
 
@@ -38,6 +41,10 @@ public class InventarioDataService {
         String name = newInventoryDate.nome();
 
         return new InventarioData(id, store, date, hour, name, 0);
+    }
+
+    public List<ItemInventario> findItensByInventory(Long storeId, Long inventoryId) {
+        return itemInventarioService.findAllByInventory(storeId, inventoryId);
     }
 
 }

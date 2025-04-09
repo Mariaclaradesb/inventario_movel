@@ -20,7 +20,7 @@ public class ItemInventarioController {
         this.itemInventarioService = itemInventarioService;
     }
 
-    @PostMapping("/item/salvar")
+    @PostMapping("/salvar")
     public ResponseEntity<ItemInventarioDTO> adicionarItem(@RequestBody ItemInventarioDTO dados) {
         ItemInventario novoItem = itemInventarioService.adicionarItem(dados);
         var dto = new ItemInventarioDTO(novoItem);

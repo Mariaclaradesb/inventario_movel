@@ -3,12 +3,13 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:inventarioapp/src/models/inventario_data.dart';
+import 'package:inventarioapp/src/models/item_inventario.dart';
 import 'package:inventarioapp/src/models/novo_inventario_data.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 
 
 class InventarioDataService {
-  static const String baseUrl = "http://10.0.2.2:8080/inventario-data";
+  static const String baseUrl = "http://10.0.2.2:8080/inventarios";
 
   Future<InventarioData> create(NovoInventarioData newInventoryDate) async {
     final codLoja = await SharedPrefsService.obterLojaSelecionada();
@@ -47,6 +48,22 @@ class InventarioDataService {
     Iterable list = json.decode(response.body);
     List<InventarioData> inventories = List<InventarioData>.from(list.map((i) => InventarioData.fromJson(i)));
     return inventories;
+  }
+
+  Future<List<ItemInventario>> findItemsByInventory(int inventoryId) async {
+    final codLoja = await SharedPrefsService.obterLojaSelecionada();
+
+    if (codLoja == null) {
+      throw Exception("Loja não selecionada");
+    }
+
+    final uri = Uri.parse("$baseUrl/buscar/$inventoryId/itens?codLoja=$codLoja");
+
+    final response = await http.get(uri);
+
+    Iterable list = json.decode(response.body);
+    List<ItemInventario> items = List<ItemInventario>.from(list.map((i) => ItemInventario.fromJson(i)));
+    return items;
   }
 
 }

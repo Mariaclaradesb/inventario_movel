@@ -14,9 +14,14 @@ class ItemInventarioService {
       throw Exception("Loja não selecionada");
     }
 
-    final uri = Uri.parse("$baseUrl/item/salvar?codLoja=$codLoja");
+    final uri = Uri.parse("$baseUrl/salvar?codLoja=$codLoja");
 
-    final response = await http.post(uri, body: inventoryItem);
+    final response = await http.post(uri,
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(inventoryItem.toJson()),
+    );
 
     if (response.statusCode != 200) {
       throw Exception("Erro ao adicionar item ao inventário");

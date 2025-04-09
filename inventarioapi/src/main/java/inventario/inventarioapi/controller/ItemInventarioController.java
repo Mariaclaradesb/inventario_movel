@@ -1,7 +1,7 @@
 package inventario.inventarioapi.controller;
 
 import inventario.inventarioapi.model.ItemInventario;
-import inventario.inventarioapi.model.NovoItemInventario;
+import inventario.inventarioapi.model.ItemInventarioDTO;
 import inventario.inventarioapi.service.ItemInventarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +21,10 @@ public class ItemInventarioController {
     }
 
     @PostMapping("/item/salvar")
-    public ResponseEntity<ItemInventario> adicionarItem(@RequestBody NovoItemInventario dados) {
+    public ResponseEntity<ItemInventarioDTO> adicionarItem(@RequestBody ItemInventarioDTO dados) {
         ItemInventario novoItem = itemInventarioService.adicionarItem(dados);
-        return ResponseEntity.ok(novoItem);
+        var dto = new ItemInventarioDTO(novoItem);
+        return ResponseEntity.ok(dto);
     }
 
 }

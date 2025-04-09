@@ -12,7 +12,7 @@ class VProduto {
   String? _codigoDeBarrasAlternativo;
   String? _original;
   double? _pcoRemar;
-  double? _estAtual;
+  int? _estAtual;
   String? _unidade;
   Marca? _marca;
 
@@ -33,7 +33,7 @@ class VProduto {
       json['cbarra3'] as String?,
       json['original'] as String?,
       json['pcoRemar'] as double,
-      json['estAtual'] as double,
+      json['estAtual'] as int,
       json['unidade'] as String?,
       Marca.fromJson(json['marca']) as Marca?
     );
@@ -76,11 +76,10 @@ class VProduto {
 
   String? get pcoRemarFormatado => (_pcoRemar == null) ? "Sem preço" : _pcoRemar?.toStringAsFixed(2);
 
-  double? get estAtual => _estAtual;
+  int? get estAtual => _estAtual;
 
   Marca? get marca => _marca;
 
   String? get unidade => _unidade;
-
 
 }

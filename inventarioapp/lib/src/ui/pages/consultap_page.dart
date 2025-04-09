@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_native_type_patch.dart';
-
 import 'package:flutter/material.dart';
 import 'package:inventarioapp/src/models/inventario_data.dart';
 import 'package:inventarioapp/src/models/item_inventario.dart';
@@ -7,14 +5,13 @@ import 'package:inventarioapp/src/models/vproduto.dart';
 import 'package:inventarioapp/src/services/consultap_service.dart';
 import 'package:inventarioapp/src/services/inventario/item_inventario_service.dart';
 import 'package:inventarioapp/src/services/price_tag/price_tag_service.dart';
-import 'package:inventarioapp/src/ui/pages/price_tag_screen.dart';
-
-import '../../config/injection_container.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
+import 'package:inventarioapp/src/ui/pages/price_tag_screen.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 import 'package:inventarioapp/src/ui/widgets/drawer_widgets.dart';
 import 'package:inventarioapp/src/ui/widgets/loja_nao_selecionada.dart';
 
+import '../../config/injection_container.dart';
 import 'barcode_scanner_screen.dart';
 
 class ConsultapPage extends StatefulWidget {
@@ -39,7 +36,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
 
 
     if(args != null){
-      // inventory = args['inventario'] as InventarioData;
+      inventory = args['inventario'] as InventarioData;
       origem = args['origem'] as String;
     }
   }
@@ -105,14 +102,14 @@ void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
                 controller: pQuantityStock,
                 decoration: InputDecoration(
                   hintText: 'Quantidade no estoque',
-                  hintStyle: TextStyle(color: Colors.white)
+                  hintStyle: TextStyle(color: Color(0xFF006989))
                 ),
               ),
               TextField(
                 controller: pQuantityStore,
                 decoration: InputDecoration(
                   hintText: 'Quantidade na loja',
-                  hintStyle: TextStyle(color: Colors.white)
+                  hintStyle: TextStyle(color: Color(0xFF006989))
                 ),
               ),
           ],
@@ -123,54 +120,64 @@ void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start, // Alinha os itens à esquerda
               children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0), // Ajusta a distância entre o ícone e os botões
-                  child: IconButton(
+                if(origem != 'inventoryProductsScreen')
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0), // Ajusta a distância entre o ícone e os botões
+                    child: IconButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      icon: Icon(Icons.shopping_cart),
+                    ),
+                  ),
+                if(origem != 'inventoryProductsScreen')
+                  TextButton(
                     onPressed: () => Navigator.of(context).pop(),
-                    icon: Icon(Icons.shopping_cart),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.of(context).pop(),
-                  style: TextButton.styleFrom(
-                    foregroundColor: const Color.fromARGB(255, 7, 79, 139), // Cor do texto // Cor de fundo do botão
-                    padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10) // Borda arredondada
-                    ),
-                  ),
-                  child: Text(
-                    "Fechar",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) =>
-                          PriceTagScreen(product: produto, priceTagService: locator<PriceTagService>(),)
+                    style: TextButton.styleFrom(
+                      foregroundColor: const Color.fromARGB(255, 7, 79, 139), // Cor do texto // Cor de fundo do botão
+                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 3),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10) // Borda arredondada
                       ),
-                  ),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white, // Cor do texto
-                    backgroundColor: const Color.fromARGB(255, 7, 79, 139), // Cor de fundo do botão
-                    padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3), // Espaçamento interno
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Borda arredondada
+                    ),
+                    child: Text(
+                      "Fechar",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  child: Text(
-                    "Imprimir etiqueta", // IMPRIMIR ETIQUETA
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                if(origem != 'inventoryProductsScreen')
+                  TextButton(
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>
+                            PriceTagScreen(product: produto, priceTagService: locator<PriceTagService>(),)
+                        ),
+                    ),
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white, // Cor do texto
+                      backgroundColor: const Color.fromARGB(255, 7, 79, 139), // Cor de fundo do botão
+                      padding: EdgeInsets.symmetric(horizontal: 7, vertical: 3), // Espaçamento interno
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10), // Borda arredondada
+                      ),
+                    ),
+                    child: Text(
+                      "Imprimir etiqueta", // IMPRIMIR ETIQUETA
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                   ),
-                ),
                 if(origem == 'inventoryProductsScreen')
-                  TextButton(onPressed: (){
-                    var quantityStore = double.parse(pQuantityStore.text);
-                    var quantityStock = double.parse(pQuantityStock.text);
-                    var item = ItemInventario(inventory!.codigo!, produto.codigo, quantityStock, quantityStore);
-                    service.saveInventoryItem(item);
-                    Navigator.pop(context, true);
-                  }, child: Text('Adicionar', style: TextStyle(color: Colors.white),))
+                  TextButton(onPressed: () {
+                      var quantityStore = double.tryParse(pQuantityStore.text) ?? 0.0;
+                      var quantityStock = double.tryParse(pQuantityStock.text) ?? 0.0;
+                      var item = ItemInventario(inventory?.codigo, produto.codigo, quantityStock, quantityStore);
+                      service.saveInventoryItem(item);
+                      Navigator.of(context).pop(true);
+                  },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Color(0xFF006989),
+                      foregroundColor: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    ),
+                    child: Text('Adicionar',),
+                  ),
               ],
             ),
           ),

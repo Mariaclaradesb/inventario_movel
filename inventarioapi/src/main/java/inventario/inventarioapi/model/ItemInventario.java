@@ -33,14 +33,14 @@ public class ItemInventario {
     private LojaFisica loja;
 
     @Column(name = "EST_ATUAL")
-    private Double estAtual;
+    private Long estAtual;
 
     @Column(name = "EST_LOJA")
-    private Double estLoja;
+    private Long estLoja;
     
     public ItemInventario(){}
 
-    public ItemInventario(InventarioData inventarioData, VProduto vProduto, double estAtual, double estLoja, LojaFisica lojaFisica) {
+    public ItemInventario(InventarioData inventarioData, VProduto vProduto, Long estAtual, Long estLoja, LojaFisica lojaFisica) {
         this.codigo = new ItemInventarioId(inventarioData, vProduto, lojaFisica.getCodigo());
         this.loja = lojaFisica;
         this.inventarioData = inventarioData;
@@ -74,19 +74,19 @@ public class ItemInventario {
         this.produto = produto;
     }
 
-    public Double getEstAtual() {
+    public Long getEstAtual() {
         return estAtual;
     }
 
-    public void setEstAtual(Double estAtual) {
+    public void setEstAtual(Long estAtual) {
         this.estAtual = estAtual;
     }
 
-    public Double getEstLoja() {
+    public Long getEstLoja() {
         return estLoja;
     }
 
-    public void setEstLoja(Double estLoja) {
+    public void setEstLoja(Long estLoja) {
         this.estLoja = estLoja;
     }
 

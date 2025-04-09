@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/inventoryProductsScreen',
+      initialRoute: '/inventoryListScreen',
       routes: {
         '/telaInicial': (context) => TelaInicialPage(),
         '/configuracoes': (context) => ConfiguracoesPage(),

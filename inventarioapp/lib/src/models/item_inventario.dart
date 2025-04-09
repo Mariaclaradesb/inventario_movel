@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 class ItemInventario {
-  int _codInventario;
+  int? _codInventario;
   int _codProduto;
   double? _estAtual;
   double? _estLoja;
@@ -15,7 +15,7 @@ class ItemInventario {
 
   factory ItemInventario.fromJson(Map<String, dynamic> json) {
     return ItemInventario(
-      json['codInventario'] as int,
+      json['codInventario'] as int?,
       json['codProduto'] as int,
       json['estAtual'] as double,
       json['estLoja'] as double
@@ -49,9 +49,9 @@ class ItemInventario {
     _codProduto = value;
   }
 
-  int get codInventario => _codInventario;
+  int? get codInventario => _codInventario;
 
-  set codInventario(int value) {
+  set codInventario(int? value) {
     _codInventario = value;
   }
 }

@@ -11,7 +11,8 @@ class InventoryProductsScreen extends StatefulWidget {
 }
 
 class _InventoryProductsScreenState extends State<InventoryProductsScreen> {
-  // late InventarioData inventario;
+
+  late InventarioData inventario;
 
   @override
   void initState() {
@@ -22,7 +23,7 @@ class _InventoryProductsScreenState extends State<InventoryProductsScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // inventario = ModalRoute.of(context)!.settings.arguments as InventarioData;
+    inventario = ModalRoute.of(context)!.settings.arguments as InventarioData;
   }
 
   @override
@@ -36,8 +37,8 @@ class _InventoryProductsScreenState extends State<InventoryProductsScreen> {
             context,
             '/consultaProdutos',
             arguments: {
-              // 'inventario': inventario,
-              'origem': 'inventoryProcutsScreen',
+              'inventario': inventario,
+              'origem': 'inventoryProductsScreen',
             },
           );
           if(result == true){

@@ -44,12 +44,12 @@ Future<bool> showMenuAddInventory(BuildContext context) async {
                 child: Text('Cancelar', style: TextStyle(color: Colors.white)),
               ),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   String nomeInventario = inventoryNameController.text.trim();
                   if (nomeInventario.isNotEmpty) {
                     //salvar o inventario no back e redirecionar
                     var inventario = NovoInventarioData(nomeInventario);
-                    service.create(inventario);
+                    await service.create(inventario);
                     Navigator.of(context).pop(true);
                   }
                 },

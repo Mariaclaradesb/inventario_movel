@@ -52,7 +52,7 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await showMenuAddInventory(context);
-          if(result == true){
+          if(result == true) {
             setState(() {
               futureInventaries = service.findAll();
             });

@@ -20,7 +20,7 @@ public interface VprodutosRepository extends JpaRepository<VProduto, Long> {
     "OR v.cbarra2 LIKE %:termo% " +
     "OR v.cbarra3 LIKE %:termo% " +  
     "OR LOWER(v.original) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-    "OR LOWER(v.pcoRemar) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+    "OR CAST(v.pcoRemar AS string) LIKE CONCAT('%', :termo, '%') " +
     "OR LOWER(v.unidade) LIKE LOWER(CONCAT('%', :termo, '%')) " +
     // "OR LOWER(v.pcoCompra) LIKE LOWER(CONCAT('%', :termo, '%')) " +
     // "OR LOWER(v.cAquis) LIKE LOWER(CONCAT('%', :termo, '%')) " +

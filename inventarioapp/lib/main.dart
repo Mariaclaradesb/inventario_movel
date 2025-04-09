@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/src/ui/pages/configuracoes_page.dart';
+import 'package:inventarioapp/src/ui/screens/settings_screen.dart';
 import 'package:inventarioapp/src/config/injection_container.dart';
-import 'package:inventarioapp/src/ui/pages/consultap_page.dart';
-import 'package:inventarioapp/src/ui/pages/tela_inicial_page.dart';
+import 'package:inventarioapp/src/ui/screens/searchp_screen.dart';
+import 'package:inventarioapp/src/ui/screens/inicial_screen.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 
 

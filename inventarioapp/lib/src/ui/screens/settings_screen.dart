@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
-import 'package:inventarioapp/src/services/loja_service.dart';
+import 'package:inventarioapp/src/services/store_service.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 
 class ConfiguracoesPage extends StatefulWidget {
@@ -26,6 +26,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
 
   Future<void> _carregarLojaSelecionada() async {
     int? lojaSalva = await SharedPrefsService.obterLojaSelecionada();
+    print("Loja selecionada recuperada: $lojaSalva");
     if (lojaSalva != null) {
       setState(() {
         lojaSelecionada = lojaSalva;

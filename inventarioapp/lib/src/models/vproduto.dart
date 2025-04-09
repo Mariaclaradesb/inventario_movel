@@ -12,7 +12,7 @@ class VProduto {
   String? _codigoDeBarrasAlternativo;
   String? _original;
   double? _pcoRemar;
-  int? _qt;
+  double? _estAtual;
   String? _unidade;
   Marca? _marca;
 
@@ -20,7 +20,7 @@ class VProduto {
   VProduto(this._codigo, this._loja, this._nome, this._alternati,
       this._codigoDeBarrasPrincipal, this._codigoDeBarrasSecundario,
       this._codigoDeBarrasAlternativo, this._original, this._pcoRemar,
-      this._qt, this._unidade, this._marca);
+      this._estAtual, this._unidade, this._marca);
 
   factory VProduto.fromJson(Map<String, dynamic> json) {
     return VProduto(
@@ -33,7 +33,7 @@ class VProduto {
       json['cbarra3'] as String?,
       json['original'] as String?,
       json['pcoRemar'] as double,
-      json['qt'] as int,
+      json['estAtual'] as double,
       json['unidade'] as String?,
       Marca.fromJson(json['marca']) as Marca?
     );
@@ -76,7 +76,7 @@ class VProduto {
 
   String? get pcoRemarFormatado => (_pcoRemar == null) ? "Sem preço" : _pcoRemar?.toStringAsFixed(2);
 
-  int? get qt => _qt;
+  double? get estAtual => _estAtual;
 
   Marca? get marca => _marca;
 

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/src/ui/pages/inventory_products_screen.dart';
-import 'package:inventarioapp/src/ui/pages/configuracoes_page.dart';
-import 'package:inventarioapp/src/ui/pages/consultap_page.dart';
-import 'package:inventarioapp/src/ui/pages/inventory_list_screen.dart';
-import 'package:inventarioapp/src/ui/pages/path_screen.dart';
-import 'package:inventarioapp/src/ui/pages/tela_inicial_page.dart';
-import 'package:inventarioapp/src/ui/pages/login_page.dart';
 
+import 'package:inventarioapp/src/ui/screens/inventory_products_screen.dart';
+import 'package:inventarioapp/src/ui/screens/inventory_list_screen.dart';
+import 'package:inventarioapp/src/ui/screens/path_screen.dart';
+
+import 'package:inventarioapp/src/ui/screens/settings_screen.dart';
+import 'package:inventarioapp/src/config/injection_container.dart';
+import 'package:inventarioapp/src/ui/screens/searchp_screen.dart';
+import 'package:inventarioapp/src/ui/screens/inicial_screen.dart';
+import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
+import 'package:inventarioapp/src/ui/screens/login_page.dart';
 
 
 void main() {
+  setup(); //certo?
   runApp(MyApp());
 }
 
@@ -25,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/telaInicial': (context) => TelaInicialPage(),
         '/configuracoes': (context) => ConfiguracoesPage(),
         '/consultaProdutos': (context) => ConsultapPage(),
+        '/appBar': (context) => MyAppBar(),
         '/loginScreen': (context) => LoginPage(),
         '/pathScreen': (context) => PathScreen(),
         '/inventoryListScreen': (context) => InventoryListScreen(),

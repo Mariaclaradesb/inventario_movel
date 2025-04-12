@@ -2,6 +2,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsService {
   static const String _lojaKey = 'codLojaSelecionada';
+  
+  static Future<void> salvarIpServidor(String ip) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('ip_servidor', ip);  
+    
+  }
+
+  static Future<String?> obterIpServidor() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('ip_servidor');  
+  }
 
   static Future<void> salvarLojaSelecionada(int codLoja) async {
     final prefs = await SharedPreferences.getInstance();

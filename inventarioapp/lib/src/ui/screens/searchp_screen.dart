@@ -39,6 +39,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
     }
   }
 
+  final SharedPrefsService _prefsService = SharedPrefsService();
   final ConsultapService _consultapService = ConsultapService();
   final TextEditingController _searchController = TextEditingController();
   List<VProduto> _produtos = <VProduto>[];
@@ -47,22 +48,37 @@ class _ConsultapPageState extends State<ConsultapPage> {
   void _buscarProdutos() async {
     setState(() => _isLoading = true);
     try {
-      final codLoja =
-          await SharedPrefsService.obterLojaSelecionada(); // Obtém a loja selecionada
+      // Obtém o IP do banco de dados
+      final ip = await SharedPrefsService.obterIpServidor();
+      if (ip == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('IP do banco de dados não configurado')),
+        );
+        return; // Retorna caso o IP não esteja configurado
+      }
+
+      // Obtém a loja selecionada
+      final codLoja = await SharedPrefsService.obterLojaSelecionada();
       if (codLoja == null) {
         LojaNaoSelecionada.mostrarErro(context);
-        return;
+        return; // Retorna caso a loja não esteja selecionada
       }
 
       List<VProduto> produtos = await _consultapService.buscarProdutos(
         _searchController.text,
       );
+      
       setState(() => _produtos = produtos);
+
     } catch (e) {
-      print("Erro: $e");
+      print("Erro ao buscar produtos: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ocorreu um erro ao buscar os produtos')),
+      );
     } finally {
       setState(() => _isLoading = false);
     }
+
   }
 
   void _adicionarProdutoACotacao(BuildContext context, VProduto produto) {

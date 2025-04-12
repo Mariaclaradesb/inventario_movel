@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: false,
                     validator: (value) {
                       if (value == null || value.isEmpty) return 'Digite o usuário';
-                      if (value != 'SUPERSCERG') return 'Usuário incorreto';
+                      if (value != 'ADMIN') return 'Usuário incorreto';
                       return null;
                     },
                   ), //Campo usuario
@@ -79,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                     validator: (value)  {
                       if (value == null || value.isEmpty) return 'Digite a senha';
-                      if (value != 'S35SUP5RSRG') return 'Senha incorreta';
+                      if (value != 'ADMIN') return 'Senha incorreta';
                       return null;
                     },
                   ), // Campo senha

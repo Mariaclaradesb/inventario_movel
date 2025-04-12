@@ -7,7 +7,6 @@ import 'package:inventarioapp/src/ui/screens/path_screen.dart';
 import 'package:inventarioapp/src/ui/screens/settings_screen.dart';
 import 'package:inventarioapp/src/config/injection_container.dart';
 import 'package:inventarioapp/src/ui/screens/searchp_screen.dart';
-import 'package:inventarioapp/src/ui/screens/inicial_screen.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 import 'package:inventarioapp/src/ui/screens/login_page.dart';
 
@@ -26,7 +25,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/loginScreen',
       routes: {
-        '/telaInicial': (context) => TelaInicialPage(),
         '/configuracoes': (context) => ConfiguracoesPage(),
         '/consultaProdutos': (context) => ConsultapPage(),
         '/appBar': (context) => MyAppBar(),

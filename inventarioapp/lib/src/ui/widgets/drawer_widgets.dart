@@ -27,7 +27,7 @@ class CustomDrawer extends StatelessWidget {
                       ),
                       SizedBox(width: 10), // Espaçamento entre o ícone e o texto
                       Text(
-                        "Usuário",
+                        "ADMIN",
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     ],
@@ -39,7 +39,7 @@ class CustomDrawer extends StatelessWidget {
               leading: Icon(Icons.home),
               title: Text("Início"),
               onTap: () {
-                Navigator.pushReplacementNamed(context, "/consultaProdutos");
+                Navigator.pushReplacementNamed(context, "/pathScreen");
               },
             ),
             ListTile(

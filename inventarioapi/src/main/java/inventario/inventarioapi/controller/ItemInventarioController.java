@@ -1,7 +1,7 @@
 package inventario.inventarioapi.controller;
 
 import inventario.inventarioapi.model.ItemInventario;
-import inventario.inventarioapi.model.ItemInventarioDTO;
+import inventario.inventarioapi.model.dto.ItemInventarioDTO;
 import inventario.inventarioapi.service.ItemInventarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

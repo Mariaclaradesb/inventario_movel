@@ -1,6 +1,7 @@
 package inventario.inventarioapi.service;
 
 import inventario.inventarioapi.model.*;
+import inventario.inventarioapi.model.dto.ItemInventarioDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

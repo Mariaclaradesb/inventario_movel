@@ -3,7 +3,7 @@ package inventario.inventarioapi.service;
 import inventario.inventarioapi.model.InventarioData;
 import inventario.inventarioapi.model.ItemInventario;
 import inventario.inventarioapi.model.LojaFisica;
-import inventario.inventarioapi.model.NovoInventarioData;
+import inventario.inventarioapi.model.dto.NovoInventarioData;
 import inventario.inventarioapi.repository.InventarioDataRepository;
 import org.springframework.stereotype.Service;
 

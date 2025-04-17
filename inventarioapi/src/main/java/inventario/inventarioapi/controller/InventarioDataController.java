@@ -1,8 +1,8 @@
 package inventario.inventarioapi.controller;
 
 import inventario.inventarioapi.model.InventarioData;
-import inventario.inventarioapi.model.ItemInventarioDTO;
-import inventario.inventarioapi.model.NovoInventarioData;
+import inventario.inventarioapi.model.dto.ItemInventarioDTO;
+import inventario.inventarioapi.model.dto.NovoInventarioData;
 import inventario.inventarioapi.service.InventarioDataService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

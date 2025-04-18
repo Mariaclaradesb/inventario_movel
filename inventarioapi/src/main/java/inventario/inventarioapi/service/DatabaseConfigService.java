@@ -1,6 +1,7 @@
 package inventario.inventarioapi.service;
 
 import inventario.inventarioapi.model.dto.ConnectionData;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,10 @@ import java.util.Properties;
 
 @Service
 public class DatabaseConfigService {
+
+    @Value("${properties-file-path}")
+    private String propertiesFilePath;
+
 
     private final ApplicationContext context;
 
@@ -58,7 +63,7 @@ public class DatabaseConfigService {
     }
 
     private void saveDatabaseProperties(Properties props) {
-        try (FileOutputStream output = new FileOutputStream("src/main/resources/application.properties")) {
+        try (FileOutputStream output = new FileOutputStream(propertiesFilePath)) {
             props.store(output, null);
         } catch (IOException e) {
             throw new RuntimeException("Erro ao salvar configuração: " + e.getMessage());
@@ -68,7 +73,7 @@ public class DatabaseConfigService {
     private Properties getProperties(ConnectionData connectionData) throws IOException {
         Properties props = new Properties();
 
-        try (FileInputStream input = new FileInputStream("src/main/resources/application.properties")) {
+        try (FileInputStream input = new FileInputStream(propertiesFilePath)) {
             props.load(input);
         }
 

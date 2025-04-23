@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/src/services/ip_service.dart';
+import 'package:inventarioapp/src/services/database_config_service.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 import 'package:inventarioapp/src/services/store_service.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
@@ -22,7 +22,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   final TextEditingController _usuarioController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  final IpService _ipService = IpService();
+  final DatabaseConfigService _databaseConfigService = DatabaseConfigService();
 
   // Tela protegida por senha
   final String senhaCorreta = 'root';
@@ -157,7 +157,7 @@ Future<void> _verificarSenha() async {
     );
 
     try {
-      await _ipService.enviarDadosConexao(connectionData);
+      await _databaseConfigService.enviarDadosConexao(connectionData);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Configuração salva com sucesso!'),

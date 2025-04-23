@@ -49,8 +49,8 @@ class _ConsultapPageState extends State<ConsultapPage> {
     setState(() => _isLoading = true);
     try {
       // Obtém o IP do banco de dados
-      final ip = await SharedPrefsService.obterIpServidor();
-      if (ip == null) {
+      final databaseIp = await SharedPrefsService.obterIpServidor();
+      if (databaseIp == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('IP do banco de dados não configurado')),
         );

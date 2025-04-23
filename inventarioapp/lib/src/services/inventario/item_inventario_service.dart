@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:inventarioapp/src/constants/api_constants.dart';
 import 'package:inventarioapp/src/models/item_inventario.dart';
 import 'package:http/http.dart' as http;
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 
 class ItemInventarioService {
-  static const String baseUrl = "http://10.0.2.2:8080/item-inventario";
+  static String baseUrl = ApiConstants.inventoryItemUrl;
 
   Future<ItemInventario> saveInventoryItem(ItemInventario inventoryItem) async {
     final codLoja = await SharedPrefsService.obterLojaSelecionada();

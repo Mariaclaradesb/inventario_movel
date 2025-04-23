@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:inventarioapp/src/models/vproduto.dart';
+import 'package:inventarioapp/src/constants/api_constants.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 
 class ConsultapService {
-  static const String baseUrl = "http://10.0.2.2:8080";
+  static String baseUrl = ApiConstants.productsUrl;
+  static String quoteUrl = ApiConstants.quoteUrl;
 
   Future<List<VProduto>> buscarProdutos(String termo) async {
     final codLoja = await SharedPrefsService.obterLojaSelecionada();
@@ -13,7 +15,7 @@ class ConsultapService {
     }
 
     final response = await http.get(
-      Uri.parse("$baseUrl/produtos/buscar?termo=$termo&codLoja=$codLoja"),
+      Uri.parse("$baseUrl/buscar?termo=$termo&codLoja=$codLoja"),
     );
 
     if (response.statusCode != 200) {
@@ -28,7 +30,7 @@ class ConsultapService {
 
   Future<void> adicionarItemACotacao(int codProduto, double quantidade) async {
   final url = Uri.parse(
-  "http://10.0.2.2:8080/cotacao-lista/adicionar?codigoProduto=$codProduto&codCotacao=1&quantidade=$quantidade"
+  "$quoteUrl/adicionar?codigoProduto=$codProduto&codCotacao=1&quantidade=$quantidade"
   );
     final response = await http.post(url);
 
@@ -37,5 +39,3 @@ class ConsultapService {
     }
   }
 }
-
-

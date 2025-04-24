@@ -65,10 +65,6 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
             ListTile(
-                leading: Icon(Icons.cloud),
-                title: Text("Ip: ...")
-            ),
-            ListTile(
               leading: Icon(Icons.logout),
               title: Text("Sair"),
               onTap: (){

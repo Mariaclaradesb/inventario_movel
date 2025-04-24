@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/api")
-public class DatabaseController {
+public class DatabaseNameController {
 
     @Autowired
     private DataSource dataSource;

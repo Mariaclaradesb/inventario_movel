@@ -31,4 +31,25 @@ class ItemInventarioService {
     return ItemInventario.fromJson(json.decode(response.body));
   }
 
+  Future<List<ItemInventario>> buscarItensDoInventario(int codInventario) async {
+  final codLoja = await SharedPrefsService.obterLojaSelecionada();
+
+
+  if (codLoja == null) {
+    throw Exception("Loja não selecionada");
+  }
+
+  final uri = Uri.parse('$baseUrl/listar?storeId=$codLoja&inventoryId=$codInventario');
+
+  final response = await http.get(uri);
+
+  if (response.statusCode != 200) {
+    throw Exception('Erro ao buscar itens do inventário');
+  }
+
+  final List<dynamic> jsonList = jsonDecode(response.body);
+  return jsonList.map((json) => ItemInventario.fromJson(json)).toList();
+}
+
+
 }

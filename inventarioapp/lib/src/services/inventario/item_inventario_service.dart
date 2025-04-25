@@ -17,6 +17,7 @@ class ItemInventarioService {
 
     String baseUrl = await ApiUrlProvider.getConfiguredUrl();
 
+
     final uri = Uri.parse("$baseUrl/item-inventario/salvar?codLoja=$codLoja");
 
     final response = await http.post(uri,
@@ -36,6 +37,7 @@ class ItemInventarioService {
   Future<List<ItemInventario>> buscarItensDoInventario(int codInventario) async {
   final codLoja = await SharedPrefsService.obterLojaSelecionada();
 
+  String baseUrl = await ApiUrlProvider.getConfiguredUrl();
 
   if (codLoja == null) {
     throw Exception("Loja não selecionada");

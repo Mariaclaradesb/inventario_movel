@@ -5,20 +5,23 @@ class ItemInventario {
   int _codProduto;
   double? _estAtual;
   double? _estLoja;
+  String? _nomeProduto;
 
   ItemInventario(
     this._codInventario,
     this._codProduto,
     this._estAtual,
     this._estLoja,
+    [this._nomeProduto]
   );
 
   factory ItemInventario.fromJson(Map<String, dynamic> json) {
     return ItemInventario(
       json['codInventario'] as int?,
       json['codProduto'] as int,
-      json['estAtual'] as double,
-      json['estLoja'] as double
+      (json['estAtual'] as num).toDouble(),
+      (json['estLoja'] as num).toDouble(),
+      json['nomeProduto'] as String?
     );
   }
 
@@ -54,4 +57,6 @@ class ItemInventario {
   set codInventario(int? value) {
     _codInventario = value;
   }
+
+  String? get nomeProduto => _nomeProduto;
 }

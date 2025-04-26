@@ -6,11 +6,11 @@ import 'package:inventarioapp/src/constants/api_constants.dart';
 import 'package:inventarioapp/src/models/inventario_data.dart';
 import 'package:inventarioapp/src/models/item_inventario.dart';
 import 'package:inventarioapp/src/models/novo_inventario_data.dart';
+import 'package:inventarioapp/src/services/api_url_provider.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 
 
 class InventarioDataService {
-  static String baseUrl = ApiConstants.inventoriesUrl;
 
   Future<InventarioData> create(NovoInventarioData newInventoryDate) async {
     final codLoja = await SharedPrefsService.obterLojaSelecionada();
@@ -19,7 +19,9 @@ class InventarioDataService {
       throw Exception("Loja não selecionada");
     }
 
-    final uri = Uri.parse("$baseUrl/criar?codLoja=$codLoja");
+    String baseUrl = await ApiUrlProvider.getConfiguredUrl();
+
+    final uri = Uri.parse("$baseUrl/inventarios/criar?codLoja=$codLoja");
 
     final response = await http.post(uri,
         headers: {
@@ -42,7 +44,9 @@ class InventarioDataService {
       throw Exception("Loja não selecionada");
     }
 
-    final uri = Uri.parse("$baseUrl/buscar?codLoja=$codLoja");
+    String baseUrl = await ApiUrlProvider.getConfiguredUrl();
+
+    final uri = Uri.parse("$baseUrl/inventarios/buscar?codLoja=$codLoja");
 
     final response = await http.get(uri);
 
@@ -58,7 +62,9 @@ class InventarioDataService {
       throw Exception("Loja não selecionada");
     }
 
-    final uri = Uri.parse("$baseUrl/buscar/$inventoryId/itens?codLoja=$codLoja");
+    String baseUrl = await ApiUrlProvider.getConfiguredUrl();
+
+    final uri = Uri.parse("$baseUrl/inventarios/buscar/$inventoryId/itens?codLoja=$codLoja");
 
     final response = await http.get(uri);
 

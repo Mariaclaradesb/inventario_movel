@@ -147,8 +147,6 @@ Future<void> _verificarSenha() async {
       return;
     }
 
-    await SharedPrefsService.salvarIpServidor("$ip:$porta");
-
     final connectionData = ConnectionData(
       url: ip,
       port: portaInt,

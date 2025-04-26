@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:inventarioapp/src/constants/api_constants.dart';
+import 'package:inventarioapp/src/services/api_url_provider.dart';
 
 Future<List<int>> getLojas() async {
-  final apiUrl = ApiConstants.apiUrl;
+  String apiUrl = await ApiUrlProvider.getConfiguredUrl();
   final response = await http.get(Uri.parse('$apiUrl/lojas'));
 
   if (response.statusCode == 200) {

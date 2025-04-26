@@ -8,6 +8,11 @@ import 'shared_prefs_service.dart';
 
 class DatabaseConfigService {
   Future<void> enviarDadosConexao(ConnectionData data) async {
+
+    String serverIp = 'http://' + data.url;
+    int port = 8080;
+    await SharedPrefsService.salvarIpServidor("$serverIp:$port");
+
     String baseUrl = await ApiUrlProvider.getConfiguredUrl();
 
     final url = '$baseUrl/database/config';
@@ -23,8 +28,5 @@ class DatabaseConfigService {
       throw Exception("Erro ao configurar o banco: ${response.body}");
     }
 
-    String serverIp = 'http://' + data.url;
-    int port = 8080;
-    SharedPrefsService.salvarIpServidor("$serverIp:$port");
   }
 }

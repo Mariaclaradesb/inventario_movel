@@ -10,7 +10,7 @@ class DatabaseConfigService {
   Future<void> enviarDadosConexao(ConnectionData data) async {
 
     String serverIp = 'http://' + data.url;
-    int port = 8080;
+    int port = 9090;
     await SharedPrefsService.salvarIpServidor("$serverIp:$port");
 
     String baseUrl = await ApiUrlProvider.getConfiguredUrl();

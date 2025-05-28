@@ -43,7 +43,7 @@ class ItemInventarioService {
     throw Exception("Loja não selecionada");
   }
 
-  final uri = Uri.parse('$baseUrl/listar?storeId=$codLoja&inventoryId=$codInventario');
+  final uri = Uri.parse('$baseUrl/item-inventario/listar?storeId=$codLoja&inventoryId=$codInventario');
 
   final response = await http.get(uri);
 

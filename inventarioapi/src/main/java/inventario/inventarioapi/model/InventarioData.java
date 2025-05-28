@@ -13,7 +13,7 @@ public class InventarioData {
 
     @ManyToOne
     @JoinColumn(name= "CODLOJA")
-    private LojaFisica loja;
+    private Empresa loja;
 
     @Column(name = "DATA")
     private LocalDateTime data;
@@ -30,7 +30,7 @@ public class InventarioData {
     public InventarioData() {
     }
 
-    public InventarioData(Long codigo, LojaFisica loja, LocalDateTime data, String hora, String nome, int disponivelEfd) {
+    public InventarioData(Long codigo, Empresa loja, LocalDateTime data, String hora, String nome, int disponivelEfd) {
         this.codigo = codigo;
         this.loja = loja;
         this.data = data;
@@ -47,11 +47,11 @@ public class InventarioData {
         this.codigo = codigo;
     }
 
-    public LojaFisica getLoja() {
+    public Empresa getLoja() {
         return loja;
     }
 
-    public void setLoja(LojaFisica loja) {
+    public void setLoja(Empresa loja) {
         this.loja = loja;
     }
 

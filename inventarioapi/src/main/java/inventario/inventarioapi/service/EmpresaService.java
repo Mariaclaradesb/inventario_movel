@@ -1,22 +1,22 @@
 package inventario.inventarioapi.service;
 
-import inventario.inventarioapi.model.LojaFisica;
-import inventario.inventarioapi.repository.LojaFisicaRepository;
+import inventario.inventarioapi.model.Empresa;
+import inventario.inventarioapi.repository.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LojaFisicaService {
+public class EmpresaService {
 
     @Autowired
-    private LojaFisicaRepository lojaRepository;
+    private EmpresaRepository lojaRepository;
 
-    public List<LojaFisica> listarTodas() {
+    public List<Empresa> listarTodas() {
         return lojaRepository.findAll();
     }
 
-    public LojaFisica findById(Long id) {
+    public Empresa findById(Long id) {
         return lojaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Loja não encontrada"));
     }

@@ -2,7 +2,7 @@ package inventario.inventarioapi.service;
 
 import inventario.inventarioapi.model.InventarioData;
 import inventario.inventarioapi.model.ItemInventario;
-import inventario.inventarioapi.model.LojaFisica;
+import inventario.inventarioapi.model.Empresa;
 import inventario.inventarioapi.model.dto.NovoInventarioData;
 import inventario.inventarioapi.repository.InventarioDataRepository;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ public class InventarioDataService {
 
     private final InventarioDataRepository repository;
     private final ItemInventarioService itemInventarioService;
-    private final LojaFisicaService lojaFisicaService;
+    private final EmpresaService EmpresaService;
 
-    public InventarioDataService(InventarioDataRepository repository, ItemInventarioService itemInventarioService, LojaFisicaService lojaFisicaService) {
+    public InventarioDataService(InventarioDataRepository repository, ItemInventarioService itemInventarioService, EmpresaService EmpresaService) {
         this.repository = repository;
         this.itemInventarioService = itemInventarioService;
-        this.lojaFisicaService = lojaFisicaService;
+        this.EmpresaService = EmpresaService;
     }
 
     public InventarioData create(Long storeId, NovoInventarioData newInventoryDate) {
@@ -35,7 +35,7 @@ public class InventarioDataService {
 
     private InventarioData createNewInventoryDate(Long storeId, NovoInventarioData newInventoryDate) {
         Long id = repository.findNewId();
-        LojaFisica store = lojaFisicaService.findById(storeId);
+        Empresa store = EmpresaService.findById(storeId);
         LocalDateTime date = LocalDateTime.now();
         String hour = date.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
         String name = newInventoryDate.nome();

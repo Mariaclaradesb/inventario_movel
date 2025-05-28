@@ -30,9 +30,9 @@ public class ItemInventarioService {
         VProduto vproduto = vprodutosRepository.findById(dados.codProduto())
         .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        LojaFisica lojaFisica = inventarioData.getLoja();
+        Empresa empresa = inventarioData.getLoja();
 
-        ItemInventario item = new ItemInventario(inventarioData, vproduto, dados.estAtual(), dados.estLoja(), lojaFisica);
+        ItemInventario item = new ItemInventario(inventarioData, vproduto, dados.estAtual(), dados.estLoja(), empresa);
 
         return itemInventarioRepository.save(item);
     }

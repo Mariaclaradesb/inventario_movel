@@ -15,7 +15,7 @@ public class VProduto {
 
     @ManyToOne
     @JoinColumn(name = "CODLOJACADASTRO") 
-    private LojaFisica loja;
+    private Empresa loja;
 
     @Column(name = "NOME")
     private String nome;
@@ -93,11 +93,11 @@ public class VProduto {
         this.codigo = codigo;
     }
 
-    public LojaFisica getLoja() {
+    public Empresa getLoja() {
         return loja;
     }
 
-    public void setLoja(LojaFisica loja) {
+    public void setLoja(Empresa loja) {
         this.loja = loja;
     }
 

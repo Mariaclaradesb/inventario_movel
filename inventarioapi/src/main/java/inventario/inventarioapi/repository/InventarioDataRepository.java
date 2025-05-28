@@ -1,6 +1,6 @@
 package inventario.inventarioapi.repository;
 
-import inventario.inventarioapi.model.LojaFisica;
+import inventario.inventarioapi.model.Empresa;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

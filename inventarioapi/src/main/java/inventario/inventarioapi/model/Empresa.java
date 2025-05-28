@@ -6,19 +6,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "LOJA_FISICA")
-public class LojaFisica {
+@Table(name = "EMPRESA")
+public class Empresa {
     
     @Id
-    @Column(name = "CODLOJA_FISICA")
+    @Column(name = "CODIGO")
     private Long codigo;
+
+    @Column(name = "NOME")
+    private String nome;
 
     public Long getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Long codigo) {
-        this.codigo = codigo;
+    public String getNome() {
+        return nome;
     }
 
 }

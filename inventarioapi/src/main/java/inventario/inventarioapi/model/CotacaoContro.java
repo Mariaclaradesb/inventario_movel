@@ -14,7 +14,7 @@ public class CotacaoContro {
 
     @ManyToOne
     @JoinColumn(name= "CODLOJA")
-    private LojaFisica loja;
+    private Empresa loja;
 
     @Column(name = "NOME")
     private String nome;
@@ -58,11 +58,11 @@ public class CotacaoContro {
         this.codigo = codigo;
     }
 
-    public LojaFisica getLoja() {
+    public Empresa getLoja() {
         return loja;
     }
 
-    public void setLoja(LojaFisica loja) {
+    public void setLoja(Empresa loja) {
         this.loja = loja;
     }
 

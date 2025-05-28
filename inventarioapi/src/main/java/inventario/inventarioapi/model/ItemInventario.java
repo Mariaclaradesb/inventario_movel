@@ -29,8 +29,8 @@ public class ItemInventario {
 
     @ManyToOne
     @MapsId("codLoja")
-    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA_FISICA")
-    private LojaFisica loja;
+    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODIGO")
+    private Empresa loja;
 
     @Column(name = "EST_ATUAL")
     private Long estAtual;
@@ -40,9 +40,9 @@ public class ItemInventario {
     
     public ItemInventario(){}
 
-    public ItemInventario(InventarioData inventarioData, VProduto vProduto, Long estAtual, Long estLoja, LojaFisica lojaFisica) {
-        this.codigo = new ItemInventarioId(inventarioData, vProduto, lojaFisica.getCodigo());
-        this.loja = lojaFisica;
+    public ItemInventario(InventarioData inventarioData, VProduto vProduto, Long estAtual, Long estLoja, Empresa Empresa) {
+        this.codigo = new ItemInventarioId(inventarioData, vProduto, Empresa.getCodigo());
+        this.loja = Empresa;
         this.inventarioData = inventarioData;
         this.produto = vProduto;
         this.estAtual = estAtual;
@@ -90,11 +90,11 @@ public class ItemInventario {
         this.estLoja = estLoja;
     }
 
-    public LojaFisica getLoja() {
+    public Empresa getLoja() {
         return loja;
     }
 
-    public void setLoja(LojaFisica loja) {
+    public void setLoja(Empresa loja) {
         this.loja = loja;
     }
 }

@@ -1,8 +1,8 @@
-import 'loja_fisica.dart';
+import 'empresa.dart';
 
 class InventarioData {
   int? _codigo;
-  LojaFisica? _loja;
+  Empresa? _loja;
   DateTime? _data;
   String? _hora;
   String? _nome;
@@ -22,8 +22,8 @@ class InventarioData {
     return InventarioData(
       json['codigo'] as int,
       json['loja'] != null
-          ? LojaFisica.fromJson(json['loja'])
-          : null as LojaFisica?,
+          ? Empresa.fromJson(json['loja'])
+          : null as Empresa?,
       json['data'] != null ? DateTime.parse(json['data']) : null as DateTime?,
       json['hora'] as String?,
       json['nome'] as String?,
@@ -66,9 +66,9 @@ class InventarioData {
     _data = value;
   }
 
-  LojaFisica? get loja => _loja;
+  Empresa? get loja => _loja;
 
-  set loja(LojaFisica? value) {
+  set loja(Empresa? value) {
     _loja = value;
   }
 

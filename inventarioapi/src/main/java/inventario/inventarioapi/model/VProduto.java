@@ -14,7 +14,7 @@ public class VProduto {
     private Long codigo;
 
     @ManyToOne
-    @JoinColumn(name = "CODLOJA") 
+    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODIGO", nullable = false) 
     private Empresa loja;
 
     @Column(name = "NOME")

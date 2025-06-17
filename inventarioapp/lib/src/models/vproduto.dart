@@ -48,15 +48,15 @@ class VProduto {
       json['codigo'] as int,
       Empresa.fromJson(json['loja']),
       json['nome'] as String,
-      json['alternati'] as String,
+      json['alternati'] as String?,
       json['cbarra'] as String?,
       json['cbarra2'] as String?,
       json['cbarra3'] as String?,
       json['original'] as String?,
-      json['pcoRemar'] as double,
-      json['estAtual'] as int,
+      (json['pcoRemar'] as num?)?.toDouble(),
+      json['estAtual'] as int?,
       json['unidade'] as String?,
-      Marca.fromJson(json['marca']) as Marca?
+      json['marca'] != null ? Marca.fromJson(json['marca']) : null,
     );
   }
 

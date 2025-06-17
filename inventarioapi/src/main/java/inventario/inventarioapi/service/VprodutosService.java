@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import inventario.inventarioapi.model.VProduto;
+import inventario.inventarioapi.model.VProdutoId;
 import inventario.inventarioapi.repository.VprodutosRepository;
 
 @Service
@@ -22,7 +23,10 @@ public class VprodutosService {
             throw new IllegalArgumentException("O campo de pesquisa não pode estar vazio.");
         }
         if (termo.matches("\\d+")) { 
-            Optional<VProduto> produtoPorCodigo = vprodutosRepository.findById(Long.parseLong(termo));
+            Long codigo = Long.parseLong(termo);
+            VProdutoId id = new VProdutoId(codigo, codLoja);
+            
+            Optional<VProduto> produtoPorCodigo = vprodutosRepository.findById(id);
             if (produtoPorCodigo.isPresent()) {
                 return List.of(produtoPorCodigo.get()); 
             }

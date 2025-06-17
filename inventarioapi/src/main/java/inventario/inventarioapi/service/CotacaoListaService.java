@@ -6,6 +6,7 @@ import inventario.inventarioapi.model.CotacaoContro;
 import inventario.inventarioapi.model.CotacaoLista;
 import inventario.inventarioapi.model.CotacaoListaId;
 import inventario.inventarioapi.model.VProduto;
+import inventario.inventarioapi.model.VProdutoId;
 import inventario.inventarioapi.repository.CotacaoControRepository;
 import inventario.inventarioapi.repository.CotacaoListaRepository;
 import inventario.inventarioapi.repository.VprodutosRepository;
@@ -25,7 +26,7 @@ public class CotacaoListaService {
         this.cotacaoControRepository = cotacaoControRepository;
     }
 
-    public void adicionarItemAoCarrinho(Long codigoProduto, Double quantidade) {
+    public void adicionarItemAoCarrinho(VProdutoId codigoProduto, Double quantidade) {
         VProduto produto = vprodutosRepository.findById(codigoProduto)
             .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 

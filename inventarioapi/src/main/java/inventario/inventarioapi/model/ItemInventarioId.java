@@ -1,6 +1,8 @@
 package inventario.inventarioapi.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -10,17 +12,15 @@ public class ItemInventarioId implements Serializable {
 
     private Long codInventario;
 
-    private Long codProduto;
+    @Embedded
+    private VProdutoId codProduto;
 
-    private Long codLoja;
-
-    public ItemInventarioId() {
+    public ItemInventarioId(InventarioData inventarioData, VProduto vProduto, Long long1) {
     }
 
-    public ItemInventarioId(InventarioData inventarioData, VProduto vProduto, Long codLoja) {
+    public ItemInventarioId(InventarioData inventarioData, VProdutoId vProduto) {
         this.codInventario = inventarioData.getCodigo();
-        this.codProduto = vProduto.getCodigo();
-        this.codLoja = codLoja;
+        this.codProduto = vProduto;
     }
 
     public Long getCodInventario() {
@@ -31,20 +31,12 @@ public class ItemInventarioId implements Serializable {
         this.codInventario = codInventario;
     }
 
-    public Long getCodProduto() {
+    public VProdutoId getCodProduto() {
         return codProduto;
     }
 
-    public void setCodProduto(Long codProduto) {
+    public void setCodProduto(VProdutoId codProduto) {
         this.codProduto = codProduto;
-    }
-
-    public Long getCodLoja() {
-        return codLoja;
-    }
-
-    public void setCodLoja(Long codLoja) {
-        this.codLoja = codLoja;
     }
 
     @Override
@@ -52,12 +44,12 @@ public class ItemInventarioId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ItemInventarioId that = (ItemInventarioId) o;
-        return Objects.equals(codInventario, that.codInventario) && Objects.equals(codProduto, that.codProduto) && Objects.equals(codLoja, that.codLoja);
+        return Objects.equals(codInventario, that.codInventario) && Objects.equals(codProduto, that.codProduto);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(codInventario, codProduto, codLoja);
+        return Objects.hash(codInventario, codProduto);
     }
 
 }

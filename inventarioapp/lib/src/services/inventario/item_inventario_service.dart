@@ -9,7 +9,7 @@ import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 class ItemInventarioService {
 
   Future<ItemInventario> saveInventoryItem(ItemInventario inventoryItem) async {
-    final codLoja = await SharedPrefsService.obterLojaSelecionada();
+    final int? codLoja = await SharedPrefsService.obterLojaSelecionada();
 
     if (codLoja == null) {
       throw Exception("Loja não selecionada");
@@ -35,7 +35,7 @@ class ItemInventarioService {
   }
 
   Future<List<ItemInventario>> buscarItensDoInventario(int codInventario) async {
-  final codLoja = await SharedPrefsService.obterLojaSelecionada();
+  final int? codLoja = await SharedPrefsService.obterLojaSelecionada();
 
   String baseUrl = await ApiUrlProvider.getConfiguredUrl();
 

@@ -7,13 +7,13 @@ import jakarta.persistence.*;
 @Embeddable
 public class CotacaoListaId implements Serializable{
 
-    private Long codPro;
+    private VProdutoId codPro;
     private Long codCotacao;
     
-    public Long getCodPro() {
+    public VProdutoId getCodPro() {
         return codPro;
     }
-    public void setCodPro(Long codPro) {
+    public void setCodPro(VProdutoId codPro) {
         this.codPro = codPro;
     }
     public Long getCodCotacao() {

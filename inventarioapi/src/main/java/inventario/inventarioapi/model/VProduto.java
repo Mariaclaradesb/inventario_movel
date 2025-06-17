@@ -9,13 +9,8 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "VPRODUTOS")
 public class VProduto {
-    @Id
-    @Column(name = "CODIGO")
-    private Long codigo;
-
-    @ManyToOne
-    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODIGO", nullable = false) 
-    private Empresa loja;
+    @EmbeddedId
+    private VProdutoId codigo;
 
     @Column(name = "NOME")
     private String nome;
@@ -85,21 +80,21 @@ public class VProduto {
     public VProduto() {
     }
 
-    public Long getCodigo() {
+    public VProdutoId getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Long codigo) {
+    public void setCodigo(VProdutoId codigo) {
         this.codigo = codigo;
     }
+    
+    // public Empresa getLoja() {
+    //     return loja;
+    // }
 
-    public Empresa getLoja() {
-        return loja;
-    }
-
-    public void setLoja(Empresa loja) {
-        this.loja = loja;
-    }
+    // public void setLoja(Empresa loja) {
+    //     this.loja = loja;
+    // }
 
     public String getNome() {
         return nome;

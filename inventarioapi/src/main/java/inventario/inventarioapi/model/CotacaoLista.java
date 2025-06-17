@@ -10,8 +10,11 @@ public class CotacaoLista {
     private CotacaoListaId codigo;
 
     @ManyToOne
-    @MapsId("codPro")
-    @JoinColumn(name = "CODIGOPRO", referencedColumnName = "CODIGO")
+    @MapsId("codProduto")
+    @JoinColumns({
+        @JoinColumn(name = "CODPRODUTO", referencedColumnName = "CODIGO"),
+        @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA")
+    })
     private VProduto produto;
 
     @ManyToOne

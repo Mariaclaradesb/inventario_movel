@@ -6,12 +6,12 @@ import 'package:inventarioapp/src/services/api_url_provider.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 
 class ConsultapService {
-  Future<List<VProduto>> buscarProdutos(String termo) async {
-    final codLoja = await SharedPrefsService.obterLojaSelecionada();
+  Future<List<VProduto>> buscarProdutos(String termo, int codLoja) async {
+    // final codLoja = await SharedPrefsService.obterLojaSelecionada();
 
-    if (codLoja == null) {
-      throw Exception("Loja não selecionada");
-    }
+    // if (codLoja == null) {
+    //   throw Exception("Loja não selecionada");
+    // }
 
     String baseUrl = await ApiUrlProvider.getConfiguredUrl();
 
@@ -20,6 +20,7 @@ class ConsultapService {
     );
 
     if (response.statusCode != 200) {
+      print("Erro HTTP ${response.statusCode}: ${response.body}");
       throw Exception("Erro ao buscar produtos");
     }
 

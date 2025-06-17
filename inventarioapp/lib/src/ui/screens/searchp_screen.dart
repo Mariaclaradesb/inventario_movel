@@ -58,16 +58,26 @@ class _ConsultapPageState extends State<ConsultapPage> {
       }
 
       // Obtém a loja selecionada
-      final codLoja = await SharedPrefsService.obterLojaSelecionada();
+      final int? codLoja = await SharedPrefsService.obterLojaSelecionada();
       if (codLoja == null) {
         LojaNaoSelecionada.mostrarErro(context);
         return; // Retorna caso a loja não esteja selecionada
       }
+      print("Código da loja selecionada: $codLoja");
 
+      // Log do termo de busca
+      final termoBusca = _searchController.text;
+      print("Termo de busca: $termoBusca");
+
+      // Faz a requisição para buscar os produtos
       List<VProduto> produtos = await _consultapService.buscarProdutos(
-        _searchController.text,
+        termoBusca,
+        codLoja,
       );
-      
+
+      // Log da quantidade de produtos retornados
+      print("Quantidade de produtos retornados: ${produtos.length}");
+
       setState(() => _produtos = produtos);
 
     } catch (e) {
@@ -112,7 +122,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
                   return;
                 }
 
-                final codLoja = await SharedPrefsService.obterLojaSelecionada();
+                final int? codLoja = await SharedPrefsService.obterLojaSelecionada();
                 if (codLoja == null) {
                   LojaNaoSelecionada.mostrarErro(dialogContext);
                   return;

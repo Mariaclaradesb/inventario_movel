@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinColumns;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
@@ -24,13 +25,12 @@ public class ItemInventario {
 
     @ManyToOne
     @MapsId("codProduto")
-    @JoinColumn(name = "CODPRODUTO", referencedColumnName = "CODIGO" )
+    @JoinColumns({
+        @JoinColumn(name = "CODPRODUTO", referencedColumnName = "CODIGO"),
+        @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA")
+    })
     private VProduto produto;
 
-    @ManyToOne
-    @MapsId("codLoja")
-    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODIGO")
-    private Empresa loja;
 
     @Column(name = "EST_ATUAL")
     private Long estAtual;
@@ -42,7 +42,6 @@ public class ItemInventario {
 
     public ItemInventario(InventarioData inventarioData, VProduto vProduto, Long estAtual, Long estLoja, Empresa Empresa) {
         this.codigo = new ItemInventarioId(inventarioData, vProduto, Empresa.getCodigo());
-        this.loja = Empresa;
         this.inventarioData = inventarioData;
         this.produto = vProduto;
         this.estAtual = estAtual;
@@ -90,11 +89,4 @@ public class ItemInventario {
         this.estLoja = estLoja;
     }
 
-    public Empresa getLoja() {
-        return loja;
-    }
-
-    public void setLoja(Empresa loja) {
-        this.loja = loja;
-    }
 }

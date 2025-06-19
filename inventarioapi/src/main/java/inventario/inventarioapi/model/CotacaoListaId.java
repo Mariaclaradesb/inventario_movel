@@ -6,19 +6,24 @@ import jakarta.persistence.*;
 
 @Embeddable
 public class CotacaoListaId implements Serializable{
+    @Column(name = "CODIGOPRO")
+    private Long codProduto;
 
-    private VProdutoId codPro;
+    @Column(name = "CODCOTACAO")
     private Long codCotacao;
     
-    public VProdutoId getCodPro() {
-        return codPro;
+    public Long getCodProduto() {
+        return codProduto;
     }
-    public void setCodPro(VProdutoId codPro) {
-        this.codPro = codPro;
+
+    public void setCodProduto(Long codProduto) {
+        this.codProduto = codProduto;
     }
+
     public Long getCodCotacao() {
         return codCotacao;
     }
+
     public void setCodCotacao(Long codCotacao) {
         this.codCotacao = codCotacao;
     }

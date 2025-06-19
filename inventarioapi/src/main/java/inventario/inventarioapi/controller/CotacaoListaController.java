@@ -21,12 +21,8 @@ public class CotacaoListaController {
 
     @PostMapping("/adicionar")
     public ResponseEntity<String> adicionarItem(
-            @RequestParam Long codigo, // Vem de VProdutoId
-            @RequestParam Long codLoja, // Vem de VProdutoId
-            @RequestParam Long codCotacao,
+            @RequestParam Long codigoProduto,
             @RequestParam Double quantidade) {
-
-        VProdutoId codigoProduto = new VProdutoId(codigo, codLoja);
 
         cotacaoListaService.adicionarItemAoCarrinho(codigoProduto, quantidade);
         return ResponseEntity.ok("Item adicionado ao carrinho com sucesso!");

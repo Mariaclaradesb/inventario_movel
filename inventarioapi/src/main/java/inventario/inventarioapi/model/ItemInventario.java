@@ -1,15 +1,6 @@
 package inventario.inventarioapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinColumns;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ITEM_INVENTARIO_DATA")
@@ -20,7 +11,7 @@ public class ItemInventario {
 
     @ManyToOne
     @MapsId("codInventario")
-    @JoinColumn(name = "CODINVENTARIO", referencedColumnName = "CODIGO" )
+    @JoinColumn(name = "CODINVENTARIO", referencedColumnName = "CODIGO")
     private InventarioData inventarioData;
 
     @ManyToOne
@@ -41,7 +32,7 @@ public class ItemInventario {
     public ItemInventario(){}
 
     public ItemInventario(InventarioData inventarioData, VProduto vProduto, Long estAtual, Long estLoja, Empresa Empresa) {
-        this.codigo = new ItemInventarioId(inventarioData, vProduto, Empresa.getCodigo());
+        this.codigo = new ItemInventarioId(inventarioData, vProduto);
         this.inventarioData = inventarioData;
         this.produto = vProduto;
         this.estAtual = estAtual;

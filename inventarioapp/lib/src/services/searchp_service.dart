@@ -32,9 +32,8 @@ class ConsultapService {
 
   Future<void> adicionarItemACotacao(int codProduto, double quantidade) async {
     String baseUrl = await ApiUrlProvider.getConfiguredUrl();
-
     final url = Uri.parse(
-    "$baseUrl/cotacao-lista/adicionar?codigoProduto=$codProduto&codCotacao=1&quantidade=$quantidade"
+    "$baseUrl/cotacao-lista/adicionar?codigoProduto=$codProduto&quantidade=$quantidade"
     );
     final response = await http.post(url);
 

@@ -13,7 +13,7 @@ public class CotacaoContro {
     private Long codigo;
 
     @ManyToOne
-    @JoinColumn(name= "CODLOJA")
+    @JoinColumn(name = "CODLOJA")
     private Empresa loja;
 
     @Column(name = "NOME")

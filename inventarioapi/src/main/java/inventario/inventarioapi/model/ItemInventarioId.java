@@ -1,6 +1,5 @@
 package inventario.inventarioapi.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 
@@ -15,12 +14,12 @@ public class ItemInventarioId implements Serializable {
     @Embedded
     private VProdutoId codProduto;
 
-    public ItemInventarioId(InventarioData inventarioData, VProduto vProduto, Long long1) {
+    public ItemInventarioId() {
     }
 
-    public ItemInventarioId(InventarioData inventarioData, VProdutoId vProduto) {
+    public ItemInventarioId(InventarioData inventarioData, VProduto vProduto) {
         this.codInventario = inventarioData.getCodigo();
-        this.codProduto = vProduto;
+        this.codProduto = vProduto.getCodigo();
     }
 
     public Long getCodInventario() {

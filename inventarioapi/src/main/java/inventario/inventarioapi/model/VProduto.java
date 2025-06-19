@@ -15,6 +15,11 @@ public class VProduto {
     @Column(name = "NOME")
     private String nome;
 
+    @ManyToOne
+    @MapsId("codLoja")
+    @JoinColumn(name = "CODLOJA")
+    private Empresa loja;
+
     @Column(name = "EST_ATUAL")
     private Long estAtual;
 
@@ -75,7 +80,7 @@ public class VProduto {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "MARCA", referencedColumnName = "CODIGO", nullable = false) 
-    private Marcas marca;
+    private Marca marca;
 
     public VProduto() {
     }
@@ -88,13 +93,13 @@ public class VProduto {
         this.codigo = codigo;
     }
     
-    // public Empresa getLoja() {
-    //     return loja;
-    // }
+     public Empresa getLoja() {
+         return loja;
+     }
 
-    // public void setLoja(Empresa loja) {
-    //     this.loja = loja;
-    // }
+     public void setLoja(Empresa loja) {
+         this.loja = loja;
+     }
 
     public String getNome() {
         return nome;
@@ -256,11 +261,11 @@ public class VProduto {
         this.estLoja = estLoja;
     }
 
-    public Marcas getMarca() {
+    public Marca getMarca() {
         return marca;
     }
 
-    public void setMarca(Marcas marca) {
+    public void setMarca(Marca marca) {
         this.marca = marca;
     }
 }

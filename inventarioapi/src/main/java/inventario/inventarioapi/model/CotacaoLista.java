@@ -9,15 +9,12 @@ public class CotacaoLista {
     @EmbeddedId
     private CotacaoListaId codigo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("codProduto")
-    @JoinColumns({
-        @JoinColumn(name = "CODPRODUTO", referencedColumnName = "CODIGO"),
-        @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA")
-    })
-    private VProduto produto;
+    @JoinColumn(name = "CODIGOPRO", referencedColumnName = "CODIGO")
+    private Produto produto;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("codCotacao")
     @JoinColumn(name = "CODCOTACAO", referencedColumnName = "CODIGO")
     private CotacaoContro cotacaoContro;
@@ -136,7 +133,6 @@ public class CotacaoLista {
         this.fechManual = 0.0;
         this.foraLimite = 0.0;
         this.empatado = null;
-
     }
 
     public CotacaoListaId getCodigo() {
@@ -147,11 +143,11 @@ public class CotacaoLista {
         this.codigo = codigo;
     }
 
-    public VProduto getProduto() {
+    public Produto getProduto() {
         return produto;
     }
 
-    public void setProduto(VProduto produto) {
+    public void setProduto(Produto produto) {
         this.produto = produto;
     }
 
@@ -386,7 +382,5 @@ public class CotacaoLista {
     public void setEmpatado(String empatado) {
         this.empatado = empatado;
     }
-
-
     
 }

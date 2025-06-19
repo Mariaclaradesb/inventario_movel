@@ -2,8 +2,8 @@ package inventario.inventarioapi.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import inventario.inventarioapi.model.Marcas;
+import inventario.inventarioapi.model.Marca;
 
-public interface MarcaRepository extends JpaRepository<Marcas, Long> {
+public interface MarcaRepository extends JpaRepository<Marca, Long> {
     
 }

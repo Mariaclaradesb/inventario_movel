@@ -1,12 +1,9 @@
 package inventario.inventarioapi.service;
 
+import inventario.inventarioapi.model.*;
+import inventario.inventarioapi.repository.ProdutosRepository;
 import org.springframework.stereotype.Service;
 
-import inventario.inventarioapi.model.CotacaoContro;
-import inventario.inventarioapi.model.CotacaoLista;
-import inventario.inventarioapi.model.CotacaoListaId;
-import inventario.inventarioapi.model.VProduto;
-import inventario.inventarioapi.model.VProdutoId;
 import inventario.inventarioapi.repository.CotacaoControRepository;
 import inventario.inventarioapi.repository.CotacaoListaRepository;
 import inventario.inventarioapi.repository.VprodutosRepository;
@@ -15,19 +12,19 @@ import inventario.inventarioapi.repository.VprodutosRepository;
 public class CotacaoListaService {
 
     private final CotacaoListaRepository cotacaoListaRepository;
-    private final VprodutosRepository vprodutosRepository;
+    private final ProdutosRepository produtosRepository;
     private final CotacaoControRepository cotacaoControRepository;
 
     public CotacaoListaService(CotacaoListaRepository cotacaoListaRepository,
-                               VprodutosRepository vprodutosRepository,
+                               ProdutosRepository produtosRepository,
                                CotacaoControRepository cotacaoControRepository) {
         this.cotacaoListaRepository = cotacaoListaRepository;
-        this.vprodutosRepository = vprodutosRepository;
+        this.produtosRepository = produtosRepository;
         this.cotacaoControRepository = cotacaoControRepository;
     }
 
-    public void adicionarItemAoCarrinho(VProdutoId codigoProduto, Double quantidade) {
-        VProduto produto = vprodutosRepository.findById(codigoProduto)
+    public void adicionarItemAoCarrinho(Long codigoProduto, Double quantidade) {
+        Produto produto = produtosRepository.findById(codigoProduto)
             .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
         CotacaoContro cotacao = cotacaoControRepository.findById(1L)
@@ -35,12 +32,12 @@ public class CotacaoListaService {
 
         CotacaoListaId id = new CotacaoListaId();
         id.setCodCotacao(cotacao.getCodigo());
-        id.setCodPro(produto.getCodigo());
+        id.setCodProduto(codigoProduto);
 
         CotacaoLista item = new CotacaoLista();
         item.setCodigo(id);
         item.setProduto(produto);
-        item.setCotacaoContro(cotacao); 
+        item.setCotacaoContro(cotacao);
         item.setQuantidade(quantidade);
 
         cotacaoListaRepository.save(item);

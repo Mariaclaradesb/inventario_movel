@@ -1,9 +1,10 @@
 import 'package:inventarioapp/src/models/empresa.dart';
+import 'package:inventarioapp/src/models/vproduto_id.dart';
 
 import 'marca.dart';
 
 class VProduto {
-  int _codigo;
+  VProdutoId _codigo;
   Empresa _loja;
   String _nome;
   String? _alternati;
@@ -23,7 +24,7 @@ class VProduto {
       this._estAtual, this._unidade, this._marca);
 
   VProduto.mock({
-    required int codigo,
+    required VProdutoId codigo,
     required Empresa loja,
     required String nome,
     double? preco,
@@ -45,7 +46,7 @@ class VProduto {
 
   factory VProduto.fromJson(Map<String, dynamic> json) {
     return VProduto(
-      json['codigo'] as int,
+      VProdutoId.fromJson(json['codigo']),
       Empresa.fromJson(json['loja']),
       json['nome'] as String,
       json['alternati'] as String?,
@@ -77,7 +78,7 @@ class VProduto {
     return null;
   }
 
-  int get codigo => _codigo;
+  VProdutoId get codigo => _codigo;
 
   Empresa get loja => _loja;
 

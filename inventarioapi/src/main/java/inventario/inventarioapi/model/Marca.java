@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "MARCAS")
-public class Marcas {
+public class Marca {
 
     @Id
     @Column(name = "CODIGO")

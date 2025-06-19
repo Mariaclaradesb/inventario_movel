@@ -130,7 +130,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
 
                 try {
                   await _consultapService.adicionarItemACotacao(
-                    produto.codigo,
+                    produto.codigo.codigo,
                     quantidade,
                   );
                   Navigator.of(dialogContext).pop(); // fecha o diálogo
@@ -274,7 +274,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
                             double.tryParse(pQuantityStock.text) ?? 0.0;
                         var item = ItemInventario(
                           inventory?.codigo,
-                          produto.codigo,
+                          produto.codigo.codigo,
                           quantityStock,
                           quantityStore,
                         );

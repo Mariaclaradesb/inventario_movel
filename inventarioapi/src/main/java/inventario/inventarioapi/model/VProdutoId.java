@@ -11,7 +11,7 @@ public class VProdutoId implements Serializable {
     @Column(name="CODIGO")
     private Long codigo;
 
-    @Column(name="CODLOJA", insertable=false, updatable=false)
+    @Column(name="CODLOJA")
     private Long codLoja;
 
     public VProdutoId() {

@@ -2,6 +2,9 @@ package inventario.inventarioapi.model;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
@@ -17,7 +20,11 @@ public class VProdutoId implements Serializable {
     public VProdutoId() {
     }
 
-    public VProdutoId(Long codigo, Long codLoja) {
+    @JsonCreator
+    public VProdutoId(
+        @JsonProperty Long codigo, 
+        @JsonProperty Long codLoja
+        ) {
         this.codigo = codigo;
         this.codLoja = codLoja;
     }

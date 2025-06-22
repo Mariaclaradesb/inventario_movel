@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:inventarioapp/src/models/inventario_data.dart';
 import 'package:inventarioapp/src/models/item_inventario.dart';
 import 'package:inventarioapp/src/models/vproduto.dart';
+import 'package:inventarioapp/src/models/vproduto_id.dart';
 import 'package:inventarioapp/src/services/searchp_service.dart';
 import 'package:inventarioapp/src/services/inventario/item_inventario_service.dart';
 import 'package:inventarioapp/src/services/price_tag/price_tag_service.dart';
@@ -79,7 +80,6 @@ class _ConsultapPageState extends State<ConsultapPage> {
       print("Quantidade de produtos retornados: ${produtos.length}");
 
       setState(() => _produtos = produtos);
-
     } catch (e) {
       print("Erro ao buscar produtos: $e");
       ScaffoldMessenger.of(context).showSnackBar(
@@ -88,7 +88,6 @@ class _ConsultapPageState extends State<ConsultapPage> {
     } finally {
       setState(() => _isLoading = false);
     }
-
   }
 
   void _adicionarProdutoACotacao(BuildContext context, VProduto produto) {
@@ -122,7 +121,8 @@ class _ConsultapPageState extends State<ConsultapPage> {
                   return;
                 }
 
-                final int? codLoja = await SharedPrefsService.obterLojaSelecionada();
+                final int? codLoja =
+                    await SharedPrefsService.obterLojaSelecionada();
                 if (codLoja == null) {
                   LojaNaoSelecionada.mostrarErro(dialogContext);
                   return;
@@ -272,9 +272,15 @@ class _ConsultapPageState extends State<ConsultapPage> {
                             double.tryParse(pQuantityStore.text) ?? 0.0;
                         var quantityStock =
                             double.tryParse(pQuantityStock.text) ?? 0.0;
+
+                        var vProdutoId = VProdutoId(
+                          produto.codigo.codigo, // código do produto
+                          produto.codigo.codLoja, // código da loja do produto
+                        );
+
                         var item = ItemInventario(
                           inventory?.codigo,
-                          produto.codigo.codigo,
+                          vProdutoId,
                           quantityStock,
                           quantityStore,
                         );

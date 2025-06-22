@@ -1,12 +1,15 @@
 import 'dart:ffi';
 
+import 'package:inventarioapp/src/models/vproduto_id.dart';
+
 class ItemInventario {
   int? _codInventario;
-  int _codProduto;
+  VProdutoId _codProduto; // não pode ser nulo, precisa ser inicializado
   double? _estAtual;
   double? _estLoja;
   String? _nomeProduto;
 
+  // Construtor exige codProduto obrigatoriamente
   ItemInventario(
     this._codInventario,
     this._codProduto,
@@ -18,7 +21,7 @@ class ItemInventario {
   factory ItemInventario.fromJson(Map<String, dynamic> json) {
     return ItemInventario(
       json['codInventario'] as int?,
-      json['codProduto'] as int,
+      VProdutoId.fromJson(json['codProduto']),
       (json['estAtual'] as num).toDouble(),
       (json['estLoja'] as num).toDouble(),
       json['nomeProduto'] as String?
@@ -28,27 +31,15 @@ class ItemInventario {
   Map<String, dynamic> toJson() {
     return {
       'codInventario': _codInventario,
-      'codProduto': _codProduto,
+      'codProduto': _codProduto.toJson(),
       'estAtual': _estAtual,
       'estLoja': _estLoja,
     };
   }
 
-  double? get estLoja => _estLoja;
+  VProdutoId get codProduto => _codProduto;
 
-  set estLoja(double? value) {
-    _estLoja = value;
-  }
-
-  double? get estAtual => _estAtual;
-
-  set estAtual(double? value) {
-    _estAtual = value;
-  }
-
-  int get codProduto => _codProduto;
-
-  set codProduto(int value) {
+  set codProduto(VProdutoId value) {
     _codProduto = value;
   }
 
@@ -58,5 +49,18 @@ class ItemInventario {
     _codInventario = value;
   }
 
+  double? get estAtual => _estAtual;
+
+  set estAtual(double? value) {
+    _estAtual = value;
+  }
+
+  double? get estLoja => _estLoja;
+
+  set estLoja(double? value) {
+    _estLoja = value;
+  }
+
   String? get nomeProduto => _nomeProduto;
 }
+

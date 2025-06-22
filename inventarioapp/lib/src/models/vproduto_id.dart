@@ -10,8 +10,15 @@ class VProdutoId {
 
   factory VProdutoId.fromJson(Map<String, dynamic> json) {
     return VProdutoId(
-        json['codigo'] as int,
-        json['codLoja'] as int,
+      json['codigo'] as int,
+      json['codLoja'] as int,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'codigo': _codigo,
+      'codLoja': _codLoja,
+    };
   }
 }

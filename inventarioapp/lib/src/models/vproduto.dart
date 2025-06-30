@@ -14,6 +14,7 @@ class VProduto {
   String? _original;
   double? _pcoRemar;
   int? _estAtual;
+  int? _estLoja;
   String? _unidade;
   Marca? _marca;
 
@@ -21,7 +22,7 @@ class VProduto {
   VProduto(this._codigo, this._loja, this._nome, this._alternati,
       this._codigoDeBarrasPrincipal, this._codigoDeBarrasSecundario,
       this._codigoDeBarrasAlternativo, this._original, this._pcoRemar,
-      this._estAtual, this._unidade, this._marca);
+      this._estAtual, this._estLoja, this._unidade, this._marca);
 
   VProduto.mock({
     required VProdutoId codigo,
@@ -56,6 +57,7 @@ class VProduto {
       json['original'] as String?,
       (json['pcoRemar'] as num?)?.toDouble(),
       json['estAtual'] as int?,
+      json['estLoja'] as int?,
       json['unidade'] as String?,
       json['marca'] != null ? Marca.fromJson(json['marca']) : null,
     );
@@ -99,6 +101,8 @@ class VProduto {
   String? get pcoRemarFormatado => (_pcoRemar == null) ? "Sem preço" : _pcoRemar?.toStringAsFixed(2);
 
   int? get estAtual => _estAtual;
+
+  int? get estLoja => _estLoja;
 
   Marca? get marca => _marca;
 

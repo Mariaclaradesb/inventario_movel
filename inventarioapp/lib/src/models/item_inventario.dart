@@ -4,17 +4,16 @@ import 'package:inventarioapp/src/models/vproduto_id.dart';
 
 class ItemInventario {
   int? _codInventario;
-  VProdutoId _codProduto; // não pode ser nulo, precisa ser inicializado
-  double? _estAtual;
-  double? _estLoja;
+  VProdutoId _codProduto;
+  double? _estLoja; // contagem feita no inventário
+  double? _estLojaProd; // estoque real do produto (de VProduto)
   String? _nomeProduto;
 
-  // Construtor exige codProduto obrigatoriamente
   ItemInventario(
     this._codInventario,
     this._codProduto,
-    this._estAtual,
     this._estLoja,
+    this._estLojaProd,
     [this._nomeProduto]
   );
 
@@ -22,8 +21,8 @@ class ItemInventario {
     return ItemInventario(
       json['codInventario'] as int?,
       VProdutoId.fromJson(json['codProduto']),
-      (json['estAtual'] as num).toDouble(),
-      (json['estLoja'] as num).toDouble(),
+      (json['estLoja'] as num?)?.toDouble(),
+      (json['estLojaProd'] as num?)?.toDouble(),
       json['nomeProduto'] as String?
     );
   }
@@ -32,8 +31,9 @@ class ItemInventario {
     return {
       'codInventario': _codInventario,
       'codProduto': _codProduto.toJson(),
-      'estAtual': _estAtual,
       'estLoja': _estLoja,
+      'estLojaProd': _estLojaProd,
+      'nomeProduto': _nomeProduto,
     };
   }
 
@@ -49,11 +49,11 @@ class ItemInventario {
     _codInventario = value;
   }
 
-  double? get estAtual => _estAtual;
+  // double? get estAtual => _estAtual;
 
-  set estAtual(double? value) {
-    _estAtual = value;
-  }
+  // set estAtual(double? value) {
+  //   _estAtual = value;
+  // }
 
   double? get estLoja => _estLoja;
 
@@ -62,5 +62,12 @@ class ItemInventario {
   }
 
   String? get nomeProduto => _nomeProduto;
+
+  double? get estLojaProd => _estLojaProd;
+
+  set estLojaProd(double? value) {
+    _estLojaProd = value;
+  }
+
 }
 

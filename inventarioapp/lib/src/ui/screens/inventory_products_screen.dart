@@ -70,10 +70,10 @@ class _InventoryProductsScreenState extends State<InventoryProductsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Loja: ${item.estLoja?.toStringAsFixed(2) ?? "0.00"}',
+                            'Contada: ${item.estLoja?.toStringAsFixed(2) ?? "0.00"}',
                           ),
                           Text(
-                            'Atual: ${item.estAtual?.toStringAsFixed(2) ?? "0.00"}',
+                            'Estoque: ${item.estLojaProd?.toStringAsFixed(2) ?? "0.00"}',
                           ),
                         ],
                       ),

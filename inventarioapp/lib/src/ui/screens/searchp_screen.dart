@@ -165,10 +165,10 @@ class _ConsultapPageState extends State<ConsultapPage> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "Quantidade: ${produto.estAtual}",
-                style: TextStyle(fontSize: 20.0),
-              ),
+              // Text(
+              //   "Quantidade: ${produto.estAtual}",
+              //   style: TextStyle(fontSize: 20.0),
+              // ),
               Text(
                 "Preço: R\$${produto.pcoRemarFormatado}",
                 style: TextStyle(fontSize: 20.0),
@@ -185,15 +185,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
                 TextField(
                   controller: pQuantityStock,
                   decoration: InputDecoration(
-                    hintText: 'Quantidade no estoque',
-                    hintStyle: TextStyle(color: Color(0xFF006989)),
-                  ),
-                ),
-              if (origem == 'inventoryProductsScreen')
-                TextField(
-                  controller: pQuantityStore,
-                  decoration: InputDecoration(
-                    hintText: 'Quantidade na loja',
+                    hintText: 'Quantidade contada',
                     hintStyle: TextStyle(color: Color(0xFF006989)),
                   ),
                 ),

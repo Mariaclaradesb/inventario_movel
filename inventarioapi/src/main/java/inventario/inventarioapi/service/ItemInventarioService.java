@@ -32,7 +32,7 @@ public class ItemInventarioService {
 
         Empresa empresa = inventarioData.getLoja();
 
-        ItemInventario item = new ItemInventario(inventarioData, vproduto, dados.estAtual(), dados.estLoja(), empresa);
+        ItemInventario item = new ItemInventario(inventarioData, vproduto, dados.estLoja(), empresa);
 
         return itemInventarioRepository.save(item);
     }

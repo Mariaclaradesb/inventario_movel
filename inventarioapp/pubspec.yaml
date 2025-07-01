@@ -45,6 +45,11 @@ dependencies:
   
   get_it: ^8.0.3
 
+  pdf: ^3.10.4
+  printing: ^5.12.0
+  path_provider: ^2.1.2
+  share_plus: ^7.2.1
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter

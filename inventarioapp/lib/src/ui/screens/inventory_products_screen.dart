@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:inventarioapp/src/models/inventario_data.dart';
 import 'package:inventarioapp/src/models/item_inventario.dart';
 import 'package:inventarioapp/src/services/inventario/item_inventario_service.dart';
+import 'package:inventarioapp/src/services/inventory_report.dart';
+import 'package:inventarioapp/src/ui/helper/relatorio_pdf.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 
 class InventoryProductsScreen extends StatefulWidget {
@@ -16,6 +18,7 @@ class _InventoryProductsScreenState extends State<InventoryProductsScreen> {
   late InventarioData inventario;
   final ItemInventarioService service = ItemInventarioService();
   late Future<List<ItemInventario>> futureItens;
+  final ReelatorioService relatorioService = ReelatorioService();
 
   @override
   void initState() {
@@ -38,7 +41,56 @@ class _InventoryProductsScreenState extends State<InventoryProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF006989),
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ), // botão de voltar branco
+        title: const Text(
+          'Itens do Inventário',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          TextButton.icon(
+            onPressed: () async {
+              try {
+                final dados = await relatorioService.buscarDivergencias(
+                  inventario.loja!.codigo,
+                  inventario.codigo!,
+                );
+                await gerarRelatorioPDF(
+                  context,
+                  dados,
+                  inventario.loja!.codigo,
+                  inventario.codigo!,
+                );
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Erro ao gerar relatório: $e')),
+                );
+              }
+            },
+            icon: const Icon(
+              Icons.picture_as_pdf,
+              color: Colors.white,
+              size: 24,
+            ),
+            label: const Text(
+              'Relatório',
+              style: TextStyle(color: Colors.white, fontSize: 16),
+            ),
+            style: TextButton.styleFrom(
+              backgroundColor: Color(0xFF005577),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+        ],
+      ),
+
       body: FutureBuilder<List<ItemInventario>>(
         future: futureItens,
         builder: (context, snapshot) {

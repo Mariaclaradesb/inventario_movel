@@ -1,12 +1,15 @@
 class ApiConstants {
-  static final String apiUrl = 'http://192.168.108.153:9090';
+  static late String apiUrl;
 
-  static final String inventoriesUrl = '$apiUrl/inventarios';
-  static final String inventoryItemUrl = '$apiUrl/item-inventario';
-  static final String productsUrl = '$apiUrl/produtos';
-  static final String quoteUrl = '$apiUrl/cotacao-lista';
-  static final String getDatabaseNameUrl = '$apiUrl/api/database-name';
-  static final String databaseConfigUrl = '$apiUrl/database/config';
-  static final String inventoryReport = '$apiUrl/relatorio/divergencia';
+  static void configurarComIp(String url) {
+    apiUrl = url;
+  }
 
+  static String get inventoriesUrl => '$apiUrl/inventarios';
+  static String get inventoryItemUrl => '$apiUrl/item-inventario';
+  static String get productsUrl => '$apiUrl/produtos';
+  static String get quoteUrl => '$apiUrl/cotacao-lista';
+  static String get getDatabaseNameUrl => '$apiUrl/api/database-name';
+  static String get databaseConfigUrl => '$apiUrl/database/config';
+  static String get inventoryReport => '$apiUrl/relatorio/divergencia';
 }

@@ -22,9 +22,9 @@ class _PriceTagScreenState extends State<PriceTagScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(onPressed: () => print("teste"),
-                child: Text('Enviar para tabela de etiquetas'),
-              ),
+              // ElevatedButton(onPressed: () => print("teste"),
+              //   child: Text('Enviar para tabela de etiquetas'),
+              // ),
               ElevatedButton(onPressed: () async {
                 int quantity = int.parse(await openQuantityDialog() ?? "0");
 

@@ -46,32 +46,22 @@ Future<void> imprimirRelatorioNaMaquininha(List<Map<String, dynamic>> dados, int
   try {
     final conteudo = gerarRelatorioTexto(dados, codLoja, codInventario);
 
-    await SunmiPrinter.initPrinter();
-    await SunmiPrinter.startTransactionPrint(true);
-
     for (var linha in conteudo.split('\n')) {
       await SunmiPrinter.printText(
         linha,
         style: SunmiTextStyle(
-          fontSize: 1,
+          fontSize: 20,
           align: SunmiPrintAlign.LEFT,
         ),
       );
     }
 
     await SunmiPrinter.lineWrap(3);
-    await SunmiPrinter.cut();
-    await SunmiPrinter.exitTransactionPrint(true);
+
   } catch (e) {
     print('Erro ao imprimir na Sunmi: $e');
   }
 }
-
-
-
-
-
-
 
 Future<void> gerarRelatorioPDF(
   BuildContext context,

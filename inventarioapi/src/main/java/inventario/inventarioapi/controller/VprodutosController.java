@@ -17,8 +17,7 @@ public class VprodutosController {
     private VprodutosService vprodutosService;
 
     @GetMapping("/buscar")
-    public List<VProduto> buscarProdutos(@RequestParam(required = false) String termo,
-                                        @RequestParam(required = false) Long codLoja) {
+    public List<VProduto> buscarProdutos(@RequestParam String termo, @RequestParam Long codLoja) {
         return vprodutosService.buscarProdutos(termo, codLoja);
     }
 }

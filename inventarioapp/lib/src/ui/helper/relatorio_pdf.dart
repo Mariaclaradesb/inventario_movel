@@ -51,6 +51,7 @@ Future<void> imprimirRelatorioNaMaquininha(List<Map<String, dynamic>> dados, int
         linha,
         style: SunmiTextStyle(
           fontSize: 20,
+          bold: true,
           align: SunmiPrintAlign.LEFT,
         ),
       );

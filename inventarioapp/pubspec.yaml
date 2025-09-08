@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  shared_preferences: ^2.2.2
   flutter:
     sdk: flutter
   http: ^0.13.5
@@ -36,6 +37,19 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
+  # Sunmi Printer
+  sunmi_printer_plus: ^4.1.0
+
+  # Barcode and QR Code Scanner
+  mobile_scanner: ^6.0.7
+  
+  get_it: ^8.0.3
+
+  pdf: ^3.10.4
+  printing: ^5.12.0
+  path_provider: ^2.1.2
+  share_plus: ^7.2.1
+    
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -59,8 +73,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - lib/images/
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/

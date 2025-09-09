@@ -61,15 +61,25 @@ class _ConsultapPageState extends State<ConsultapPage> {
     setState(() => _isLoading = true);
     try {
       final termoBusca = _searchController.text;
-      final produtosEncontrados = await _consultapService.buscarProdutos(termoBusca, codLoja);
+      final produtosEncontrados =
+          await _consultapService.buscarProdutos(termoBusca, codLoja);
       setState(() => _produtos = produtosEncontrados);
+
+      if (produtosEncontrados.isEmpty && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Nenhum produto encontrado para o termo informado.')),
+        );
+      }
     } catch (e) {
-      print("Erro ao buscar produtos: $e");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Ocorreu um erro ao buscar os produtos: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Erro ao buscar produtos: ${e.toString().replaceAll("Exception: ", "")}')),
+        );
+      }
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -80,41 +90,63 @@ class _ConsultapPageState extends State<ConsultapPage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text("Definir quantidade"),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          backgroundColor: Color(0xFF006989),
+          title: Row(
+            children: [
+              Icon(Icons.shopping_cart_checkout, color: Colors.white),
+              SizedBox(width: 10),
+              Text("Definir Quantidade", style: TextStyle(color: Colors.white)),
+            ],
+          ),
           content: TextField(
             controller: quantidadeController,
             keyboardType: TextInputType.numberWithOptions(decimal: true),
-            decoration: InputDecoration(labelText: "Quantidade"),
+            style: TextStyle(color: Colors.white),
             autofocus: true,
+            decoration: InputDecoration(
+              labelText: "Quantidade",
+              labelStyle: TextStyle(color: Colors.white70),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white54),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white, width: 2),
+              ),
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(dialogContext).pop(),
-              child: Text("Cancelar"),
+              child: Text("Cancelar", style: TextStyle(color: Colors.white)),
             ),
             ElevatedButton(
               onPressed: () async {
                 final quantidade = double.tryParse(quantidadeController.text);
                 if (quantidade == null || quantidade <= 0) {
-                  // Opcional: mostrar erro dentro do dialog
                   return;
                 }
-                Navigator.of(dialogContext).pop(); // Fecha o dialog primeiro
+                Navigator.of(dialogContext).pop();
                 try {
                   await _consultapService.adicionarItemACotacao(
                     produto.codigo.codigo,
                     quantidade,
                   );
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Produto adicionado à cotação!"), backgroundColor: Colors.green),
+                    SnackBar(
+                        content: Text("Produto adicionado à cotação!"),
+                        backgroundColor: Colors.green),
                   );
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("Erro ao adicionar: $e"), backgroundColor: Colors.red),
+                    SnackBar(
+                        content: Text("Erro ao adicionar: $e"),
+                        backgroundColor: Colors.red),
                   );
                 }
               },
-              child: Text("Adicionar"),
+              style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
+              child: Text("Adicionar", style: TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -130,83 +162,150 @@ class _ConsultapPageState extends State<ConsultapPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(produto.nome, style: TextStyle(fontWeight: FontWeight.bold)),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          // Remove a cor de fundo do AlertDialog para que o Theme.light() no conteúdo funcione
+          // ou defina uma cor mais neutra se desejar bordas coloridas.
+          backgroundColor: Colors.white, // Fundo branco para o AlertDialog
+          titlePadding: EdgeInsets.zero, // Remove padding padrão do título
+          title: Container(
+            padding: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: const Color(0xFF006989), // Cor de fundo do cabeçalho
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              ),
+            ),
+            child: Row(
               children: [
-                Text("Preço: R\$${produto.pcoRemarFormatado}"),
-                Text("Unidade: ${produto.unidade ?? 'N/A'}"),
-                Text("Marca: ${produto.marca?.nome ?? 'Sem Marca'}"),
-                Text("Estoque Atual: ${produto.estAtual ?? 0}"),
-                if (origem == 'inventoryProductsScreen') ...[
-                  SizedBox(height: 16),
-                  TextField(
-                    controller: _pQuantityStockController,
-                    autofocus: true,
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
-                    decoration: InputDecoration(
-                      labelText: 'Quantidade contada',
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ]
+                Icon(Icons.info_outline, color: Colors.white),
+                SizedBox(width: 10),
+                Expanded(
+                  child: Text(produto.nome,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
+                      overflow: TextOverflow.ellipsis),
+                ),
               ],
             ),
           ),
-          actions: [
-            if (origem == 'inventoryProductsScreen')
-              ElevatedButton(
-                onPressed: () async {
-                  final quantityStock = double.tryParse(_pQuantityStockController.text);
-                  if (quantityStock == null) {
-                    // Opcional: mostrar erro
-                    return;
-                  }
-
-                  final item = ItemInventario(
-                    inventory?.codigo,
-                    produto.codigo,
-                    quantityStock,
-                    (produto.estLoja ?? 0).toDouble(), // Estoque real do produto
-                    produto.nome,
-                  );
-
-                  Navigator.of(context).pop(); // Fecha o dialog
-                  try {
-                    await _itemInventarioService.saveInventoryItem(item);
-                    // Retorna 'true' para a tela anterior para indicar que deve recarregar a lista
-                    Navigator.of(context).pop(true);
-                  } catch (e) {
-                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Erro ao salvar item: $e"), backgroundColor: Colors.red),
-                    );
-                  }
-                },
-                child: Text('Adicionar ao Inventário'),
-              )
-            else ...[ // Se não for da tela de inventário, mostra os outros botões
-              TextButton(
-                onPressed: () => _adicionarProdutoACotacao(context, produto),
-                child: Text("Comprar"),
+          content: SingleChildScrollView(
+            child: Theme(
+              data: ThemeData.light(), // Aplica tema claro para o conteúdo
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Código: ${produto.codigo?.codigo ?? 'N/A'}"),
+                  Text("Preço: R\$${produto.pcoRemarFormatado}"),
+                  Text("Unidade: ${produto.unidade ?? 'N/A'}"),
+                  Text("Marca: ${produto.marca?.nome ?? 'Sem Marca'}"),
+                  Text("Estoque Atual: ${produto.estAtual ?? 0}"),
+                  if (origem == 'inventoryProductsScreen') ...[
+                    SizedBox(height: 16),
+                    TextField(
+                      controller: _pQuantityStockController,
+                      autofocus: true,
+                      style: TextStyle(color: Colors.black), // Texto em preto
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: true),
+                      decoration: InputDecoration(
+                        labelText: 'Quantidade contada',
+                        labelStyle: TextStyle(color: Colors.grey[700]), // Label mais escuro
+                        enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey[400]!)),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Color(0xFF006989), width: 2)),
+                      ),
+                    ),
+                  ]
+                ],
               ),
-              TextButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PriceTagScreen(
-                      product: produto,
-                      priceTagService: locator<PriceTagService>(),
+            ),
+          ),
+          actions: [
+            // Row para alinhar os botões
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribui o espaço
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text("Fechar",
+                      style: TextStyle(color: Color(0xFF006989))), // Azul da paleta
+                ),
+                if (origem == 'inventoryProductsScreen')
+                  ElevatedButton(
+                    onPressed: () async {
+                      final quantityStock = double.tryParse(_pQuantityStockController.text);
+                      if (quantityStock == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Por favor, insira uma quantidade válida.'),
+                            backgroundColor: Colors.orange,
+                          ),
+                        );
+                        return;
+                      }
+                      final item = ItemInventario(inventory?.codigo, produto.codigo, quantityStock, (produto.estLoja ?? 0).toDouble(), produto.nome);
+                      
+                      try {
+                        await _itemInventarioService.saveInventoryItem(item);
+                        Navigator.of(context).pop(); // Fecha o dialog
+                        if (mounted) {
+                          Navigator.of(context).pop(true); // Volta para a tela anterior
+                        }
+                      } catch (e) {
+                        Navigator.of(context).pop(); // Fecha o dialog
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Erro ao salvar: ${e.toString().replaceAll("Exception: ", "")}"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
+                    child: Text('Adicionar', style: TextStyle(color: Colors.white)),
+                  )
+                else ...[
+                  // Botões para "Comprar" e "Etiquetas"
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        _adicionarProdutoACotacao(context, produto);
+                      },
+                      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
+                      child: FittedBox( 
+                      fit: BoxFit.scaleDown, 
+                      child: Text("Comprar", style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
-                child: Text("Etiquetas"),
-              ),
-            ],
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text("Fechar", style: TextStyle(color: Colors.red)),
+                  SizedBox(width: 8), 
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PriceTagScreen(
+                            product: produto,
+                            priceTagService: locator<PriceTagService>(),
+                          ),
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
+                      child: FittedBox( 
+                        fit: BoxFit.scaleDown, 
+                        child: Text("Etiquetas", style: TextStyle(color: Colors.white)),
+                      ),
+                    ),
+                  ),
+                ],
+              ],
             ),
           ],
         );
@@ -240,7 +339,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
             TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                labelText: "Busque por nome, código ou EAN",
+                labelText: "Busque por nome ou código de barras",
                 border: OutlineInputBorder(),
                 suffixIcon: Row(
                   mainAxisSize: MainAxisSize.min,

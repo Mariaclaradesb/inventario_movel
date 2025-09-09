@@ -8,8 +8,9 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "NVENDA2")
 public class PreVenda {
-    @EmbeddedId
-    private PreVendaId codigoVenda;
+    @Id
+    @Column(name = "CODIGOVENDA")
+    private Long codigoVenda;
 
     @ManyToOne
     @MapsId("codLoja")
@@ -52,12 +53,13 @@ public class PreVenda {
     @Column(name = "CNPJ_ESTABELECIMENTO")
     private String cpnj;
 
-    public PreVendaId getCodigoVenda() {
+    public Long getCodigoVenda() {
         return codigoVenda;
     }
 
-    public void setCodigoVenda(PreVendaId codigoVenda) {
-        this.codigoVenda = codigoVenda;
+    public void setCodigoVenda(Long sequencia, Long lojaId) {
+        var id = String.format("%d%d", lojaId, sequencia);
+        this.codigoVenda = Long.parseLong(id);
     }
 
     public Empresa getLoja() {

@@ -16,7 +16,7 @@ import inventario.inventarioapi.repository.VprodutosRepository;
 public class VprodutosService {
 
     @Autowired
-    private VprodutosRepository vprodutosRepository;
+    private VprodutosRepository repository;
 
     public List<VProduto> buscarProdutos(String termo, Long codLoja) {
 
@@ -29,10 +29,10 @@ public class VprodutosService {
             VProdutoId id = new VProdutoId(codigo, codLoja);
 
             // Busca por código exato
-            Optional<VProduto> produtoPorCodigo = vprodutosRepository.findById(id);
+            Optional<VProduto> produtoPorCodigo = repository.findById(id);
             if (produtoPorCodigo.isPresent()) {
                 // Busca os demais produtos normalmente
-                List<VProduto> produtos = vprodutosRepository.buscarPorTodosOsCampos(termo, codLoja);
+                List<VProduto> produtos = repository.buscarPorTodosOsCampos(termo, codLoja);
 
                 // Remove o produto com código exato da lista para evitar duplicidade
                 produtos.removeIf(p -> p.getCodigo().getCodigo().equals(codigo));
@@ -46,6 +46,13 @@ public class VprodutosService {
         }
 
         // Se não for número ou não encontrou código exato, retorna lista normal
-        return vprodutosRepository.buscarPorTodosOsCampos(termo, codLoja);
+        return repository.buscarPorTodosOsCampos(termo, codLoja);
+    }
+
+    public Optional<VProduto> findById(Long codProduto, Long codLoja) {
+        var id = new VProdutoId();
+        id.setCodigo(codProduto);
+        id.setCodLoja(codLoja);
+        return repository.findById(id);
     }
 }

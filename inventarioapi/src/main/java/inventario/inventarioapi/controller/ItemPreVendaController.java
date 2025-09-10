@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pre-venda/{codigoVenda}/itens")
+@RequestMapping("/pre-vendas/{codigoVenda}/itens")
 public class ItemPreVendaController {
     private final ItemPreVendaService service;
 

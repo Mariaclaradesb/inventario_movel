@@ -34,7 +34,7 @@ public class ItemPreVenda {
     @Column(name = "NVTOTAL")
     private BigDecimal nvTotal;
 
-    @Column(name = "VALOR_ORIGINAL")
+    @Column(name = "VALORORIGINAL")
     private BigDecimal valorOriginal;
 
     @Column(name = "DATA")

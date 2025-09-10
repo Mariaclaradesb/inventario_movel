@@ -52,7 +52,11 @@ public class ItemPreVendaService {
         id.setCodigoVenda(codigoVenda);
         id.setCodProduto(codProduto);
 
-        var nextItemId = repository.getLastItemId(codProduto, codigoVenda) + 1;
+        var lastId = repository.getLastItemId(codProduto, codigoVenda);
+        Long nextItemId = 0L;
+
+        nextItemId = (lastId != null) ? lastId + 1 : 1L;
+
         id.setItemId(nextItemId);
 
         return id;

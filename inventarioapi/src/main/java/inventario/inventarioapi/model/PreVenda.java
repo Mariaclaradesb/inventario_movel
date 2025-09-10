@@ -2,7 +2,8 @@ package inventario.inventarioapi.model;
 
 import jakarta.persistence.*;
 
-import java.time.Instant;
+
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -24,7 +25,7 @@ public class PreVenda {
     private Long sequencia;
 
     @Column(name = "EMISSAO")
-    private Instant emissao = Instant.now();
+    private LocalDateTime emissao = LocalDateTime.now();
 
     @Column(name = "VALORPROD")
     private Double valorProd;
@@ -36,7 +37,7 @@ public class PreVenda {
     private String nomeCli;
 
     @Column(name = "MAPA")
-    private Instant mapa = Instant.now();
+    private LocalDateTime mapa = LocalDateTime.now();
 
     @Column(name = "HORA")
     private LocalTime hora = LocalTime.now();
@@ -70,11 +71,11 @@ public class PreVenda {
         return codigoVenda;
     }
 
-    public Instant getEmissao() {
+    public LocalDateTime getEmissao() {
         return emissao;
     }
 
-    public void setEmissao(Instant emissao) {
+    public void setEmissao(LocalDateTime emissao) {
         this.emissao = emissao;
     }
 
@@ -110,11 +111,11 @@ public class PreVenda {
         this.nomeCli = nomeCli;
     }
 
-    public Instant getMapa() {
+    public LocalDateTime getMapa() {
         return mapa;
     }
 
-    public void setMapa(Instant mapa) {
+    public void setMapa(LocalDateTime mapa) {
         this.mapa = mapa;
     }
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "NVENDI2")
@@ -37,7 +38,7 @@ public class ItemPreVenda {
     private BigDecimal valorOriginal;
 
     @Column(name = "DATA")
-    private Instant data;
+    private LocalDateTime data;
 
     @Column(name = "MU_UNIDADE")
     private String muUnidade;
@@ -180,11 +181,11 @@ public class ItemPreVenda {
         this.valorOriginal = valorOriginal;
     }
 
-    public Instant getData() {
+    public LocalDateTime getData() {
         return data;
     }
 
-    public void setData(Instant data) {
+    public void setData(LocalDateTime data) {
         this.data = data;
     }
 

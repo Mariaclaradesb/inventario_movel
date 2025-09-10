@@ -13,7 +13,7 @@ public class PreVenda {
     private Long codigoVenda;
 
     @ManyToOne
-    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA")
+    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODIGO", insertable = false, updatable = false)
     private Empresa loja;
 
     @Column(name = "EMISSAO")
@@ -44,7 +44,7 @@ public class PreVenda {
     @OneToOne
     @JoinColumns({
         @JoinColumn(name = "SEQUENCIA", referencedColumnName = "SEQUENCIA"),
-        @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA", insertable = false)
+        @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA")
     })
 
     private Sequencia sequencia;

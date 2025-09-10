@@ -19,8 +19,8 @@ public class PreVendaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PreVenda>> getAll() {
-        var list = service.getAll();
+    public ResponseEntity<List<PreVenda>> getAll(@RequestParam Long codLoja) {
+        var list = service.getAll(codLoja);
         return ResponseEntity.ok(list);
     }
 

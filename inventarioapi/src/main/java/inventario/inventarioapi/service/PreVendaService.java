@@ -56,7 +56,7 @@ public class PreVendaService {
         return obj;
     }
 
-    public List<PreVenda> getAll() {
-        return repository.findAll(Sort.by(Sort.Direction.DESC, "emissao"));
+    public List<PreVenda> getAll(Long codLoja) {
+        return repository.getAllOrdered(codLoja);
     }
 }

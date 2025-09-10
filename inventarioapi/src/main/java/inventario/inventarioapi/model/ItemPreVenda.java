@@ -13,13 +13,13 @@ public class ItemPreVenda {
 
     @ManyToOne
     @MapsId("codigoVenda")
-    @JoinColumn(name = "NUMVENDA")
+    @JoinColumn(name = "NUMVENDA", referencedColumnName = "CODIGOVENDA")
     private PreVenda preVenda;
 
     @ManyToOne
     @MapsId("codProduto")
-    @JoinColumn(name = "CODPRODUTO")
-    private VProduto vProduto;
+    @JoinColumn(name = "CODPRODUTO", referencedColumnName = "CODIGO")
+    private Produto produto;
 
     @Column(name = "QUANTIDADE")
     private Long quantidade;
@@ -88,29 +88,29 @@ public class ItemPreVenda {
     @Column(name = "LUCRO_REAL")
     private BigDecimal lucroReal;
 
-    public ItemPreVenda(VProduto produto) {
-        this.setvProduto(produto);
+    public ItemPreVenda(VProduto vProduto, Produto produto) {
+        this.setProduto(produto);
 
-        this.setUnitario1(produto.getPcoRemar());
-        this.setUnitario2(produto.getPcoRemar());
-        this.setNvTotal(produto.getPcoRemar());
-        this.setValorOriginal(produto.getPcoRemar());
+        this.setUnitario1(vProduto.getPcoRemar());
+        this.setUnitario2(vProduto.getPcoRemar());
+        this.setNvTotal(vProduto.getPcoRemar());
+        this.setValorOriginal(vProduto.getPcoRemar());
 
-        this.setMuUnidade(produto.getUnidade());
-        this.setUnidade(produto.getUnidade());
+        this.setMuUnidade(vProduto.getUnidade());
+        this.setUnidade(vProduto.getUnidade());
 
-        this.setCodigoBarra(produto.getCbarra());
-        this.setDescricao(produto.getNome());
+        this.setCodigoBarra(vProduto.getCbarra());
+        this.setDescricao(vProduto.getNome());
 
-        this.setPcoCompra(produto.getPcoCompra());
-        this.setcAquis(produto.getcAquis());
-        this.setPcoLiq(produto.getPcoLiq());
-        this.setPcoRemar(produto.getPcoRemar());
-        this.setPco02(produto.getPco02());
-        this.setPco03(produto.getPco03());
-        this.setPco04(produto.getPco04());
-        this.setLucroBruto(produto.getLucroBruto());
-        this.setLucroReal(produto.getLucroLiquido());
+        this.setPcoCompra(vProduto.getPcoCompra());
+        this.setcAquis(vProduto.getcAquis());
+        this.setPcoLiq(vProduto.getPcoLiq());
+        this.setPcoRemar(vProduto.getPcoRemar());
+        this.setPco02(vProduto.getPco02());
+        this.setPco03(vProduto.getPco03());
+        this.setPco04(vProduto.getPco04());
+        this.setLucroBruto(vProduto.getLucroBruto());
+        this.setLucroReal(vProduto.getLucroLiquido());
     }
 
     public ItemPreVenda() {
@@ -132,12 +132,12 @@ public class ItemPreVenda {
         this.preVenda = preVenda;
     }
 
-    public VProduto getvProduto() {
-        return vProduto;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public void setvProduto(VProduto vProduto) {
-        this.vProduto = vProduto;
+    public void setProduto(Produto produto) {
+        this.produto = produto;
     }
 
     public Long getQuantidade() {

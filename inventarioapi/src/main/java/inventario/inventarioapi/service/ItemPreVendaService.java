@@ -6,6 +6,7 @@ import inventario.inventarioapi.model.ItemPreVenda;
 import inventario.inventarioapi.model.ItemPreVendaId;
 import inventario.inventarioapi.model.dto.ItemPreVendaInsert;
 import inventario.inventarioapi.repository.ItemPreVendaRepository;
+import inventario.inventarioapi.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,17 +15,22 @@ import java.util.List;
 public class ItemPreVendaService {
     private final ItemPreVendaRepository repository;
     private final VprodutosService vprodutoService;
+    private final ProdutoRepository produtoRepository;
 
-    public ItemPreVendaService(ItemPreVendaRepository repository, VprodutosService vprodutoService) {
+    public ItemPreVendaService(ItemPreVendaRepository repository, VprodutosService vprodutoService, ProdutoRepository produtoRepository) {
         this.repository = repository;
         this.vprodutoService = vprodutoService;
+        this.produtoRepository = produtoRepository;
     }
 
     public ItemPreVenda save(ItemPreVendaInsert item, Long codigoVenda) throws EntityNotFoundException {
-        var produto = vprodutoService.findById(item.codProduto(), item.codLoja())
+        var vProduto = vprodutoService.findById(item.codProduto(), item.codLoja())
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
 
-        var obj = new ItemPreVenda(produto);
+        var produto = produtoRepository.findById(item.codProduto())
+                .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
+
+        var obj = new ItemPreVenda(vProduto, produto);
 
         var id = this.getId(item.codProduto(), codigoVenda);
         obj.setId(id);

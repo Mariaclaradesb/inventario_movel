@@ -8,6 +8,8 @@ import inventario.inventarioapi.model.dto.ItemPreVendaInsert;
 import inventario.inventarioapi.repository.ItemPreVendaRepository;
 import inventario.inventarioapi.repository.PreVendaRepository;
 import inventario.inventarioapi.repository.ProdutoRepository;
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class ItemPreVendaService {
         this.preVendaRepository = preVendaRepository;
     }
 
+    @Transactional
     public ItemPreVenda save(ItemPreVendaInsert item, Long codigoVenda) throws EntityNotFoundException {
         var vProduto = vprodutoService.findById(item.codProduto(), item.codLoja())
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
@@ -73,6 +76,7 @@ public class ItemPreVendaService {
         return repository.findAllById_CodigoVenda(codigoVenda);
     }
 
+    @Transactional
     public ItemPreVenda update(Long codigoVenda, Long codProduto, Long itemId, Long quantidade) throws EntityNotFoundException {
         ItemPreVendaId id = new ItemPreVendaId();
         id.setCodigoVenda(codigoVenda);

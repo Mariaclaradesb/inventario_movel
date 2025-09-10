@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:inventarioapp/mocks/item_pre_venda_service_mock.dart';
 import 'package:inventarioapp/src/models/document_av_get.dart';
 import 'package:inventarioapp/src/models/item_pre_venda.dart';
-import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
+import 'package:inventarioapp/src/ui/helper/dav_relatorio_pdf.dart';
 import 'package:inventarioapp/src/ui/widgets/drawer_widgets.dart';
 
 class DocumentAVProductsScreen extends StatefulWidget {
   const DocumentAVProductsScreen({super.key});
 
   @override
-  State<DocumentAVProductsScreen> createState() => _DocumentAVProductsScreenState();
+  State<DocumentAVProductsScreen> createState() =>
+      _DocumentAVProductsScreenState();
 }
 
 class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
@@ -33,7 +34,36 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyAppBar(),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF00838F),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Produtos do DAV',
+            style: TextStyle(color: Colors.white)),
+        actions: [
+          TextButton.icon(
+            onPressed: () async {
+              try {
+                final items = await futureItems;
+                await gerarRelatorioDavPdf(context, document, items);
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Erro ao gerar relatório: $e')),
+                );
+              }
+            },
+            icon: const Icon(Icons.picture_as_pdf, color: Colors.white),
+            label:
+                const Text('Relatório', style: TextStyle(color: Colors.white)),
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.teal,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+        ],
+      ),
       drawer: CustomDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,8 +103,12 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
                       return Card(
                         child: ListTile(
                           title: Text(item.descricaoProduto),
-                          subtitle: Text('Qtd: ${item.quantidade} | Vlr. Unit: R\$ ${item.valorUnitario.toStringAsFixed(2)}'),
-                          trailing: Text('Total: R\$ ${item.valorTotal.toStringAsFixed(2)}', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Text(
+                              'Qtd: ${item.quantidade} | Vlr. Unit: R\$ ${item.valorUnitario.toStringAsFixed(2)}'),
+                          trailing: Text(
+                              'Total: R\$ ${item.valorTotal.toStringAsFixed(2)}',
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold)),
                         ),
                       );
                     },
@@ -90,11 +124,11 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
           final result = await Navigator.pushNamed(
             context,
             '/consultaProdutos',
-            arguments: { 'document': document, 'origem': 'documentAVProductsScreen' },
+            arguments: {'document': document, 'origem': 'documentAVProductsScreen'},
           );
 
           if (result == true) {
-            _reloadData(); // 5. Chame a função de recarregar aqui
+            _reloadData();
             print("Item adicionado! Recarregando lista...");
           }
         },

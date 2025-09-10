@@ -1,0 +1,91 @@
+{
+  "1001": [
+    {
+      "codProduto": 10,
+      "descricaoProduto": "CANETA ESFEROGRAFICA AZUL",
+      "quantidade": 5.0,
+      "valorUnitario": 2.50,
+      "valorTotal": 12.50
+    },
+    {
+      "codProduto": 25,
+      "descricaoProduto": "CADERNO UNIVERSITARIO 96 FLS",
+      "quantidade": 1.0,
+      "valorUnitario": 15.00,
+      "valorTotal": 15.00
+    },
+    {
+      "codProduto": 41,
+      "descricaoProduto": "BORRACHA BRANCA",
+      "quantidade": 3.0,
+      "valorUnitario": 1.50,
+      "valorTotal": 4.50
+    },
+    {
+      "codProduto": 55,
+      "descricaoProduto": "REGUA ACRILICA 30CM",
+      "quantidade": 1.0,
+      "valorUnitario": 3.00,
+      "valorTotal": 3.00
+    },
+    {
+      "codProduto": 90,
+      "descricaoProduto": "MOCHILA NOTEBOOK PRETA",
+      "quantidade": 1.0,
+      "valorUnitario": 120.00,
+      "valorTotal": 120.00
+    }
+  ],
+  "1002": [
+    {
+      "codProduto": 30,
+      "descricaoProduto": "LAPIS DE COR 12 CORES",
+      "quantidade": 2.0,
+      "valorUnitario": 22.00,
+      "valorTotal": 44.00
+    },
+    {
+      "codProduto": 62,
+      "descricaoProduto": "APONTADOR COM DEPOSITO",
+      "quantidade": 1.0,
+      "valorUnitario": 4.50,
+      "valorTotal": 4.50
+    },
+    {
+      "codProduto": 78,
+      "descricaoProduto": "BLOCO DE ANOTACOES ADESIVO",
+      "quantidade": 4.0,
+      "valorUnitario": 5.00,
+      "valorTotal": 20.00
+    },
+    {
+      "codProduto": 81,
+      "descricaoProduto": "PASTA PLASTICA COM ELASTICO",
+      "quantidade": 2.0,
+      "valorUnitario": 7.50,
+      "valorTotal": 15.00
+    },
+    {
+      "codProduto": 95,
+      "descricaoProduto": "MOUSE SEM FIO",
+      "quantidade": 1.0,
+      "valorUnitario": 65.00,
+      "valorTotal": 65.00
+    },
+    {
+      "codProduto": 112,
+      "descricaoProduto": "GARRAFA TERMICA INOX 500ML",
+      "quantidade": 1.0,
+      "valorUnitario": 45.00,
+      "valorTotal": 45.00
+    },
+    {
+      "codProduto": 134,
+      "descricaoProduto": "CALCULADORA CIENTIFICA",
+      "quantidade": 1.0,
+      "valorUnitario": 80.00,
+      "valorTotal": 80.00
+    }
+  ]
+
+}

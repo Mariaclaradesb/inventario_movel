@@ -4,7 +4,7 @@ class FuncionarioData {
   int? _codigo;
   String? _nome;
   String? _apelido;
-  Empresa? _loja; // MUDANÇA: Mais seguro como anulável
+  Empresa? _loja;
 
   FuncionarioData(this._codigo, this._nome, this._apelido, this._loja);
 
@@ -22,11 +22,10 @@ class FuncionarioData {
       'codigo': _codigo,
       'nome': _nome,
       'apelido': _apelido,
-      'loja': _loja?.toJson() // Usa o operador '?.' para segurança
+      'loja': _loja?.toJson()
     };
   }
 
-  // ADIÇÃO: Getter e Setter para a propriedade 'loja' que faltava
   Empresa? get loja => _loja;
 
   set loja(Empresa? value) {

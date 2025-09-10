@@ -13,7 +13,7 @@ class DocumentAvGet {
   DateTime? mapa;
   String? hora;
   String? nomeUsuario;
-  Sequencia? sequencia;      // novo campo
+  Sequencia? sequencia;
 
   DocumentAvGet({
     this.codigoVenda,

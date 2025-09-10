@@ -1,19 +1,25 @@
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:inventarioapp/mocks/consultap_service_mock.dart';
+import 'package:inventarioapp/mocks/item_pre_venda_service_mock.dart';
+import 'package:inventarioapp/src/config/injection_container.dart';
+import 'package:inventarioapp/src/models/ItemPreVendaInsert.dart';
+import 'package:inventarioapp/src/models/document_av_get.dart';
 import 'package:inventarioapp/src/models/inventario_data.dart';
+import 'package:inventarioapp/src/models/item_document_av_create.dart';
 import 'package:inventarioapp/src/models/item_inventario.dart';
 import 'package:inventarioapp/src/models/vproduto.dart';
-import 'package:inventarioapp/src/models/vproduto_id.dart';
-import 'package:inventarioapp/src/services/searchp_service.dart';
+import 'package:inventarioapp/src/services/dav/item_document_av_service.dart';
 import 'package:inventarioapp/src/services/inventario/item_inventario_service.dart';
 import 'package:inventarioapp/src/services/price_tag/price_tag_service.dart';
+import 'package:inventarioapp/src/services/searchp_service.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
+import 'package:inventarioapp/src/ui/screens/barcode_scanner_screen.dart';
 import 'package:inventarioapp/src/ui/screens/price_tag_screen.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 import 'package:inventarioapp/src/ui/widgets/drawer_widgets.dart';
 import 'package:inventarioapp/src/ui/widgets/loja_nao_selecionada.dart';
-
-import '../../config/injection_container.dart';
-import 'barcode_scanner_screen.dart';
 
 class ConsultapPage extends StatefulWidget {
   @override
@@ -26,12 +32,15 @@ class _ConsultapPageState extends State<ConsultapPage> {
   InventarioData? inventory;
   bool _isLoading = false;
   List<VProduto> _produtos = [];
+  DocumentAvGet? document;
 
   // --- Services and Controllers ---
   final ItemInventarioService _itemInventarioService = ItemInventarioService();
   final ConsultapService _consultapService = ConsultapService();
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _pQuantityStockController = TextEditingController();
+  final consultapServiceMock = ConsultapServiceMock();
+  final itemPreVendaService = ItemPreVendaServiceMock();
 
   @override
   void didChangeDependencies() {
@@ -40,6 +49,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
     final args = ModalRoute.of(context)?.settings.arguments as Map?;
     if (args != null) {
       inventory = args['inventario'] as InventarioData?;
+      document = args['document'] as DocumentAvGet?;
       origem = args['origem'] as String?;
     }
   }
@@ -154,8 +164,115 @@ class _ConsultapPageState extends State<ConsultapPage> {
     );
   }
 
+
+  void _showAddItemModal(BuildContext context, VProduto produto, DocumentAvGet documento) {
+    final quantidadeController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          backgroundColor: const Color(0xFF00838F),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildInfoRow("Nome Produto:", produto.nome),
+              const SizedBox(height: 16),
+              _buildInputRow("Quantidade:", "Digite a quantidade", quantidadeController),
+              const SizedBox(height: 16),
+              _buildInfoRow("Preço Unitário:", "R\$ ${produto.pcoRemarFormatado}"),
+            ],
+          ),
+          actions: [
+            Center(
+              child: ElevatedButton(
+                onPressed: () async {
+                  final quantidade = double.tryParse(quantidadeController.text);
+                  if (quantidade == null || quantidade <= 0) {
+                    // ... (mostrar erro de quantidade inválida)
+                    return;
+                  }
+                  try {
+                    // Crie o objeto de inserção
+                    final item = ItemPreVendaInsert(
+                      codProduto: produto.codigo.codigo,
+                      quantidade: quantidade,
+                    );
+
+                    // Chame o método 'insert' do nosso mock
+                    await itemPreVendaService.insert(documento.codigoVenda!, item, produto);
+
+                    // Fecha o dialog
+                    Navigator.of(dialogContext).pop();
+                    // Fecha a tela de busca e retorna 'true' para a tela anterior
+                    if (mounted) Navigator.of(context).pop(true);
+
+                  } catch (e) {
+                    // ... (tratamento de erro)
+                  }
+                },
+                // ... (estilo do botão)
+                child: const Text("Adicionar Item"),
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        );
+      },
+    );
+  }
+
+
+
+  Widget _buildInfoRow(String label, String value) {
+    return Row(
+      children: [
+        Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Text(value, style: const TextStyle(color: Colors.black)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildInputRow(String label, String hint, TextEditingController controller) {
+    return Row(
+      children: [
+        Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+        const SizedBox(width: 10),
+        Expanded(
+          child: TextField(
+            controller: controller,
+            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            autofocus: true,
+            decoration: InputDecoration(
+              hintText: hint,
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
-    // Limpa o controller de quantidade antes de abrir o dialog
+
     _pQuantityStockController.clear();
 
     showDialog(
@@ -163,14 +280,12 @@ class _ConsultapPageState extends State<ConsultapPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          // Remove a cor de fundo do AlertDialog para que o Theme.light() no conteúdo funcione
-          // ou defina uma cor mais neutra se desejar bordas coloridas.
-          backgroundColor: Colors.white, // Fundo branco para o AlertDialog
-          titlePadding: EdgeInsets.zero, // Remove padding padrão do título
+          backgroundColor: Colors.white,
+          titlePadding: EdgeInsets.zero,
           title: Container(
             padding: const EdgeInsets.all(16.0),
             decoration: BoxDecoration(
-              color: const Color(0xFF006989), // Cor de fundo do cabeçalho
+              color: const Color(0xFF006989),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
@@ -248,7 +363,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
                         return;
                       }
                       final item = ItemInventario(inventory?.codigo, produto.codigo, quantityStock, (produto.estLoja ?? 0).toDouble(), produto.nome);
-                      
+
                       try {
                         await _itemInventarioService.saveInventoryItem(item);
                         Navigator.of(context).pop(); // Fecha o dialog
@@ -279,13 +394,13 @@ class _ConsultapPageState extends State<ConsultapPage> {
                         _adicionarProdutoACotacao(context, produto);
                       },
                       style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
-                      child: FittedBox( 
-                      fit: BoxFit.scaleDown, 
+                      child: FittedBox(
+                      fit: BoxFit.scaleDown,
                       child: Text("Comprar", style: TextStyle(color: Colors.white)),
                     ),
                   ),
                 ),
-                  SizedBox(width: 8), 
+                  SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () => Navigator.push(
@@ -298,8 +413,8 @@ class _ConsultapPageState extends State<ConsultapPage> {
                         ),
                       ),
                       style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
-                      child: FittedBox( 
-                        fit: BoxFit.scaleDown, 
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
                         child: Text("Etiquetas", style: TextStyle(color: Colors.white)),
                       ),
                     ),
@@ -312,7 +427,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
       },
     );
   }
-  
+
   void _readBarcode() async {
     // Navega para a tela de scanner e aguarda o resultado
     final barcode = await Navigator.push<String>(
@@ -376,7 +491,13 @@ class _ConsultapPageState extends State<ConsultapPage> {
                         subtitle: Text(
                           "Estoque: ${produto.estAtual ?? 0} | Preço: R\$${produto.pcoRemarFormatado}",
                         ),
-                        onTap: () => _mostrarDetalhesProduto(context, produto),
+                        onTap: () {
+                          if (origem == 'documentAVProductsScreen'){
+                            _showAddItemModal(context, produto, document!);
+                          } else {
+                            _mostrarDetalhesProduto(context, produto);
+                          }
+                        },
                       ),
                     );
                   },

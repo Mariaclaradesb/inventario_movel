@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventarioapp/mocks/document_av_service_mock.dart';
 import 'package:inventarioapp/src/models/document_av_get.dart';
 import 'package:inventarioapp/src/services/dav/document_av_service.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
@@ -14,7 +15,8 @@ class DocumentListScreen extends StatefulWidget {
 }
 
 class _DocumentListScreenState extends State<DocumentListScreen>{
-  final DocumentAVDataService service = DocumentAVDataService();
+  //final DocumentAVDataService service = DocumentAVDataService();
+  final DocumentAVDataServiceMock service = DocumentAVDataServiceMock();
   late Future<List<DocumentAvGet>> futureDocuments;
 
   @override
@@ -109,8 +111,8 @@ class _DocumentListScreenState extends State<DocumentListScreen>{
                                 ),
                                 ElevatedButton.icon(
                                   onPressed: () {
-                                    // tela produtos
                                     Navigator.pop(context);
+                                    Navigator.pushNamed(context, '/documentsProductsScreen', arguments: document,);
                                   },
                                   icon: const Icon(Icons.grid_view_rounded, size: 18),
                                   label: const Text("Ver Produtos"),
@@ -134,7 +136,7 @@ class _DocumentListScreenState extends State<DocumentListScreen>{
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final result = await showMenuAddDocumentAV(context);
+          final result = await showMenuAddDocumentAV(context, service); //quando o back funcionar, tira o service
           if (result == true){
             _reloadData();
           }

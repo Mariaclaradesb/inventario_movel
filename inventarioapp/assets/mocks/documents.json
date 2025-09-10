@@ -1,0 +1,48 @@
+[
+  {
+    "codigoVenda": 1001,
+    "loja": {
+      "codigo": 1,
+      "nome": "SUPERMERCADO ORFERTAO"
+    },
+    "emissao": "2025-09-09T00:00:00.000Z",
+    "vendedor": {
+      "codigo": 101,
+      "nome": "JOAO DA SILVA",
+      "apelido": "JOAO"
+    },
+    "valorProd": 150.75,
+    "totalVenda": 150.75,
+    "nomeCli": "CLIENTE BALCAO",
+    "mapa": null,
+    "hora": "14:30",
+    "nomeUsuario": "admin",
+    "sequencia": {
+      "sequencia": 1,
+      "codLoja": 1
+    }
+  },
+  {
+    "codigoVenda": 1002,
+    "loja": {
+      "codigo": 1,
+      "nome": "PIT STOP"
+    },
+    "emissao": "2025-09-10T00:00:00.000Z",
+    "vendedor": {
+      "codigo": 102,
+      "nome": "MARIA OLIVEIRA",
+      "apelido": "MARIA"
+    },
+    "valorProd": 320.00,
+    "totalVenda": 320.00,
+    "nomeCli": "ANA PEREIRA",
+    "mapa": null,
+    "hora": "10:15",
+    "nomeUsuario": "vendedor_user",
+    "sequencia": {
+      "sequencia": 2,
+      "codLoja": 1
+    }
+  }
+]

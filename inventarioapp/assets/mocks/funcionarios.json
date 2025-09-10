@@ -1,0 +1,29 @@
+[
+  {
+    "codigo": 101,
+    "nome": "JOAO DA SILVA",
+    "apelido": "JOAO",
+    "loja": {
+      "codigo": 1,
+      "nome": "SUPERMERCADO OFERTAO"
+    }
+  },
+  {
+    "codigo": 102,
+    "nome": "MARIA OLIVEIRA",
+    "apelido": "MARIA",
+    "loja": {
+      "codigo": 2,
+      "nome": "PIT STOP"
+    }
+  },
+  {
+    "codigo": 105,
+    "nome": "PEDRO SANTOS",
+    "apelido": "PEDRO",
+    "loja": {
+      "codigo": 1,
+      "nome": "SUPERMERCADO OFERTAO"
+    }
+  }
+]

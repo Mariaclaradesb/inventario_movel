@@ -1,14 +1,15 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/src/models/document_av_get.dart';
-import 'package:inventarioapp/src/models/document_av_insert.dart';
+import 'package:inventarioapp/mocks/document_av_service_mock.dart';
+import 'package:inventarioapp/mocks/funcionario_service_mock.dart';
+
 import 'package:inventarioapp/src/models/funcionario.dart';
 import 'package:inventarioapp/src/services/dav/document_av_service.dart';
 import 'package:inventarioapp/src/services/funcionario_service.dart';
 
-Future<bool> showMenuAddDocumentAV(BuildContext context) async {
-  // O serviço será usado dentro do DropdownSearch
-  final funcionarioService = FuncionarioDataService();
+Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataServiceMock documentService) async {
+  //final funcionarioService = FuncionarioDataService();
+  final funcionarioService = FuncionarioDataServiceMock();
 
   final formKey = GlobalKey<FormState>();
   final clienteController = TextEditingController();
@@ -35,12 +36,9 @@ Future<bool> showMenuAddDocumentAV(BuildContext context) async {
               const Text("Vendedor:", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
 
-              // --- CORREÇÕES AQUI ---
-              DropdownSearch<FuncionarioData>( // 1. TIPO CORRIGIDO: O tipo é FuncionarioData
-                // 2. USO DO ASYNCITEMS: Para buscar dados da API
-                asyncItems: (String filter) => funcionarioService.findAll(),
+              DropdownSearch<FuncionarioData>(
+                asyncItems: (String filter) => funcionarioService.findAllFuncionarios(),
 
-                // Define como o nome do funcionário será exibido no dropdown
                 itemAsString: (FuncionarioData f) => f.nome ?? 'Nome não disponível',
 
                 popupProps: PopupProps.menu(
@@ -55,9 +53,7 @@ Future<bool> showMenuAddDocumentAV(BuildContext context) async {
                   menuProps: MenuProps(
                     backgroundColor: Colors.white.withOpacity(0.9),
                   ),
-                  // Mostra um indicador de "carregando" enquanto busca os dados
                   loadingBuilder: (context, searchEntry) => const Center(child: CircularProgressIndicator()),
-                  // Mostra uma mensagem se ocorrer um erro
                   errorBuilder: (context, searchEntry, exception) => const Center(child: Text('Erro ao carregar dados!')),
                 ),
 
@@ -82,7 +78,7 @@ Future<bool> showMenuAddDocumentAV(BuildContext context) async {
                 },
               ),
               const SizedBox(height: 20),
-              
+
               const Text("Cliente", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
               const SizedBox(height: 8),
               TextFormField(
@@ -110,11 +106,10 @@ Future<bool> showMenuAddDocumentAV(BuildContext context) async {
         actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
         actionsAlignment: MainAxisAlignment.spaceBetween,
         actions: [
-          // --- BOTÕES DE AÇÃO ---
           ElevatedButton(
             onPressed: () => Navigator.of(context).pop(false),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD32F2F), // Vermelho
+              backgroundColor: const Color(0xFFD32F2F),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
               padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
             ),
@@ -122,14 +117,14 @@ Future<bool> showMenuAddDocumentAV(BuildContext context) async {
           ),
           ElevatedButton(
             onPressed: () async {
-              // Valida os campos antes de continuar
               if (formKey.currentState!.validate()) {
 
-                var service = DocumentAVDataService();
+                //var service = DocumentAVDataService();
                 int codVendedor =  vendedorSelecionado?.codigo ?? 0;
                 String nomeCliente = clienteController.text;
-                if (clienteController.text.isNotEmpty){
-                  await service.create(codVendedor, nomeCliente);
+                if (clienteController.text.isNotEmpty && vendedorSelecionado != null){
+                  //await service.create(codVendedor, nomeCliente);
+                  await documentService.create(vendedorSelecionado!, nomeCliente);
                   Navigator.of(context).pop(true);
                 }
               }

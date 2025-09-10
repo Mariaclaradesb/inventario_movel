@@ -1,0 +1,47 @@
+[
+  {
+    "codigo": { "codigo": 10, "digito": "0" },
+    "loja": { "codigo": 1, "nome": "LOJA MATRIZ" },
+    "nome": "CANETA ESFEROGRAFICA AZUL",
+    "pcoRemar": 2.50,
+    "estAtual": 150,
+    "unidade": "UN",
+    "marca": { "codigo": 1, "nome": "Marca A" }
+  },
+  {
+    "codigo": { "codigo": 25, "digito": "0" },
+    "loja": { "codigo": 1, "nome": "LOJA MATRIZ" },
+    "nome": "CADERNO UNIVERSITARIO 96 FLS",
+    "pcoRemar": 15.00,
+    "estAtual": 80,
+    "unidade": "UN",
+    "marca": { "codigo": 1, "nome": "Marca A" }
+  },
+  {
+    "codigo": { "codigo": 30, "digito": "0" },
+    "loja": { "codigo": 1, "nome": "LOJA MATRIZ" },
+    "nome": "LAPIS DE COR 12 CORES",
+    "pcoRemar": 22.00,
+    "estAtual": 50,
+    "unidade": "CX",
+    "marca": { "codigo": 2, "nome": "Marca B" }
+  },
+  {
+    "codigo": { "codigo": 90, "digito": "0" },
+    "loja": { "codigo": 1, "nome": "LOJA MATRIZ" },
+    "nome": "MOCHILA NOTEBOOK PRETA",
+    "pcoRemar": 120.00,
+    "estAtual": 25,
+    "unidade": "UN",
+    "marca": { "codigo": 3, "nome": "Marca C" }
+  },
+  {
+    "codigo": { "codigo": 95, "digito": "0" },
+    "loja": { "codigo": 1, "nome": "LOJA MATRIZ" },
+    "nome": "MOUSE SEM FIO",
+    "pcoRemar": 65.00,
+    "estAtual": 40,
+    "unidade": "UN",
+    "marca": { "codigo": 3, "nome": "Marca C" }
+  }
+]

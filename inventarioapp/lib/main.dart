@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventarioapp/src/ui/screens/document_av_products_screen.dart';
 import 'package:inventarioapp/src/ui/screens/document_list_screen.dart';
 
 import 'package:inventarioapp/src/ui/screens/inventory_products_screen.dart';
@@ -33,7 +34,8 @@ class MyApp extends StatelessWidget {
         '/pathScreen': (context) => PathScreen(),
         '/inventoryListScreen': (context) => InventoryListScreen(),
         '/inventoryProductsScreen': (context) => InventoryProductsScreen(),
-        '/documentScreen': (context) => DocumentListScreen()
+        '/documentScreen': (context) => DocumentListScreen(),
+        '/documentsProductsScreen': (context) => DocumentAVProductsScreen(),
       },
     );
   }

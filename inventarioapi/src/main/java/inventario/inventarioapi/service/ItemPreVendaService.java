@@ -6,6 +6,7 @@ import inventario.inventarioapi.model.ItemPreVenda;
 import inventario.inventarioapi.model.ItemPreVendaId;
 import inventario.inventarioapi.model.dto.ItemPreVendaInsert;
 import inventario.inventarioapi.repository.ItemPreVendaRepository;
+import inventario.inventarioapi.repository.PreVendaRepository;
 import inventario.inventarioapi.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ public class ItemPreVendaService {
     private final ItemPreVendaRepository repository;
     private final VprodutosService vprodutoService;
     private final ProdutoRepository produtoRepository;
+    private final PreVendaRepository preVendaRepository;
 
-    public ItemPreVendaService(ItemPreVendaRepository repository, VprodutosService vprodutoService, ProdutoRepository produtoRepository) {
+    public ItemPreVendaService(ItemPreVendaRepository repository, VprodutosService vprodutoService, ProdutoRepository produtoRepository, PreVendaRepository preVendaRepository) {
         this.repository = repository;
         this.vprodutoService = vprodutoService;
         this.produtoRepository = produtoRepository;
+        this.preVendaRepository = preVendaRepository;
     }
 
     public ItemPreVenda save(ItemPreVendaInsert item, Long codigoVenda) throws EntityNotFoundException {
@@ -29,6 +32,9 @@ public class ItemPreVendaService {
 
         var produto = produtoRepository.findById(item.codProduto())
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
+
+        var preVenda = preVendaRepository.findById(codigoVenda)
+                .orElseThrow(() -> new EntityNotFoundException("Venda não encontrada!"));
 
         var obj = new ItemPreVenda(vProduto, produto);
 
@@ -41,6 +47,7 @@ public class ItemPreVendaService {
         vendedor.setCodigo(item.codVendedor());
         obj.setVendedor(vendedor);
 
+        obj.setPreVenda(preVenda);
         obj.setDavNumero(codigoVenda);
 
         return repository.save(obj);

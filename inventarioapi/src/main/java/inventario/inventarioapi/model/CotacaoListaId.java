@@ -6,10 +6,10 @@ import jakarta.persistence.*;
 
 @Embeddable
 public class CotacaoListaId implements Serializable{
-    @Column(name = "CODIGOPRO")
+
     private Long codProduto;
 
-    @Column(name = "CODCOTACAO")
+
     private Long codCotacao;
     
     public Long getCodProduto() {

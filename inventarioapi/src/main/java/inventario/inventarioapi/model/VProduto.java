@@ -72,6 +72,12 @@ public class VProduto {
     @Column(name = "PCO_AREMAR")
     private BigDecimal pcoARemar;
 
+    @Column(name = "VLUC_LIQ")
+    private BigDecimal lucroLiquido;
+
+    @Column(name = "VLUC_BRU")
+    private BigDecimal lucroBruto;
+
     @Column(name = "EST_DEPOSITO")
     private Long estDeposito;
 
@@ -267,5 +273,21 @@ public class VProduto {
 
     public void setMarca(Marca marca) {
         this.marca = marca;
+    }
+
+    public BigDecimal getLucroLiquido() {
+        return lucroLiquido;
+    }
+
+    public void setLucroLiquido(BigDecimal lucroLiquido) {
+        this.lucroLiquido = lucroLiquido;
+    }
+
+    public BigDecimal getLucroBruto() {
+        return lucroBruto;
+    }
+
+    public void setLucroBruto(BigDecimal lucroBruto) {
+        this.lucroBruto = lucroBruto;
     }
 }

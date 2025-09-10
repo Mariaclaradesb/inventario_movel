@@ -16,6 +16,13 @@ public class Empresa {
     @Column(name = "NOME")
     private String nome;
 
+    @Column(name = "CGC")
+    private String cpnj;
+
+    public String getCpnj() {
+        return cpnj;
+    }
+
     public Long getCodigo() {
         return codigo;
     }

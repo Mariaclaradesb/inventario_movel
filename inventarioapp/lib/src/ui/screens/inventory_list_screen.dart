@@ -51,11 +51,28 @@ class _InventoryListScreenState extends State<InventoryListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final result = await showMenuAddInventory(context);
-          if(result == true) {
-            setState(() {
-              futureInventaries = service.findAll();
-            });
+          try {
+            final result = await showMenuAddInventory(context);
+            if (result == true && mounted) { // Adicionado 'mounted' check
+              setState(() {
+                futureInventaries = service.findAll();
+              });
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Inventário criado com sucesso!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+            }
+          } catch (e) {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Erro ao criar inventário: ${e.toString().replaceAll("Exception: ", "")}'),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
           }
         },
         backgroundColor: const Color(0xFF006989),

@@ -43,26 +43,21 @@ String gerarRelatorioTexto(List<Map<String, dynamic>> dados, int codLoja, int co
 
 
 Future<void> imprimirRelatorioNaMaquininha(List<Map<String, dynamic>> dados, int codLoja, int codInventario) async {
-  try {
-    final conteudo = gerarRelatorioTexto(dados, codLoja, codInventario);
+  final conteudo = gerarRelatorioTexto(dados, codLoja, codInventario);
 
-    for (var linha in conteudo.split('\n')) {
-      await SunmiPrinter.printText(
-        linha,
-        style: SunmiTextStyle(
-          fontSize: 20,
-          bold: true,
-          align: SunmiPrintAlign.LEFT,
-        ),
-      );
-    }
-
-    await SunmiPrinter.lineWrap(3);
-
-  } catch (e) {
-    print('Erro ao imprimir na Sunmi: $e');
+  for (var linha in conteudo.split('\n')) {
+    await SunmiPrinter.printText(
+      linha,
+      style: SunmiTextStyle(
+        fontSize: 20,
+        bold: true,
+        align: SunmiPrintAlign.LEFT,
+      ),
+    );
   }
+  await SunmiPrinter.lineWrap(3);
 }
+
 
 Future<void> gerarRelatorioPDF(
   BuildContext context,
@@ -158,8 +153,11 @@ Future<void> gerarRelatorioPDF(
       ),
     );
   } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Erro ao gerar relatório: $e')),
-    );
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao gerar/imprimir relatório: ${e.toString().replaceAll("Exception: ", "")}')),
+      );
+    }
   }
 }
+

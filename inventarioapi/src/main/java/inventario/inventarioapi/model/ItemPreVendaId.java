@@ -2,7 +2,6 @@ package inventario.inventarioapi.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import jakarta.persistence.EmbeddedId;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -10,7 +9,7 @@ import java.util.Objects;
 @Embeddable
 public class ItemPreVendaId implements Serializable {
     @Column(name = "NUMVENDA")
-    private Long preVendaId;
+    private Long codigoVenda;
 
     @Column(name = "CODPRODUTO")
     private Long codProduto;
@@ -21,18 +20,18 @@ public class ItemPreVendaId implements Serializable {
     public ItemPreVendaId() {
     }
 
-    public ItemPreVendaId(Long preVendaId, Long codProduto, Long itemId) {
-        this.preVendaId = preVendaId;
+    public ItemPreVendaId(Long codigoVenda, Long codProduto, Long itemId) {
+        this.codigoVenda = codigoVenda;
         this.codProduto = codProduto;
         this.itemId = itemId;
     }
 
-    public Long getPreVendaId() {
-        return preVendaId;
+    public Long getCodigoVenda() {
+        return codigoVenda;
     }
 
-    public void setPreVendaId(Long preVendaId) {
-        this.preVendaId = preVendaId;
+    public void setCodigoVenda(Long codigoVenda) {
+        this.codigoVenda = codigoVenda;
     }
 
     public Long getCodProduto() {
@@ -55,18 +54,18 @@ public class ItemPreVendaId implements Serializable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ItemPreVendaId that = (ItemPreVendaId) o;
-        return Objects.equals(preVendaId, that.preVendaId) && Objects.equals(codProduto, that.codProduto) && Objects.equals(itemId, that.itemId);
+        return Objects.equals(codigoVenda, that.codigoVenda) && Objects.equals(codProduto, that.codProduto) && Objects.equals(itemId, that.itemId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(preVendaId, codProduto, itemId);
+        return Objects.hash(codigoVenda, codProduto, itemId);
     }
 
     @Override
     public String toString() {
         return "ItemPreVendaId{" +
-                "preVendaId=" + preVendaId +
+                "codigoVenda=" + codigoVenda +
                 ", codProduto=" + codProduto +
                 ", itemId=" + itemId +
                 '}';

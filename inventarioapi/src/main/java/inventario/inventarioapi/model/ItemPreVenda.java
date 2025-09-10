@@ -12,10 +12,7 @@ public class ItemPreVenda {
     private ItemPreVendaId id;
 
     @ManyToOne
-    @MapsId("preVendaId"
-
-
-    )
+    @MapsId("codigoVenda")
     @JoinColumn(name = "NUMVENDA")
     private PreVenda preVenda;
 
@@ -28,22 +25,22 @@ public class ItemPreVenda {
     private Long quantidade;
 
     @Column(name = "UNITARIO1")
-    private Long unitario1;
+    private BigDecimal unitario1;
 
     @Column(name = "UNITARIO2")
-    private Long unitario2;
+    private BigDecimal unitario2;
 
     @Column(name = "NVTOTAL")
-    private Long nvTotal;
+    private BigDecimal nvTotal;
 
     @Column(name = "VALOR_ORIGINAL")
-    private Long valorOriginal;
+    private BigDecimal valorOriginal;
 
     @Column(name = "DATA")
     private Instant data;
 
     @Column(name = "MU_UNIDADE")
-    private Long muUnidade;
+    private String muUnidade;
 
     @Column(name = "MU_QTE_MENORUN")
     private Long menorUnidade;
@@ -59,7 +56,7 @@ public class ItemPreVenda {
     private String descricao;
 
     @Column(name = "UNIDADE")
-    private Long unidade;
+    private String unidade;
 
     @Column(name = "DAV_NUMERO")
     private Long davNumero;
@@ -91,6 +88,42 @@ public class ItemPreVenda {
     @Column(name = "LUCRO_REAL")
     private BigDecimal lucroReal;
 
+    public ItemPreVenda(VProduto produto) {
+        this.setvProduto(produto);
+
+        this.setUnitario1(produto.getPcoRemar());
+        this.setUnitario2(produto.getPcoRemar());
+        this.setNvTotal(produto.getPcoRemar());
+        this.setValorOriginal(produto.getPcoRemar());
+
+        this.setMuUnidade(produto.getUnidade());
+        this.setUnidade(produto.getUnidade());
+
+        this.setCodigoBarra(produto.getCbarra());
+        this.setDescricao(produto.getNome());
+
+        this.setPcoCompra(produto.getPcoCompra());
+        this.setcAquis(produto.getcAquis());
+        this.setPcoLiq(produto.getPcoLiq());
+        this.setPcoRemar(produto.getPcoRemar());
+        this.setPco02(produto.getPco02());
+        this.setPco03(produto.getPco03());
+        this.setPco04(produto.getPco04());
+        this.setLucroBruto(produto.getLucroBruto());
+        this.setLucroReal(produto.getLucroLiquido());
+    }
+
+    public ItemPreVenda() {
+    }
+
+    public ItemPreVendaId getId() {
+        return id;
+    }
+
+    public void setId(ItemPreVendaId id) {
+        this.id = id;
+    }
+
     public PreVenda getPreVenda() {
         return preVenda;
     }
@@ -115,35 +148,35 @@ public class ItemPreVenda {
         this.quantidade = quantidade;
     }
 
-    public Long getUnitario1() {
+    public BigDecimal getUnitario1() {
         return unitario1;
     }
 
-    public void setUnitario1(Long unitario1) {
+    public void setUnitario1(BigDecimal unitario1) {
         this.unitario1 = unitario1;
     }
 
-    public Long getUnitario2() {
+    public BigDecimal getUnitario2() {
         return unitario2;
     }
 
-    public void setUnitario2(Long unitario2) {
+    public void setUnitario2(BigDecimal unitario2) {
         this.unitario2 = unitario2;
     }
 
-    public Long getNvTotal() {
+    public BigDecimal getNvTotal() {
         return nvTotal;
     }
 
-    public void setNvTotal(Long nvTotal) {
+    public void setNvTotal(BigDecimal nvTotal) {
         this.nvTotal = nvTotal;
     }
 
-    public Long getValorOriginal() {
+    public BigDecimal getValorOriginal() {
         return valorOriginal;
     }
 
-    public void setValorOriginal(Long valorOriginal) {
+    public void setValorOriginal(BigDecimal valorOriginal) {
         this.valorOriginal = valorOriginal;
     }
 
@@ -155,11 +188,11 @@ public class ItemPreVenda {
         this.data = data;
     }
 
-    public Long getMuUnidade() {
+    public String getMuUnidade() {
         return muUnidade;
     }
 
-    public void setMuUnidade(Long muUnidade) {
+    public void setMuUnidade(String muUnidade) {
         this.muUnidade = muUnidade;
     }
 
@@ -195,11 +228,11 @@ public class ItemPreVenda {
         this.descricao = descricao;
     }
 
-    public Long getUnidade() {
+    public String getUnidade() {
         return unidade;
     }
 
-    public void setUnidade(Long unidade) {
+    public void setUnidade(String unidade) {
         this.unidade = unidade;
     }
 

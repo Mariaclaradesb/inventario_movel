@@ -8,20 +8,24 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "NVENDA2")
 public class PreVenda {
+
     @Id
     @Column(name = "CODIGOVENDA")
     private Long codigoVenda;
 
     @ManyToOne
-    @JoinColumn(name = "CODLOJA", referencedColumnName = "CODIGO", insertable = false, updatable = false)
-    private Empresa loja;
+    @JoinColumn(name = "CODVENDEDOR")
+    private Funcionario vendedor;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "SEQUENCIA", referencedColumnName = "SEQUENCIA"),
+            @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA")
+    })
+    private Sequencia sequencia;
 
     @Column(name = "EMISSAO")
     private Instant emissao = Instant.now();
-
-    @ManyToOne
-    @JoinColumn(name = "CODVENDEDOR")
-    private Funcionario vendedor;
 
     @Column(name = "VALORPROD")
     private Double valorProd;
@@ -41,35 +45,18 @@ public class PreVenda {
     @Column(name = "NOMEUSUARIO")
     private String nomeUsuario;
 
-    @OneToOne
-    @JoinColumns({
-        @JoinColumn(name = "SEQUENCIA", referencedColumnName = "SEQUENCIA"),
-        @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA")
-    })
-
-    private Sequencia sequencia;
-
     @Column(name = "DAV_NUMERO")
     private Long davNumero;
 
     @Column(name = "CNPJ_ESTABELECIMENTO")
     private String cpnj;
 
+    public void setCodigoVenda(Long codigoVenda) {
+        this.codigoVenda = codigoVenda;
+    }
+
     public Long getCodigoVenda() {
         return codigoVenda;
-    }
-
-    public void setCodigoVenda(Long sequencia, Long lojaId) {
-        var id = String.format("%d%d", lojaId, sequencia);
-        this.codigoVenda = Long.parseLong(id);
-    }
-
-    public Empresa getLoja() {
-        return loja;
-    }
-
-    public void setLoja(Empresa loja) {
-        this.loja = loja;
     }
 
     public Instant getEmissao() {
@@ -158,5 +145,10 @@ public class PreVenda {
 
     public void setCpnj(String cpnj) {
         this.cpnj = cpnj;
+    }
+
+    public void setCodigoVenda(Long sequencia, Long lojaId) {
+        var id = String.format("%d%d", lojaId, sequencia);
+        this.codigoVenda = Long.parseLong(id);
     }
 }

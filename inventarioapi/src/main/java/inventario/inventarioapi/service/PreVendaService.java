@@ -9,7 +9,6 @@ import inventario.inventarioapi.repository.FuncionarioRepository;
 import inventario.inventarioapi.repository.PreVendaRepository;
 import inventario.inventarioapi.repository.SequenciaRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,7 +52,6 @@ public class PreVendaService {
     private PreVenda loadPreVenda(Funcionario vendedor, Empresa loja, PreVendaInsert preVenda) {
         var obj = new PreVenda();
         obj.setNomeUsuario(vendedor.getNome());
-        obj.setLoja(loja);
         obj.setVendedor(vendedor);
         obj.setNomeCli(preVenda.nomeCliente());
         obj.setCpnj(loja.getCpnj());

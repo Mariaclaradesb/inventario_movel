@@ -1,7 +1,6 @@
 package inventario.inventarioapi.repository;
 
 import inventario.inventarioapi.model.PreVenda;
-import inventario.inventarioapi.model.PreVendaId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,7 +11,7 @@ import java.util.List;
 public interface PreVendaRepository extends JpaRepository<PreVenda, Long> {
     @Query("""
         SELECT p FROM PreVenda p
-        WHERE p.loja.codigo = :codLoja
+        WHERE p.sequencia.id.codLoja = :codLoja
         ORDER BY p.emissao DESC
     """)
     List<PreVenda> getAllOrdered(Long codLoja);

@@ -11,6 +11,7 @@ import inventario.inventarioapi.repository.SequenciaRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -61,6 +62,7 @@ public class PreVendaService {
     }
 
     public List<PreVenda> getAll(Long codLoja) {
-        return repository.getAllOrdered(codLoja);
+        var dataInicial = LocalDateTime.of(2025, 9, 9, 0,0);
+        return repository.getAllOrdered(codLoja, dataInicial);
     }
 }

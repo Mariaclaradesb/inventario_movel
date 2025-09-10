@@ -13,16 +13,15 @@ public class PreVenda {
     @Column(name = "CODIGOVENDA")
     private Long codigoVenda;
 
+    @Column(name = "CODLOJA")
+    private Long codLoja;
+
     @ManyToOne
     @JoinColumn(name = "CODVENDEDOR")
     private Funcionario vendedor;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "SEQUENCIA", referencedColumnName = "SEQUENCIA"),
-            @JoinColumn(name = "CODLOJA", referencedColumnName = "CODLOJA")
-    })
-    private Sequencia sequencia;
+    @Column(name = "SEQUENCIA")
+    private Long sequencia;
 
     @Column(name = "EMISSAO")
     private Instant emissao = Instant.now();
@@ -50,6 +49,18 @@ public class PreVenda {
 
     @Column(name = "CNPJ_ESTABELECIMENTO")
     private String cpnj;
+
+    public Long getCodLoja() {
+        return codLoja;
+    }
+
+    public void setCodLoja(Long codLoja) {
+        this.codLoja = codLoja;
+    }
+
+    public void setSequencia(Long sequencia) {
+        this.sequencia = sequencia;
+    }
 
     public void setCodigoVenda(Long codigoVenda) {
         this.codigoVenda = codigoVenda;
@@ -121,14 +132,6 @@ public class PreVenda {
 
     public void setNomeUsuario(String nomeUsuario) {
         this.nomeUsuario = nomeUsuario;
-    }
-
-    public Sequencia getSequencia() {
-        return sequencia;
-    }
-
-    public void setSequencia(Sequencia sequencia) {
-        this.sequencia = sequencia;
     }
 
     public Long getDavNumero() {

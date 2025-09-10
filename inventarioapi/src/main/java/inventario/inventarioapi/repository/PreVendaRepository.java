@@ -11,7 +11,7 @@ import java.util.List;
 public interface PreVendaRepository extends JpaRepository<PreVenda, Long> {
     @Query("""
         SELECT p FROM PreVenda p
-        WHERE p.sequencia.id.codLoja = :codLoja
+        WHERE p.codLoja = :codLoja
         ORDER BY p.emissao DESC
     """)
     List<PreVenda> getAllOrdered(Long codLoja);

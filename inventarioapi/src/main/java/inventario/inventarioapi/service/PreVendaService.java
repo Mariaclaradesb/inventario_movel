@@ -44,6 +44,7 @@ public class PreVendaService {
         sequenciaRepository.save(new Sequencia(novoNumeroSequencia, loja.getCodigo()));
 
         obj.setCodigoVenda(novoNumeroSequencia, loja.getCodigo());
+        obj.setSequencia(novoNumeroSequencia);
 
         return repository.save(obj);
     }
@@ -51,6 +52,7 @@ public class PreVendaService {
 
     private PreVenda loadPreVenda(Funcionario vendedor, Empresa loja, PreVendaInsert preVenda) {
         var obj = new PreVenda();
+        obj.setCodLoja(loja.getCodigo());
         obj.setNomeUsuario(vendedor.getNome());
         obj.setVendedor(vendedor);
         obj.setNomeCli(preVenda.nomeCliente());

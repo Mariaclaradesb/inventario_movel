@@ -2,8 +2,10 @@ package inventario.inventarioapi.model;
 
 import jakarta.persistence.*;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "NVENDA2")
@@ -24,7 +26,7 @@ public class PreVenda {
     private Long sequencia;
 
     @Column(name = "EMISSAO")
-    private Instant emissao = Instant.now();
+    private LocalDateTime emissao = LocalDateTime.now();
 
     @Column(name = "VALORPROD")
     private Double valorProd;
@@ -36,10 +38,10 @@ public class PreVenda {
     private String nomeCli;
 
     @Column(name = "MAPA")
-    private Instant mapa = Instant.now();
+    private String mapa = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
     @Column(name = "HORA")
-    private LocalTime hora = LocalTime.now();
+    private String hora = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 
     @Column(name = "NOMEUSUARIO")
     private String nomeUsuario;
@@ -70,11 +72,15 @@ public class PreVenda {
         return codigoVenda;
     }
 
-    public Instant getEmissao() {
+    public Long getSequencia() {
+        return sequencia;
+    }
+
+    public LocalDateTime getEmissao() {
         return emissao;
     }
 
-    public void setEmissao(Instant emissao) {
+    public void setEmissao(LocalDateTime emissao) {
         this.emissao = emissao;
     }
 
@@ -110,20 +116,16 @@ public class PreVenda {
         this.nomeCli = nomeCli;
     }
 
-    public Instant getMapa() {
+    public String getMapa() {
         return mapa;
     }
 
-    public void setMapa(Instant mapa) {
+    public void setMapa(String mapa) {
         this.mapa = mapa;
     }
 
-    public LocalTime getHora() {
+    public String getHora() {
         return hora;
-    }
-
-    public void setHora(LocalTime hora) {
-        this.hora = hora;
     }
 
     public String getNomeUsuario() {

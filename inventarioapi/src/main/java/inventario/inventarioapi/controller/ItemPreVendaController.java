@@ -39,7 +39,7 @@ public class ItemPreVendaController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam Long itemId, @RequestParam Long codigoVenda, @RequestParam Long codProduto) {
+    public ResponseEntity<Void> delete(@RequestParam Long itemId, @PathVariable Long codigoVenda, @RequestParam Long codProduto) {
         service.delete(itemId, codigoVenda, codProduto);
         return ResponseEntity.noContent().build();
     }

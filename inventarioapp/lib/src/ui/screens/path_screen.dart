@@ -37,6 +37,25 @@ class PathScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushNamed(
                       context,
+                      "/documentScreen",
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(360, 60),
+                    backgroundColor: Color(0xFF013A63),
+                  ),
+                  child: Text(
+                    "DOCUMENTOS A.V",
+                    style: TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
                       "/consultaProdutos",
                     );
                   },

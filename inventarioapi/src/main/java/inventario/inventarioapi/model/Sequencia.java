@@ -5,35 +5,19 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "SEQ_NVENDA2")
 public class Sequencia {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "SEQUENCIA")
-    private Long sequencia;
 
-    @Column(name = "CODLOJA")
-    private Long codLoja;
+    @EmbeddedId
+    private SequenciaId id;
+
 
     public Sequencia(Long sequencia, Long codLoja) {
-        this.sequencia = sequencia;
-        this.codLoja = codLoja;
+        this.id = new SequenciaId();
+        this.id.setSequencia(sequencia);
+        this.id.setCodLoja(codLoja);
     }
 
-    public Sequencia() {
-    }
+    public Sequencia() { }
 
-    public Long getSequencia() {
-        return sequencia;
-    }
-
-    public void setSequencia(Long sequencia) {
-        this.sequencia = sequencia;
-    }
-
-    public Long getCodLoja() {
-        return codLoja;
-    }
-
-    public void setCodLoja(Long codLoja) {
-        this.codLoja = codLoja;
-    }
+    public SequenciaId getId() { return id; }
+    public void setId(SequenciaId id) { this.id = id; }
 }

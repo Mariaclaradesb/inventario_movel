@@ -8,10 +8,9 @@ import java.util.Objects;
 
 @Embeddable
 public class ItemPreVendaId implements Serializable {
-    @Column(name = "NUMVENDA")
+
     private Long codigoVenda;
 
-    @Column(name = "CODPRODUTO")
     private Long codProduto;
 
     @Column(name = "ITEM")

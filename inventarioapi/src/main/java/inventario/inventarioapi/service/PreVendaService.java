@@ -37,10 +37,14 @@ public class PreVendaService {
             return null;
         var obj = loadPreVenda(vendedor, loja, preVenda);
 
-        // Salva nova sequencia
-        var sequencia = sequenciaRepository.findLastSequencia() + 1;
-        sequenciaRepository.save(new Sequencia(sequencia, loja.getCodigo()));
-        obj.setCodigoVenda(sequencia, loja.getCodigo());
+        Long novoNumeroSequencia = 1L; 
+        Long ultimaSequencia = sequenciaRepository.findLastSequencia();
+        if (ultimaSequencia != null) {
+            novoNumeroSequencia = ultimaSequencia + 1;
+        }
+        sequenciaRepository.save(new Sequencia(novoNumeroSequencia, loja.getCodigo()));
+
+        obj.setCodigoVenda(novoNumeroSequencia, loja.getCodigo());
 
         return repository.save(obj);
     }

@@ -3,7 +3,7 @@ package inventario.inventarioapi.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "FUNCIONARIOS")
+@Table(name = "FUNCIONARIO")
 public class Funcionario {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

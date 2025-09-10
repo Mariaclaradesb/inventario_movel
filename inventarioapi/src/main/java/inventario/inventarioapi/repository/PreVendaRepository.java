@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PreVendaRepository extends JpaRepository<PreVenda, PreVendaId> {
+public interface PreVendaRepository extends JpaRepository<PreVenda, Long> {
     @Query("""
         SELECT p FROM PreVenda p
         WHERE p.loja.codigo = :codLoja

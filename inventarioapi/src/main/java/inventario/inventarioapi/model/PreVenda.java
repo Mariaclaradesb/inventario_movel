@@ -13,7 +13,6 @@ public class PreVenda {
     private Long codigoVenda;
 
     @ManyToOne
-    @MapsId("codLoja")
     @JoinColumn(name = "CODLOJA")
     private Empresa loja;
 
@@ -43,7 +42,6 @@ public class PreVenda {
     private String nomeUsuario;
 
     @OneToOne
-    @MapsId("sequencia")
     @JoinColumn(name = "SEQUENCIA")
     private Sequencia sequencia;
 

@@ -1,24 +1,29 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:inventarioapp/src/models/vproduto.dart';
 import 'package:inventarioapp/src/services/api_url_provider.dart';
+import 'package:inventarioapp/src/services/http_client.dart';
 import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 
 class ConsultapService {
+  final ApiClient _apiClient = ApiClient();
+
   Future<List<VProduto>> buscarProdutos(String termo, int codLoja) async {
     String baseUrl = await ApiUrlProvider.getConfiguredUrl();
 
-    final response = await http.get(
-      Uri.parse("$baseUrl/produtos/buscar?termo=$termo&codLoja=$codLoja"),
-    );
+    final uri = Uri.parse("$baseUrl/produtos/buscar?termo=$termo&codLoja=$codLoja");
+
+    final response = await _apiClient.get(uri);
 
     if (response.statusCode != 200) {
       print("Erro HTTP ${response.statusCode}: ${response.body}");
       throw Exception("Erro ao buscar produtos");
     }
 
-    Iterable list = json.decode(response.body);
+
+    Iterable list = json.decode(utf8.decode(response.bodyBytes));
     List<VProduto> products = List<VProduto>.from(
       list.map((p) => VProduto.fromJson(p)),
     );
@@ -43,7 +48,7 @@ class ConsultapService {
     final url = Uri.parse(
       "$baseUrl/cotacao-lista/adicionar?codigoProduto=$codProduto&quantidade=$quantidade",
     );
-    final response = await http.post(url);
+    final response = await _apiClient.post(url);
 
     if (response.statusCode != 200) {
       throw Exception("Erro ao adicionar à cotação: ${response.body}");

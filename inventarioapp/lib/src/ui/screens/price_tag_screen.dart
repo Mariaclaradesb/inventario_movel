@@ -12,6 +12,31 @@ class PriceTagScreen extends StatefulWidget {
 }
 
 class _PriceTagScreenState extends State<PriceTagScreen> {
+  Future<void> _printPriceTags(VProduto product, int quantity) async {
+    if (quantity <= 0) return;
+
+    try {
+      await widget.priceTagService.printPriceTags(product, quantity);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Impressão enviada com sucesso!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Falha na impressão. Verifique a impressora (sem papel, offline, etc.).'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,43 +47,62 @@ class _PriceTagScreenState extends State<PriceTagScreen> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // ElevatedButton(onPressed: () => print("teste"),
-              //   child: Text('Enviar para tabela de etiquetas'),
-              // ),
-              ElevatedButton(onPressed: () async {
-                int quantity = int.parse(await openQuantityDialog() ?? "0");
-
-                _printPriceTags(this.widget.product, quantity);
-              },
-                child: Text('Imprimir etiqueta'),
+              ElevatedButton(
+                onPressed: () async {
+                  final result = await openQuantityDialog();
+                  if (result != null) {
+                    int? quantity = int.tryParse(result);
+                    if (quantity != null) {
+                      await _printPriceTags(widget.product, quantity);
+                    }
+                  }
+                },
+                child: const Text('Imprimir etiqueta'),
               ),
             ],
           ),
-      ),
-    );
-  }
-
-  Future<String?> openQuantityDialog() => showDialog<String>(
-    context: context,
-    builder: (BuildContext context) {
-      TextEditingController controller = TextEditingController();
-      return AlertDialog(
-        title: Text('Quantidade de etiquetas'),
-        content: TextField(
-          controller: controller,
-          autofocus: true,
-          decoration: InputDecoration(hintText: 'Digite a quantidade de etiquetas'),
-          keyboardType: TextInputType.number,
         ),
-        actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(controller.text), child: Text('Imprimir'))
-        ],
       );
     }
-  );
 
-  void _printPriceTags(VProduto product, int quantity) {
-    this.widget.priceTagService.printPriceTags(product, quantity);
-  }
-
+    Future<String?> openQuantityDialog() => showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController controller = TextEditingController();
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          backgroundColor: Color(0xFF006989),
+          title: Row(
+            children: [
+              Icon(Icons.tag, color: Colors.white),
+              SizedBox(width: 10),
+              Text('Nº de Etiquetas', style: TextStyle(color: Colors.white)),
+            ],
+          ),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: 'Digite a quantidade',
+              labelStyle: TextStyle(color: Colors.white70),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white54)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 2)),
+            ),
+            keyboardType: TextInputType.number,
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Cancelar', style: TextStyle(color: Colors.white70)),
+            ),
+            ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(controller.text),
+                style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
+                child: Text('Imprimir', style: TextStyle(color: Colors.white)))
+          ],
+        );
+      });
 }

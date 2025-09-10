@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/src/models/inventario_data.dart';
 import 'package:inventarioapp/src/models/novo_inventario_data.dart';
 import 'package:inventarioapp/src/services/inventario/inventario_data_service.dart';
 
@@ -11,54 +10,61 @@ Future<bool> showMenuAddInventory(BuildContext context) async {
     context: context,
     builder: (context) {
       return AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         backgroundColor: Color(0xFF006989),
-        title: Text(
-          'Novo Inventário',
-          style: TextStyle(color: Colors.white, fontSize: 18),
+        title: Row(
+          children: [
+            Icon(Icons.add_circle_outline, color: Colors.white),
+            SizedBox(width: 10),
+            Text(
+              'Novo Inventário',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ],
         ),
         content: TextField(
           controller: inventoryNameController,
+          autofocus: true,
           decoration: InputDecoration(
-            hintText: 'Digite o nome do inventário',
-            hintStyle: TextStyle(color: Colors.white),
+            labelText: 'Nome do inventário',
+            labelStyle: TextStyle(color: Colors.white70),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
+              borderSide: BorderSide(color: Colors.white54),
             ),
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Color(0xFF013A63), width: 2),
+              borderSide: BorderSide(color: Colors.white, width: 2),
             ),
           ),
           style: TextStyle(color: Colors.white),
         ),
         actions: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ElevatedButton(
-                onPressed: () {
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: Text('Cancelar', style: TextStyle(color: Colors.white)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              String nomeInventario = inventoryNameController.text.trim();
+              if (nomeInventario.isNotEmpty) {
+                try {
+                  var inventario = NovoInventarioData(nomeInventario);
+                  await service.create(inventario);
+                  Navigator.of(context).pop(true); // Sucesso
+                } catch (e) {
                   Navigator.of(context).pop(false);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFB00020),
-                ),
-                child: Text('Cancelar', style: TextStyle(color: Colors.white)),
+                  throw Exception(e);
+                }
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF013A63),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
               ),
-              ElevatedButton(
-                onPressed: () async {
-                  String nomeInventario = inventoryNameController.text.trim();
-                  if (nomeInventario.isNotEmpty) {
-                    //salvar o inventario no back e redirecionar
-                    var inventario = NovoInventarioData(nomeInventario);
-                    await service.create(inventario);
-                    Navigator.of(context).pop(true);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF013A63),
-                ),
-                child: Text("Adicionar", style: TextStyle(color: Colors.white)),
-              ),
-            ],
+            ),
+            child: Text("Adicionar", style: TextStyle(color: Colors.white)),
           ),
         ],
       );

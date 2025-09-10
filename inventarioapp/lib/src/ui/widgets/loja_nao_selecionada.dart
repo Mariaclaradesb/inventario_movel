@@ -6,12 +6,24 @@ class LojaNaoSelecionada {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Erro"),
-          content: Text("Nenhuma loja foi selecionada. Escolha uma loja antes de continuar."),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          backgroundColor: Color(0xFFa11a1a), // Cor de fundo para erro
+          title: Row(
+            children: [
+              Icon(Icons.error_outline, color: Colors.white),
+              SizedBox(width: 10),
+              Text("Atenção", style: TextStyle(color: Colors.white)),
+            ],
+          ),
+          content: Text(
+            "Nenhuma loja foi selecionada. Por favor, escolha uma loja na tela de Configurações antes de continuar.",
+            style: TextStyle(color: Colors.white),
+          ),
           actions: [
-            TextButton(
+            ElevatedButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text("OK"),
+              style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF6b0f0f)),
+              child: Text("OK", style: TextStyle(color: Colors.white)),
             ),
           ],
         );

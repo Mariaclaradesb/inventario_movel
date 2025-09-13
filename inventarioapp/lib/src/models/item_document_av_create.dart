@@ -2,7 +2,7 @@ class ItemDocumentAvCreate {
   int _codProduto;
   int _codVendedor;
   int _codLoja;
-  int _quantidade; // ⚠️ Faltava!
+  int _quantidade; 
 
   ItemDocumentAvCreate({
     required int codProduto,
@@ -33,7 +33,7 @@ class ItemDocumentAvCreate {
   }
 
   // Getters e Setters
-  int get codProduto => _codProduto;
+  int get codProduto => _codProduto;git
   set codProduto(int value) => _codProduto = value;
 
   int get codVendedor => _codVendedor;

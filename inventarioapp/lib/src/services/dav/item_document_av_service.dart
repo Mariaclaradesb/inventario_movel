@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:inventarioapp/src/models/item_document_av.dart';
 import 'package:inventarioapp/src/models/item_document_av_create.dart';
 import 'package:inventarioapp/src/services/api_url_provider.dart';
@@ -7,62 +9,96 @@ import 'package:inventarioapp/src/services/http_client.dart';
 class ItemDocumentAvService {
   final ApiClient _apiClient = ApiClient();
 
-  Future<ItemDocumentAv> create(
-      int codigoVenda, ItemDocumentAvCreate item) async {
-    String baseUrl = await ApiUrlProvider.getConfiguredUrl();
-    final uri = Uri.parse("$baseUrl/pre-vendas/$codigoVenda/itens");
+  
+  Future<ItemDocumentAv> create(int codigoVenda, ItemDocumentAvCreate item) async {
+    final String baseUrl = await ApiUrlProvider.getConfiguredUrl();
+    final uri = Uri.parse('$baseUrl/pre-vendas/$codigoVenda/itens');
 
-    final response = await _apiClient.post(uri, body: item.toJson());
+    try {
+      final response = await _apiClient.post(uri, body: item.toJson());
 
-    if (response.statusCode != 201) {
-      throw Exception("Erro ao criar item: ${response.body}");
+      
+      if (response.statusCode != 200 && response.statusCode != 201) {
+        throw Exception('Erro ao criar item: ${response.statusCode} - ${response.body}');
+      }
+
+      final Map<String, dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+      return ItemDocumentAv.fromJson(data);
+    } on Exception catch (e) {
+      print('Erro ao criar item na venda $codigoVenda: $e');
+      rethrow;
     }
-
-    return ItemDocumentAv.fromJson(
-        json.decode(utf8.decode(response.bodyBytes)));
   }
 
   Future<List<ItemDocumentAv>> findAll(int codigoVenda) async {
-    String baseUrl = await ApiUrlProvider.getConfiguredUrl();
-    final uri = Uri.parse("$baseUrl/pre-vendas/$codigoVenda/itens");
+    final String baseUrl = await ApiUrlProvider.getConfiguredUrl();
+    final uri = Uri.parse('$baseUrl/pre-vendas/$codigoVenda/itens');
 
-    final response = await _apiClient.get(uri);
+    try {
+      final response = await _apiClient.get(uri);
 
-    if (response.statusCode != 200) {
-      throw Exception("Erro ao buscar itens: ${response.body}");
+      if (response.statusCode != 200) {
+        throw Exception('Erro ao carregar itens: ${response.body}');
+      }
+
+      final List<dynamic> list = json.decode(utf8.decode(response.bodyBytes));
+      return list.map((i) => ItemDocumentAv.fromJson(i)).toList();
+    } on Exception catch (e) {
+      print('Erro ao carregar itens da venda $codigoVenda: $e');
+      rethrow;
     }
-
-    Iterable list = json.decode(utf8.decode(response.bodyBytes));
-    return List<ItemDocumentAv>.from(
-        list.map((i) => ItemDocumentAv.fromJson(i)));
   }
 
-  // Future<ItemDocumentAv> update(
-  //     int codigoVenda, int codProduto, int itemId, int quantidade) async {
-  //   String baseUrl = await ApiUrlProvider.getConfiguredUrl();
-  //   final uri = Uri.parse(
-  //       "$baseUrl/pre-vendas/$codigoVenda/itens?codProduto=$codProduto&itemId=$itemId&quantidade=$quantidade");
-  //
-  //   final response = await _apiClient.put(uri);
-  //
-  //   if (response.statusCode != 200) {
-  //     throw Exception("Erro ao atualizar item: ${response.body}");
-  //   }
-  //
-  //   return ItemDocumentAv.fromJson(
-  //       json.decode(utf8.decode(response.bodyBytes)));
-  // }
+  Future<ItemDocumentAv> update({
+    required int codigoVenda,
+    required int codProduto,
+    required int itemId,
+    required int quantidade,
+  }) async {
+    final String baseUrl = await ApiUrlProvider.getConfiguredUrl();
+    final uri = Uri.parse('$baseUrl/pre-vendas/$codigoVenda/itens')
+        .replace(queryParameters: {
+      'codProduto': codProduto.toString(),
+      'itemId': itemId.toString(),
+      'quantidade': quantidade.toString(),
+    });
 
+    try {
+      final response = await _apiClient.put(uri);
 
-  // Future<void> delete(int codigoVenda, int codProduto, int itemId) async {
-  //   String baseUrl = await ApiUrlProvider.getConfiguredUrl();
-  //   final uri = Uri.parse(
-  //       "$baseUrl/pre-vendas/$codigoVenda/itens?codProduto=$codProduto&itemId=$itemId");
-  //
-  //   final response = await _apiClient.delete(uri);
-  //
-  //   if (response.statusCode != 204) {
-  //     throw Exception("Erro ao deletar item: ${response.body}");
-  //   }
-  // }
+      if (response.statusCode != 200) {
+        throw Exception('Erro ao atualizar item: ${response.body}');
+      }
+
+      final Map<String, dynamic> data = json.decode(utf8.decode(response.bodyBytes));
+      return ItemDocumentAv.fromJson(data);
+    } on Exception catch (e) {
+      print('Erro ao atualizar item: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> delete({
+    required int codigoVenda,
+    required int codProduto,
+    required int itemId,
+  }) async {
+    final String baseUrl = await ApiUrlProvider.getConfiguredUrl();
+    final uri = Uri.parse('$baseUrl/pre-vendas/$codigoVenda/itens')
+        .replace(queryParameters: {
+      'itemId': itemId.toString(),
+      'codProduto': codProduto.toString(),
+    });
+
+    try {
+      final response = await _apiClient.delete(uri);
+
+      if (response.statusCode != 204 && response.statusCode != 200) {
+        throw Exception('Erro ao remover item: ${response.body}');
+      }
+    } on Exception catch (e) {
+      print('Erro ao deletar item: $e');
+      rethrow;
+    }
+  }
 }

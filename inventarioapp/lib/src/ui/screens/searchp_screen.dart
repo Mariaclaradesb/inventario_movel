@@ -1,10 +1,6 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/mocks/consultap_service_mock.dart';
-import 'package:inventarioapp/mocks/item_pre_venda_service_mock.dart';
 import 'package:inventarioapp/src/config/injection_container.dart';
-import 'package:inventarioapp/src/models/ItemPreVendaInsert.dart';
 import 'package:inventarioapp/src/models/document_av_get.dart';
 import 'package:inventarioapp/src/models/inventario_data.dart';
 import 'package:inventarioapp/src/models/item_document_av_create.dart';
@@ -27,25 +23,24 @@ class ConsultapPage extends StatefulWidget {
 }
 
 class _ConsultapPageState extends State<ConsultapPage> {
-  // --- State Variables ---
+  // --- Variáveis de Estado ---
   String? origem;
   InventarioData? inventory;
   bool _isLoading = false;
   List<VProduto> _produtos = [];
   DocumentAvGet? document;
 
-  // --- Services and Controllers ---
+  // --- Serviços e Controladores ---
   final ItemInventarioService _itemInventarioService = ItemInventarioService();
   final ConsultapService _consultapService = ConsultapService();
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _pQuantityStockController = TextEditingController();
-  final consultapServiceMock = ConsultapServiceMock();
-  final itemPreVendaService = ItemPreVendaServiceMock();
+  // --- SERVIÇO REAL ADICIONADO ---
+  final itemDocumentAvService = ItemDocumentAvService();
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Captura os argumentos passados de outra tela
     final args = ModalRoute.of(context)?.settings.arguments as Map?;
     if (args != null) {
       inventory = args['inventario'] as InventarioData?;
@@ -55,7 +50,6 @@ class _ConsultapPageState extends State<ConsultapPage> {
   }
 
   Future<void> _buscarProdutos() async {
-    // Validação inicial
     final int? codLoja = await SharedPrefsService.obterLojaSelecionada();
     if (codLoja == null) {
       LojaNaoSelecionada.mostrarErro(context);
@@ -164,7 +158,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
     );
   }
 
-
+  // --- MÉTODO CORRIGIDO ---
   void _showAddItemModal(BuildContext context, VProduto produto, DocumentAvGet documento) {
     final quantidadeController = TextEditingController();
 
@@ -189,32 +183,44 @@ class _ConsultapPageState extends State<ConsultapPage> {
             Center(
               child: ElevatedButton(
                 onPressed: () async {
-                  final quantidade = double.tryParse(quantidadeController.text);
+                  final quantidade = int.tryParse(quantidadeController.text);
                   if (quantidade == null || quantidade <= 0) {
-                    // ... (mostrar erro de quantidade inválida)
+                    ScaffoldMessenger.of(dialogContext).showSnackBar(
+                      SnackBar(content: Text("Quantidade inválida!"), backgroundColor: Colors.orange)
+                    );
                     return;
                   }
+                  
                   try {
-                    // Crie o objeto de inserção
-                    final item = ItemPreVendaInsert(
+                    // Cria o objeto correto para a API
+                    final item = ItemDocumentAvCreate(
                       codProduto: produto.codigo.codigo,
+                      codVendedor: documento.vendedor!.codigo!,
+                      codLoja: documento.loja!.codigo,
                       quantidade: quantidade,
                     );
+                    
+                    // Chama o serviço REAL
+                    await itemDocumentAvService.create(documento.codigoVenda!, item);
 
-                    // Chame o método 'insert' do nosso mock
-                    await itemPreVendaService.insert(documento.codigoVenda!, item, produto);
-
-                    // Fecha o dialog
-                    Navigator.of(dialogContext).pop();
-                    // Fecha a tela de busca e retorna 'true' para a tela anterior
-                    if (mounted) Navigator.of(context).pop(true);
+                    Navigator.of(dialogContext).pop(); // Fecha o dialog
+                    if (mounted) Navigator.of(context).pop(true); // Retorna 'true' para a tela anterior
 
                   } catch (e) {
-                    // ... (tratamento de erro)
+                    if (mounted) {
+                      Navigator.of(dialogContext).pop();
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text("Erro ao adicionar item: $e"), backgroundColor: Colors.red),
+                      );
+                    }
                   }
                 },
-                // ... (estilo do botão)
-                child: const Text("Adicionar Item"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF0D47A1),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                ),
+                child: const Text("Adicionar Item", style: TextStyle(color: Colors.white)),
               ),
             ),
             const SizedBox(height: 10),
@@ -223,8 +229,6 @@ class _ConsultapPageState extends State<ConsultapPage> {
       },
     );
   }
-
-
 
   Widget _buildInfoRow(String label, String value) {
     return Row(
@@ -306,12 +310,12 @@ class _ConsultapPageState extends State<ConsultapPage> {
           ),
           content: SingleChildScrollView(
             child: Theme(
-              data: ThemeData.light(), // Aplica tema claro para o conteúdo
+              data: ThemeData.light(),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Código: ${produto.codigo?.codigo ?? 'N/A'}"),
+                  Text("Código: ${produto.codigo.codigo}"),
                   Text("Preço: R\$${produto.pcoRemarFormatado}"),
                   Text("Unidade: ${produto.unidade ?? 'N/A'}"),
                   Text("Marca: ${produto.marca?.nome ?? 'Sem Marca'}"),
@@ -321,12 +325,12 @@ class _ConsultapPageState extends State<ConsultapPage> {
                     TextField(
                       controller: _pQuantityStockController,
                       autofocus: true,
-                      style: TextStyle(color: Colors.black), // Texto em preto
+                      style: TextStyle(color: Colors.black),
                       keyboardType:
                           TextInputType.numberWithOptions(decimal: true),
                       decoration: InputDecoration(
                         labelText: 'Quantidade contada',
-                        labelStyle: TextStyle(color: Colors.grey[700]), // Label mais escuro
+                        labelStyle: TextStyle(color: Colors.grey[700]),
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey[400]!)),
                         focusedBorder: OutlineInputBorder(
@@ -340,14 +344,13 @@ class _ConsultapPageState extends State<ConsultapPage> {
             ),
           ),
           actions: [
-            // Row para alinhar os botões
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribui o espaço
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   child: Text("Fechar",
-                      style: TextStyle(color: Color(0xFF006989))), // Azul da paleta
+                      style: TextStyle(color: Color(0xFF006989))),
                 ),
                 if (origem == 'inventoryProductsScreen')
                   ElevatedButton(
@@ -366,12 +369,12 @@ class _ConsultapPageState extends State<ConsultapPage> {
 
                       try {
                         await _itemInventarioService.saveInventoryItem(item);
-                        Navigator.of(context).pop(); // Fecha o dialog
+                        Navigator.of(context).pop();
                         if (mounted) {
-                          Navigator.of(context).pop(true); // Volta para a tela anterior
+                          Navigator.of(context).pop(true);
                         }
                       } catch (e) {
-                        Navigator.of(context).pop(); // Fecha o dialog
+                        Navigator.of(context).pop();
                         if (mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -386,7 +389,6 @@ class _ConsultapPageState extends State<ConsultapPage> {
                     child: Text('Adicionar', style: TextStyle(color: Colors.white)),
                   )
                 else ...[
-                  // Botões para "Comprar" e "Etiquetas"
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
@@ -429,13 +431,11 @@ class _ConsultapPageState extends State<ConsultapPage> {
   }
 
   void _readBarcode() async {
-    // Navega para a tela de scanner e aguarda o resultado
     final barcode = await Navigator.push<String>(
       context,
       MaterialPageRoute(builder: (context) => BarcodeScannerScreen()),
     );
 
-    // Se um código foi retornado, atualiza o campo de busca e pesquisa
     if (barcode != null && barcode.isNotEmpty) {
       _searchController.text = barcode;
       _buscarProdutos();

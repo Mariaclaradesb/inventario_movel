@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:http/http.dart';
 import 'package:inventarioapp/src/models/item_document_av.dart';
 import 'package:inventarioapp/src/models/item_document_av_create.dart';
 import 'package:inventarioapp/src/services/api_url_provider.dart';
@@ -64,7 +65,7 @@ class ItemDocumentAvService {
     });
 
     try {
-      final response = await _apiClient.put(uri);
+      final response = await _apiClient.post(uri);
 
       if (response.statusCode != 200) {
         throw Exception('Erro ao atualizar item: ${response.body}');
@@ -91,7 +92,7 @@ class ItemDocumentAvService {
     });
 
     try {
-      final response = await _apiClient.delete(uri);
+      final response = await _apiClient.post(uri);
 
       if (response.statusCode != 204 && response.statusCode != 200) {
         throw Exception('Erro ao remover item: ${response.body}');

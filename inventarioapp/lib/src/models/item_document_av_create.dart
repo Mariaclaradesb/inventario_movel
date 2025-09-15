@@ -33,7 +33,7 @@ class ItemDocumentAvCreate {
   }
 
   // Getters e Setters
-  int get codProduto => _codProduto;git
+  int get codProduto => _codProduto;
   set codProduto(int value) => _codProduto = value;
 
   int get codVendedor => _codVendedor;

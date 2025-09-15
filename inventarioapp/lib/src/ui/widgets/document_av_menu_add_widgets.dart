@@ -1,16 +1,11 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/mocks/document_av_service_mock.dart';
-import 'package:inventarioapp/mocks/funcionario_service_mock.dart';
-
 import 'package:inventarioapp/src/models/funcionario.dart';
 import 'package:inventarioapp/src/services/dav/document_av_service.dart';
 import 'package:inventarioapp/src/services/funcionario_service.dart';
 
-Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataServiceMock documentService) async {
-  //final funcionarioService = FuncionarioDataService();
-  final funcionarioService = FuncionarioDataServiceMock();
-
+Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataService documentService) async {
+  final funcionarioService = FuncionarioDataService();
   final formKey = GlobalKey<FormState>();
   final clienteController = TextEditingController();
   FuncionarioData? vendedorSelecionado;
@@ -20,7 +15,7 @@ Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataServiceMo
     barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: const Color(0xFF00838F), // Usei a cor do dialog anterior, que combina mais
+        backgroundColor: const Color(0xFF00838F),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         contentPadding: const EdgeInsets.all(24),
         title: const Text(
@@ -37,10 +32,8 @@ Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataServiceMo
               const SizedBox(height: 8),
 
               DropdownSearch<FuncionarioData>(
-                asyncItems: (String filter) => funcionarioService.findAllFuncionarios(),
-
+                asyncItems: (String filter) => funcionarioService.findAll(),
                 itemAsString: (FuncionarioData f) => f.nome ?? 'Nome não disponível',
-
                 popupProps: PopupProps.menu(
                   showSearchBox: true,
                   searchFieldProps: TextFieldProps(
@@ -56,7 +49,6 @@ Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataServiceMo
                   loadingBuilder: (context, searchEntry) => const Center(child: CircularProgressIndicator()),
                   errorBuilder: (context, searchEntry, exception) => const Center(child: Text('Erro ao carregar dados!')),
                 ),
-
                 dropdownDecoratorProps: DropDownDecoratorProps(
                   dropdownSearchDecoration: InputDecoration(
                     hintText: "Selecione o funcionário",
@@ -118,13 +110,10 @@ Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataServiceMo
           ElevatedButton(
             onPressed: () async {
               if (formKey.currentState!.validate()) {
-
-                //var service = DocumentAVDataService();
-                int codVendedor =  vendedorSelecionado?.codigo ?? 0;
+                int? codVendedor = vendedorSelecionado?.codigo;
                 String nomeCliente = clienteController.text;
-                if (clienteController.text.isNotEmpty && vendedorSelecionado != null){
-                  //await service.create(codVendedor, nomeCliente);
-                  await documentService.create(vendedorSelecionado!, nomeCliente);
+                if (codVendedor != null && nomeCliente.isNotEmpty) {
+                  await documentService.create(codVendedor, nomeCliente);
                   Navigator.of(context).pop(true);
                 }
               }

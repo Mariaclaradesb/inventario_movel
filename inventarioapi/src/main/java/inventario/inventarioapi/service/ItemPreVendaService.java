@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -44,12 +45,22 @@ public class ItemPreVendaService {
         var id = this.getId(item.codProduto(), codigoVenda);
         obj.setId(id);
 
+        obj.setDescricao(vProduto.getNome());
+
+        obj.setQuantidade(item.quantidade());
         obj.setMenorUnidade(item.quantidade());
+
+        BigDecimal precoUnitario = vProduto.getPcoRemar() != null ? vProduto.getPcoRemar() : BigDecimal.ZERO;
+        BigDecimal quantidade = new BigDecimal(item.quantidade());
+        BigDecimal total = precoUnitario.multiply(quantidade);
+        obj.setNvTotal(total);
+
+        obj.setPcoRemar(precoUnitario);
 
         var vendedor = new Funcionario();
         vendedor.setCodigo(item.codVendedor());
         obj.setVendedor(vendedor);
-
+            
         obj.setPreVenda(preVenda);
         obj.setDavNumero(codigoVenda);
 

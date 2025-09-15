@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/mocks/document_av_service_mock.dart';
 import 'package:inventarioapp/src/models/document_av_get.dart';
 import 'package:inventarioapp/src/services/dav/document_av_service.dart';
 import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
@@ -15,8 +14,7 @@ class DocumentListScreen extends StatefulWidget {
 }
 
 class _DocumentListScreenState extends State<DocumentListScreen>{
-  //final DocumentAVDataService service = DocumentAVDataService();
-  final DocumentAVDataServiceMock service = DocumentAVDataServiceMock();
+  final DocumentAVDataService service = DocumentAVDataService();
   late Future<List<DocumentAvGet>> futureDocuments;
 
   @override
@@ -59,7 +57,7 @@ class _DocumentListScreenState extends State<DocumentListScreen>{
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(document.nomeUsuario ?? 'Sem usuário'),
+                    Text(document.nomeCli ?? 'Sem usuário'),
                     Text(document.vendedor?.nome ?? 'Sem vendedor'),
                   ],
                 ),
@@ -136,7 +134,7 @@ class _DocumentListScreenState extends State<DocumentListScreen>{
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final result = await showMenuAddDocumentAV(context, service); //quando o back funcionar, tira o service
+          final result = await showMenuAddDocumentAV(context, service);
           if (result == true){
             _reloadData();
           }

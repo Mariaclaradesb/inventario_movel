@@ -35,9 +35,10 @@ public class PreVendaService {
         var loja = empresaService.findById(preVenda.codLoja());
         if (loja == null || vendedor == null)
             return null;
+
         var obj = loadPreVenda(vendedor, loja, preVenda);
 
-        Long novoNumeroSequencia = 1L; 
+        Long novoNumeroSequencia = 1L;
         Long ultimaSequencia = sequenciaRepository.findLastSequencia();
         if (ultimaSequencia != null) {
             novoNumeroSequencia = ultimaSequencia + 1;
@@ -54,7 +55,15 @@ public class PreVendaService {
     private PreVenda loadPreVenda(Funcionario vendedor, Empresa loja, PreVendaInsert preVenda) {
         var obj = new PreVenda();
         obj.setCodLoja(loja.getCodigo());
-        obj.setNomeUsuario(vendedor.getNome());
+
+        String nomeCompleto = vendedor.getNome();
+        if (nomeCompleto != null && !nomeCompleto.trim().isEmpty()) {
+            String primeiroNome = nomeCompleto.trim().split("\\s+")[0];
+            obj.setNomeUsuario(primeiroNome); // Usa o primeiro nome para evitar erro de tamanho no BD
+        } else {
+            obj.setNomeUsuario(""); // Garante que o campo não seja nulo
+        }
+        
         obj.setVendedor(vendedor);
         obj.setNomeCli(preVenda.nomeCliente());
         obj.setCpnj(loja.getCpnj());

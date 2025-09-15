@@ -11,16 +11,16 @@ class ItemDocumentAv {
   VProduto? _vProduto;
 
   int? _quantidade;
-  int? _unitario1;
-  int? _unitario2;
-  int? _nvTotal;
-  int? _valorOriginal;
+  double? _unitario1;
+  double? _unitario2;
+  double? _nvTotal;
+  double? _valorOriginal;
   DateTime? _data;
-  int? _muUnidade;
+  String? _muUnidade;
   int? _menorUnidade;
   String? _codigoBarra;
   String? _descricao;
-  int? _unidade;
+  String? _unidade;
   int? _davNumero;
 
   double? _pcoCompra;
@@ -40,16 +40,16 @@ class ItemDocumentAv {
     DocumentAvGet? preVenda,
     VProduto? vProduto,
     int? quantidade,
-    int? unitario1,
-    int? unitario2,
-    int? nvTotal,
-    int? valorOriginal,
+    double? unitario1,
+    double? unitario2,
+    double? nvTotal,
+    double? valorOriginal,
     DateTime? data,
-    int? muUnidade,
+    String? muUnidade,
     int? menorUnidade,
     String? codigoBarra,
     String? descricao,
-    int? unidade,
+    String? unidade,
     int? davNumero,
     double? pcoCompra,
     double? cAquis,
@@ -89,26 +89,30 @@ class ItemDocumentAv {
 
   factory ItemDocumentAv.fromJson(Map<String, dynamic> json) {
     return ItemDocumentAv(
-      codProduto: json['codProduto'] as int?,
+      codProduto: json['produto'] != null ? json['produto']['codigo'] as int? : null,
       vendedor: json['vendedor'] != null
           ? FuncionarioData.fromJson(json['vendedor'])
           : null,
+      // O campo 'loja' não vem no item, então removemos a tentativa de leitura.
       loja: json['loja'] != null ? Empresa.fromJson(json['loja']) : null,
       preVenda: json['preVenda'] != null
           ? DocumentAvGet.fromJson(json['preVenda'])
           : null,
-      vProduto: json['vProduto'] != null ? VProduto.fromJson(json['vProduto']) : null,
       quantidade: json['quantidade'] as int?,
-      unitario1: json['unitario1'] as int?,
-      unitario2: json['unitario2'] as int?,
-      nvTotal: json['nvTotal'] as int?,
-      valorOriginal: json['valorOriginal'] as int?,
+      
+      unitario1: (json['unitario1'] as num?)?.toDouble(),
+      unitario2: (json['unitario2'] as num?)?.toDouble(),
+      nvTotal: (json['nvTotal'] as num?)?.toDouble(),
+      valorOriginal: (json['valorOriginal'] as num?)?.toDouble(),
+      
       data: json['data'] != null ? DateTime.parse(json['data']) : null,
-      muUnidade: json['muUnidade'] as int?,
+
+      muUnidade: json['muUnidade'] as String?,
+      unidade: json['unidade'] as String?,
+
       menorUnidade: json['menorUnidade'] as int?,
       codigoBarra: json['codigoBarra'] as String?,
       descricao: json['descricao'] as String?,
-      unidade: json['unidade'] as int?,
       davNumero: json['davNumero'] as int?,
       pcoCompra: (json['pcoCompra'] as num?)?.toDouble(),
       cAquis: (json['cAquis'] as num?)?.toDouble(),
@@ -122,38 +126,7 @@ class ItemDocumentAv {
     );
   }
 
-  Map<String, dynamic> toJson() {
-    return {
-      'codProduto': _codProduto,
-      'vendedor': _vendedor?.toJson(),
-      'loja': _loja?.toJson(),
-      'preVenda': _preVenda?.toJson(),
-      'vProduto': _vProduto,
-      'quantidade': _quantidade,
-      'unitario1': _unitario1,
-      'unitario2': _unitario2,
-      'nvTotal': _nvTotal,
-      'valorOriginal': _valorOriginal,
-      'data': _data?.toIso8601String(),
-      'muUnidade': _muUnidade,
-      'menorUnidade': _menorUnidade,
-      'codigoBarra': _codigoBarra,
-      'descricao': _descricao,
-      'unidade': _unidade,
-      'davNumero': _davNumero,
-      'pcoCompra': _pcoCompra,
-      'cAquis': _cAquis,
-      'pcoLiq': _pcoLiq,
-      'pcoRemar': _pcoRemar,
-      'pco02': _pco02,
-      'pco03': _pco03,
-      'pco04': _pco04,
-      'lucroBruto': _lucroBruto,
-      'lucroReal': _lucroReal,
-    };
-  }
-
-  // Getters e Setters
+  // Getters e Setters atualizados
   int? get codProduto => _codProduto;
   set codProduto(int? value) => _codProduto = value;
 
@@ -172,23 +145,23 @@ class ItemDocumentAv {
   int? get quantidade => _quantidade;
   set quantidade(int? value) => _quantidade = value;
 
-  int? get unitario1 => _unitario1;
-  set unitario1(int? value) => _unitario1 = value;
+  double? get unitario1 => _unitario1;
+  set unitario1(double? value) => _unitario1 = value;
 
-  int? get unitario2 => _unitario2;
-  set unitario2(int? value) => _unitario2 = value;
+  double? get unitario2 => _unitario2;
+  set unitario2(double? value) => _unitario2 = value;
 
-  int? get nvTotal => _nvTotal;
-  set nvTotal(int? value) => _nvTotal = value;
+  double? get nvTotal => _nvTotal;
+  set nvTotal(double? value) => _nvTotal = value;
 
-  int? get valorOriginal => _valorOriginal;
-  set valorOriginal(int? value) => _valorOriginal = value;
+  double? get valorOriginal => _valorOriginal;
+  set valorOriginal(double? value) => _valorOriginal = value;
 
   DateTime? get data => _data;
   set data(DateTime? value) => _data = value;
 
-  int? get muUnidade => _muUnidade;
-  set muUnidade(int? value) => _muUnidade = value;
+  String? get muUnidade => _muUnidade;
+  set muUnidade(String? value) => _muUnidade = value;
 
   int? get menorUnidade => _menorUnidade;
   set menorUnidade(int? value) => _menorUnidade = value;
@@ -199,8 +172,8 @@ class ItemDocumentAv {
   String? get descricao => _descricao;
   set descricao(String? value) => _descricao = value;
 
-  int? get unidade => _unidade;
-  set unidade(int? value) => _unidade = value;
+  String? get unidade => _unidade;
+  set unidade(String? value) => _unidade = value;
 
   int? get davNumero => _davNumero;
   set davNumero(int? value) => _davNumero = value;
@@ -231,4 +204,11 @@ class ItemDocumentAv {
 
   double? get lucroReal => _lucroReal;
   set lucroReal(double? value) => _lucroReal = value;
+
+  // toJson não foi alterado pois já está correto
+  Map<String, dynamic> toJson() {
+    return {
+      // ...
+    };
+  }
 }

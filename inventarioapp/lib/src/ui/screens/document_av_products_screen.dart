@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:inventarioapp/mocks/item_pre_venda_service_mock.dart';
 import 'package:inventarioapp/src/models/document_av_get.dart';
+import 'package:inventarioapp/src/models/item_document_av.dart';
 import 'package:inventarioapp/src/models/item_pre_venda.dart';
+import 'package:inventarioapp/src/services/dav/item_document_av_service.dart';
 import 'package:inventarioapp/src/ui/helper/dav_relatorio_pdf.dart';
 import 'package:inventarioapp/src/ui/widgets/drawer_widgets.dart';
 
@@ -14,13 +15,13 @@ class DocumentAVProductsScreen extends StatefulWidget {
 }
 
 class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
-  final itemService = ItemPreVendaServiceMock();
+  final itemService = ItemDocumentAvService();
   late DocumentAvGet document;
-  late Future<List<ItemPreVenda>> futureItems;
+  late Future<List<ItemDocumentAv>> futureItems;
 
   void _reloadData() {
     setState(() {
-      futureItems = itemService.getByPreVenda(document.codigoVenda!);
+      futureItems = itemService.findAll(document.codigoVenda!);
     });
   }
 
@@ -28,7 +29,7 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     document = ModalRoute.of(context)!.settings.arguments as DocumentAvGet;
-    futureItems = itemService.getByPreVenda(document.codigoVenda!);
+    futureItems = itemService.findAll(document.codigoVenda!);
   }
 
   @override
@@ -44,7 +45,15 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
             onPressed: () async {
               try {
                 final items = await futureItems;
-                await gerarRelatorioDavPdf(context, document, items);
+                // Convert the list of ItemDocumentAv to a list of ItemPreVenda for the report
+                final reportItems = items.map((item) => ItemPreVenda(
+                  codProduto: item.codProduto ?? 0,
+                  descricaoProduto: item.descricao ?? 'N/A',
+                  quantidade: item.quantidade?.toDouble() ?? 0.0,
+                  valorUnitario: item.pcoRemar ?? 0.0,
+                  valorTotal: (item.quantidade ?? 0) * (item.pcoRemar ?? 0.0),
+                )).toList();
+                await gerarRelatorioDavPdf(context, document, reportItems);
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text('Erro ao gerar relatório: $e')),
@@ -76,7 +85,7 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: FutureBuilder<List<ItemPreVenda>>(
+              child: FutureBuilder<List<ItemDocumentAv>>(
                 future: futureItems,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -100,13 +109,14 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
                     itemCount: items.length,
                     itemBuilder: (context, index) {
                       final item = items[index];
+                      final total = (item.quantidade ?? 0) * (item.pcoRemar ?? 0.0);
                       return Card(
                         child: ListTile(
-                          title: Text(item.descricaoProduto),
+                          title: Text(item.descricao ?? 'Produto sem nome'),
                           subtitle: Text(
-                              'Qtd: ${item.quantidade} | Vlr. Unit: R\$ ${item.valorUnitario.toStringAsFixed(2)}'),
+                              'Qtd: ${item.quantidade} | Vlr. Unit: R\$ ${item.pcoRemar?.toStringAsFixed(2) ?? "0.00"}'),
                           trailing: Text(
-                              'Total: R\$ ${item.valorTotal.toStringAsFixed(2)}',
+                              'Total: R\$ ${total.toStringAsFixed(2)}',
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold)),
                         ),

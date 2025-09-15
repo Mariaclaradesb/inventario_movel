@@ -20,8 +20,8 @@ String gerarRelatorioTexto(List<Map<String, dynamic>> dados, int codLoja, int co
   buffer.writeln("Inventário Nº: $codInventario | Nome: ${dados.isNotEmpty ? dados[0]['nomeInventario'] : 'N/A'}");
   buffer.writeln("Loja Nº: $codLoja");
   buffer.writeln("--------------------------------");
-
-  for (var item in dados) {
+  final dadosFiltrados = dados.where((item) => item['divergencia'] != 0);
+  for (var item in dadosFiltrados) {
     final nome = item['nomeProduto'] ?? '';
     final cod = item['codProduto']['codigo'] ?? '';
     final cbarra = item['cbarra'] ?? '';
@@ -33,7 +33,7 @@ String gerarRelatorioTexto(List<Map<String, dynamic>> dados, int codLoja, int co
     buffer.writeln("Produto: $nome");
     buffer.writeln("Código: $cod | CBarra: $cbarra");
     buffer.writeln("Contado: $contado | Sist.: $sistema");
-    buffer.writeln("Diferença: $sinal$dif");
+      buffer.writeln("Diferença: $sinal$dif");
     buffer.writeln("--------------------------------");
   }
 
@@ -68,6 +68,7 @@ Future<void> gerarRelatorioPDF(
   try {
     final pdf = pw.Document();
     final font = await PdfGoogleFonts.robotoMonoRegular();
+    final dadosFiltrados = dados.where((item) => item['divergencia'] != 0);
 
     pdf.addPage(
       pw.Page(
@@ -79,7 +80,7 @@ Future<void> gerarRelatorioPDF(
             pw.Text("Inventário Nº: $codInventario | Nome: ${dados.isNotEmpty ? dados[0]['nomeInventario'] : 'N/A'}", style: pw.TextStyle(fontSize: 10)),
             pw.Text("Loja Nº: $codLoja", style: pw.TextStyle(fontSize: 10)),
             pw.Divider(thickness: 1, height: 4),
-            ...dados.map((item) {
+            ...dadosFiltrados.map((item) {
               final cod = item['codProduto']['codigo'] ?? '';
               final cbarra = item['cbarra'];
               final nome = item['nomeProduto'] ?? '';

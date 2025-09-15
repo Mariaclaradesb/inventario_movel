@@ -55,6 +55,8 @@ public class ItemPreVendaService {
         BigDecimal total = precoUnitario.multiply(quantidade);
         obj.setNvTotal(total);
 
+        preVendaRepository.updateValorTotal(codigoVenda, total);
+
         obj.setPcoRemar(precoUnitario);
 
         var vendedor = new Funcionario();

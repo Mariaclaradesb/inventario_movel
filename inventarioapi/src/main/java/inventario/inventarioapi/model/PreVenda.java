@@ -2,6 +2,7 @@ package inventario.inventarioapi.model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -32,7 +33,7 @@ public class PreVenda {
     private Double valorProd;
 
     @Column(name = "TOTALVENDA")
-    private Double totalVenda;
+    private BigDecimal totalVenda;
 
     @Column(name = "NOMECLI")
     private String nomeCli;
@@ -100,11 +101,11 @@ public class PreVenda {
         this.valorProd = valorProd;
     }
 
-    public Double getTotalVenda() {
+    public BigDecimal getTotalVenda() {
         return totalVenda;
     }
 
-    public void setTotalVenda(Double totalVenda) {
+    public void setTotalVenda(BigDecimal totalVenda) {
         this.totalVenda = totalVenda;
     }
 

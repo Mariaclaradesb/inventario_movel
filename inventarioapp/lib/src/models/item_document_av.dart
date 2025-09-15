@@ -93,7 +93,6 @@ class ItemDocumentAv {
       vendedor: json['vendedor'] != null
           ? FuncionarioData.fromJson(json['vendedor'])
           : null,
-      // O campo 'loja' não vem no item, então removemos a tentativa de leitura.
       loja: json['loja'] != null ? Empresa.fromJson(json['loja']) : null,
       preVenda: json['preVenda'] != null
           ? DocumentAvGet.fromJson(json['preVenda'])

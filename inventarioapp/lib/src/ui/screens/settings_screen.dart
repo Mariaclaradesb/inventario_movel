@@ -33,23 +33,82 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
   @override
   void initState() {
     super.initState();
-    // A verificação de senha e o carregamento dos dados agora são feitos juntos
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _verificarSenhaEcarregarDados();
     });
   }
 
-  // Combina a verificação de senha com o carregamento dos dados
   Future<void> _verificarSenhaEcarregarDados() async {
-    bool entrou = false;
-    // ... (Seu código de diálogo de senha pode ser mantido aqui)
-    // Para simplificar, vamos assumir que a senha foi inserida corretamente.
-    // Se quiser manter o diálogo, coloque o código dele aqui e sete 'entrou = true' em caso de sucesso.
-    entrou = true; // Simulação de senha correta
+    final bool senhaValida = await _showPasswordDialog() ?? false;
 
-    if (entrou) {
+    if (senhaValida) {
       await _carregarDadosSalvos();
+    } else {
+      // Se o usuário cancelar ou errar a senha, volta para a tela anterior
+      if (mounted) Navigator.pop(context);
     }
+  }
+
+  Future<bool?> _showPasswordDialog() {
+    final passwordController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
+
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        backgroundColor: Color(0xFF006989),
+        title: Row(
+          children: [
+            Icon(Icons.lock, color: Colors.white),
+            SizedBox(width: 10),
+            Text('Acesso Restrito', style: TextStyle(color: Colors.white)),
+          ],
+        ),
+        content: Form(
+          key: formKey,
+          child: TextFormField(
+            controller: passwordController,
+            obscureText: true,
+            autofocus: true,
+            style: TextStyle(color: Colors.white),
+            decoration: InputDecoration(
+              labelText: 'Senha',
+              labelStyle: TextStyle(color: Colors.white70),
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white54)),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 2)),
+            ),
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Digite a senha';
+              }
+              if (value != senhaCorreta) {
+                return 'Senha incorreta';
+              }
+              return null;
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text('Cancelar', style: TextStyle(color: Colors.white70)),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (formKey.currentState?.validate() == true) {
+                Navigator.of(context).pop(true);
+              }
+            },
+            style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
+            child: Text('Entrar', style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
   }
 
   // Carrega TODAS as configurações salvas no dispositivo

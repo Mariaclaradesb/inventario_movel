@@ -34,7 +34,8 @@ class _ConsultapPageState extends State<ConsultapPage> {
   final ItemInventarioService _itemInventarioService = ItemInventarioService();
   final ConsultapService _consultapService = ConsultapService();
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _pQuantityStockController = TextEditingController();
+  final TextEditingController _pQuantityStockController =
+      TextEditingController();
   // --- SERVIÇO REAL ADICIONADO ---
   final itemDocumentAvService = ItemDocumentAvService();
 
@@ -71,13 +72,16 @@ class _ConsultapPageState extends State<ConsultapPage> {
 
       if (produtosEncontrados.isEmpty && mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Nenhum produto encontrado para o termo informado.')),
+          const SnackBar(
+              content: Text('Nenhum produto encontrado para o termo informado.')),
         );
       }
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao buscar produtos: ${e.toString().replaceAll("Exception: ", "")}')),
+          SnackBar(
+              content: Text(
+                  'Erro ao buscar produtos: ${e.toString().replaceAll("Exception: ", "")}')),
         );
       }
     } finally {
@@ -94,7 +98,8 @@ class _ConsultapPageState extends State<ConsultapPage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           backgroundColor: Color(0xFF006989),
           title: Row(
             children: [
@@ -127,29 +132,42 @@ class _ConsultapPageState extends State<ConsultapPage> {
             ElevatedButton(
               onPressed: () async {
                 final quantidade = double.tryParse(quantidadeController.text);
+                Navigator.of(dialogContext).pop(); // Fecha o dialog primeiro
+
                 if (quantidade == null || quantidade <= 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text("Quantidade inválida!"),
+                        backgroundColor: Colors.orange),
+                  );
                   return;
                 }
-                Navigator.of(dialogContext).pop();
+
                 try {
                   await _consultapService.adicionarItemACotacao(
                     produto.codigo.codigo,
                     quantidade,
                   );
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text("Produto adicionado à cotação!"),
-                        backgroundColor: Colors.green),
-                  );
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text("Produto adicionado à cotação!"),
+                          backgroundColor: Colors.green),
+                    );
+                  }
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text("Erro ao adicionar: $e"),
-                        backgroundColor: Colors.red),
-                  );
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text(
+                              "Erro ao adicionar: ${e.toString().replaceAll("Exception: ", "")}"),
+                          backgroundColor: Colors.red),
+                    );
+                  }
                 }
               },
-              style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF013A63)),
               child: Text("Adicionar", style: TextStyle(color: Colors.white)),
             ),
           ],
@@ -159,124 +177,128 @@ class _ConsultapPageState extends State<ConsultapPage> {
   }
 
   void _showAddItemModal(
-    BuildContext context, VProduto produto, DocumentAvGet documento) {
-  final quantidadeController = TextEditingController();
+      BuildContext context, VProduto produto, DocumentAvGet documento) {
+    final quantidadeController = TextEditingController();
 
-  showDialog(
-    context: context,
-    builder: (BuildContext dialogContext) {
-      return AlertDialog(
-        // --- ESTILOS ATUALIZADOS ---
-        backgroundColor: const Color(0xFF006989),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        title: const Row(
-          children: [
-            Icon(Icons.add_shopping_cart, color: Colors.white),
-            SizedBox(width: 10),
-            Text(
-              'Adicionar Produto',
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              produto.nome, // Nome do produto
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              "Preço Unitário: R\$ ${produto.pcoRemarFormatado}",
-              style: const TextStyle(color: Colors.white70, fontSize: 14),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: quantidadeController,
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              autofocus: true,
-              style: const TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                labelText: "Quantidade",
-                labelStyle: const TextStyle(color: Colors.white70),
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white54),
-                ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white, width: 2),
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          // --- ESTILOS ATUALIZADOS ---
+          backgroundColor: const Color(0xFF006989),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          title: const Row(
+            children: [
+              Icon(Icons.add_shopping_cart, color: Colors.white),
+              SizedBox(width: 10),
+              Text(
+                'Adicionar Produto',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                produto.nome, // Nome do produto
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Preço Unitário: R\$ ${produto.pcoRemarFormatado}",
+                style: const TextStyle(color: Colors.white70, fontSize: 14),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: quantidadeController,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                  labelText: "Quantidade",
+                  labelStyle: const TextStyle(color: Colors.white70),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white54),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2),
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(dialogContext).pop(),
-            child:
-                const Text('Cancelar', style: TextStyle(color: Colors.white)),
+            ],
           ),
-          ElevatedButton(
-            onPressed: () async {
-              final quantidade = int.tryParse(quantidadeController.text);
-              if (quantidade == null || quantidade <= 0) {
-                ScaffoldMessenger.of(dialogContext).showSnackBar(const SnackBar(
-                    content: Text("Quantidade inválida!"),
-                    backgroundColor: Colors.orange));
-                return;
-              }
-
-              try {
-                final item = ItemDocumentAvCreate(
-                  codProduto: produto.codigo.codigo,
-                  codVendedor: documento.vendedor!.codigo!,
-                  codLoja: documento.loja!.codigo,
-                  quantidade: quantidade,
-                );
-
-                await itemDocumentAvService.create(
-                    documento.codigoVenda!, item);
-
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child:
+                  const Text('Cancelar', style: TextStyle(color: Colors.white)),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                final quantidade = int.tryParse(quantidadeController.text);
                 Navigator.of(dialogContext).pop(); // Fecha o dialog
-                if (mounted) {
-                  Navigator.of(context)
-                      .pop(true);
-                } // Retorna 'true' para a tela anterior
-              } catch (e) {
-                if (mounted) {
-                  Navigator.of(dialogContext).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text("Erro ao adicionar item: $e"),
-                        backgroundColor: Colors.red),
-                  );
+
+                if (quantidade == null || quantidade <= 0) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Quantidade inválida!"),
+                      backgroundColor: Colors.orange));
+                  return;
                 }
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF013A63),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+
+                try {
+                  final item = ItemDocumentAvCreate(
+                    codProduto: produto.codigo.codigo,
+                    codVendedor: documento.vendedor!.codigo!,
+                    codLoja: documento.loja!.codigo,
+                    quantidade: quantidade,
+                  );
+
+                  await itemDocumentAvService.create(
+                      documento.codigoVenda!, item);
+
+                  if (mounted) {
+                    Navigator.of(context).pop(true);
+                  } // Retorna 'true' para a tela anterior
+                } catch (e) {
+                  if (mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                          content: Text("Erro ao adicionar item: $e"),
+                          backgroundColor: Colors.red),
+                    );
+                  }
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF013A63),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
+              child:
+                  const Text("Adicionar", style: TextStyle(color: Colors.white)),
             ),
-            child: const Text("Adicionar",
-                style: TextStyle(color: Colors.white)),
-          ),
-        ],
-      );
-    },
-  );
-}
+          ],
+        );
+      },
+    );
+  }
 
   Widget _buildInfoRow(String label, String value) {
     return Row(
       children: [
-        Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+        Text(label,
+            style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16)),
         const SizedBox(width: 10),
         Expanded(
           child: Container(
@@ -292,10 +314,15 @@ class _ConsultapPageState extends State<ConsultapPage> {
     );
   }
 
-  Widget _buildInputRow(String label, String hint, TextEditingController controller) {
+  Widget _buildInputRow(
+      String label, String hint, TextEditingController controller) {
     return Row(
       children: [
-        Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
+        Text(label,
+            style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16)),
         const SizedBox(width: 10),
         Expanded(
           child: TextField(
@@ -306,7 +333,8 @@ class _ConsultapPageState extends State<ConsultapPage> {
               hintText: hint,
               filled: true,
               fillColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,
@@ -319,14 +347,14 @@ class _ConsultapPageState extends State<ConsultapPage> {
   }
 
   void _mostrarDetalhesProduto(BuildContext context, VProduto produto) {
-
     _pQuantityStockController.clear();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           backgroundColor: Colors.white,
           titlePadding: EdgeInsets.zero,
           title: Container(
@@ -377,8 +405,8 @@ class _ConsultapPageState extends State<ConsultapPage> {
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.grey[400]!)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Color(0xFF006989), width: 2)),
+                            borderSide: BorderSide(
+                                color: Color(0xFF006989), width: 2)),
                       ),
                     ),
                   ]
@@ -398,17 +426,24 @@ class _ConsultapPageState extends State<ConsultapPage> {
                 if (origem == 'inventoryProductsScreen')
                   ElevatedButton(
                     onPressed: () async {
-                      final quantityStock = double.tryParse(_pQuantityStockController.text);
+                      final quantityStock =
+                          double.tryParse(_pQuantityStockController.text);
                       if (quantityStock == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content: Text('Por favor, insira uma quantidade válida.'),
+                            content: Text(
+                                'Por favor, insira uma quantidade válida.'),
                             backgroundColor: Colors.orange,
                           ),
                         );
                         return;
                       }
-                      final item = ItemInventario(inventory?.codigo, produto.codigo, quantityStock, (produto.estLoja ?? 0).toDouble(), produto.nome);
+                      final item = ItemInventario(
+                          inventory?.codigo,
+                          produto.codigo,
+                          quantityStock,
+                          (produto.estLoja ?? 0).toDouble(),
+                          produto.nome);
 
                       try {
                         await _itemInventarioService.saveInventoryItem(item);
@@ -421,15 +456,18 @@ class _ConsultapPageState extends State<ConsultapPage> {
                         if (mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text("Erro ao salvar: ${e.toString().replaceAll("Exception: ", "")}"),
+                              content: Text(
+                                  "Erro ao salvar: ${e.toString().replaceAll("Exception: ", "")}"),
                               backgroundColor: Colors.red,
                             ),
                           );
                         }
                       }
                     },
-                    style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
-                    child: Text('Adicionar', style: TextStyle(color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color(0xFF013A63)),
+                    child:
+                        Text('Adicionar', style: TextStyle(color: Colors.white)),
                   )
                 else ...[
                   Expanded(
@@ -438,13 +476,15 @@ class _ConsultapPageState extends State<ConsultapPage> {
                         Navigator.of(context).pop();
                         _adicionarProdutoACotacao(context, produto);
                       },
-                      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF013A63)),
                       child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text("Comprar", style: TextStyle(color: Colors.white)),
+                        fit: BoxFit.scaleDown,
+                        child:
+                            Text("Comprar", style: TextStyle(color: Colors.white)),
+                      ),
                     ),
                   ),
-                ),
                   SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
@@ -457,10 +497,12 @@ class _ConsultapPageState extends State<ConsultapPage> {
                           ),
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(backgroundColor: Color(0xFF013A63)),
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF013A63)),
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: Text("Etiquetas", style: TextStyle(color: Colors.white)),
+                        child: Text("Etiquetas",
+                            style: TextStyle(color: Colors.white)),
                       ),
                     ),
                   ),
@@ -497,7 +539,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
             TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                labelText: "Busque por nome ou código de barras",
+                labelText: "Busque por nome, código ou código de barras",
                 border: OutlineInputBorder(),
                 suffixIcon: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -530,12 +572,13 @@ class _ConsultapPageState extends State<ConsultapPage> {
                     final produto = _produtos[index];
                     return Card(
                       child: ListTile(
-                        title: Text(produto.nome, style: TextStyle(fontWeight: FontWeight.bold)),
+                        title: Text(produto.nome,
+                            style: TextStyle(fontWeight: FontWeight.bold)),
                         subtitle: Text(
                           "Estoque: ${produto.estAtual ?? 0} | Preço: R\$${produto.pcoRemarFormatado}",
                         ),
                         onTap: () {
-                          if (origem == 'documentAVProductsScreen'){
+                          if (origem == 'documentAVProductsScreen') {
                             _showAddItemModal(context, produto, document!);
                           } else {
                             _mostrarDetalhesProduto(context, produto);

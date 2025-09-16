@@ -24,6 +24,4 @@ public interface VprodutosRepository extends JpaRepository<VProduto, VProdutoId>
            "OR LOWER(v.marca.nome) LIKE LOWER(CONCAT('%', :termo, '%')) ) " +
            "AND v.codigo.codLoja = :codLoja")
     List<VProduto> buscarPorCamposDeTexto(@Param("termo") String termo, @Param("codLoja") Long codLoja);
-
-
 }

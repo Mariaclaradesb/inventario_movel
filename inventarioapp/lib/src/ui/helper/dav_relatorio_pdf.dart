@@ -69,66 +69,72 @@ Future<void> gerarRelatorioDavPdf(
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.roll80,
-        build: (context) => pw.Column(
-          // --- ALTERAÇÃO PRINCIPAL E ÚNICA AQUI ---
-          // Mude de .start para .stretch para forçar a coluna a ocupar toda a largura.
-          crossAxisAlignment: pw.CrossAxisAlignment.stretch,
-          children: [
-            pw.Text("Documento Auxiliar de Venda",
-                style: pw.TextStyle(fontSize: 10)),
-            pw.Text(
-                "DAV Nº: ${document.codigoVenda} | Emissão: ${document.emissao?.toLocal().toString().split(' ').first ?? ''}",
-                style: pw.TextStyle(fontSize: 10)),
-            pw.Text("Loja: ${document.loja?.nome ?? 'N/A'}",
-                style: pw.TextStyle(fontSize: 10)),
-            pw.Text("Vendedor: ${document.vendedor?.nome ?? 'N/A'}",
-                style: pw.TextStyle(fontSize: 10)),
-            pw.Text("Cliente: ${document.nomeCli ?? 'N/A'}",
-                style: pw.TextStyle(fontSize: 10)),
-            pw.Divider(thickness: 1, height: 4),
-            pw.Text("Itens:",
-                style:
-                    pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
-            pw.SizedBox(height: 5),
-            ...items.map((item) {
-              return pw.Column(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
+        build: (context) {
+
+          return pw.Center(
+
+            child: pw.Container(
+              width: 210,
+              child: pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.stretch,
                 children: [
-                  pw.Text(item.descricaoProduto,
-                      style: pw.TextStyle(fontSize: 9)),
-                  pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                    children: [
-                      pw.Text(
-                        'Qtd: ${item.quantidade} | Vlr. Unit.: R\$ ${item.valorUnitario.toStringAsFixed(2)}',
-                        style: pw.TextStyle(fontSize: 9),
-                      ),
-                      pw.Text(
-                        'Total: R\$ ${item.valorTotal.toStringAsFixed(2)}',
-                        style: pw.TextStyle(fontSize: 9),
-                      ),
-                    ],
-                  ),
+                  pw.Text("Documento Auxiliar de Venda",
+                      style: pw.TextStyle(fontSize: 10)),
+                  pw.Text(
+                      "DAV Nº: ${document.codigoVenda} | Emissão: ${document.emissao?.toLocal().toString().split(' ').first ?? ''}",
+                      style: pw.TextStyle(fontSize: 10)),
+                  pw.Text("Loja: ${document.loja?.nome ?? 'N/A'}",
+                      style: pw.TextStyle(fontSize: 10)),
+                  pw.Text("Vendedor: ${document.vendedor?.nome ?? 'N/A'}",
+                      style: pw.TextStyle(fontSize: 10)),
+                  pw.Text("Cliente: ${document.nomeCli ?? 'N/A'}",
+                      style: pw.TextStyle(fontSize: 10)),
                   pw.Divider(thickness: 1, height: 4),
+                  pw.Text("Itens:",
+                      style: pw.TextStyle(
+                          fontSize: 9, fontWeight: pw.FontWeight.bold)),
+                  pw.SizedBox(height: 5),
+                  ...items.map((item) {
+                    return pw.Column(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      children: [
+                        pw.Text(item.descricaoProduto,
+                            style: pw.TextStyle(fontSize: 9)),
+                        pw.Row(
+                          mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                          children: [
+                            pw.Text(
+                              'Qtd: ${item.quantidade} | Vlr. Unit.: R\$ ${item.valorUnitario.toStringAsFixed(2)}',
+                              style: pw.TextStyle(fontSize: 9),
+                            ),
+                            pw.Text(
+                              'Total: R\$ ${item.valorTotal.toStringAsFixed(2)}',
+                              style: pw.TextStyle(fontSize: 9),
+                            ),
+                          ],
+                        ),
+                        pw.Divider(thickness: 1, height: 4),
+                      ],
+                    );
+                  }),
+                  pw.SizedBox(height: 10),
+                  pw.Align(
+                    alignment: pw.Alignment.centerRight,
+                    child: pw.Text(
+                        "Valor Total: R\$ ${document.totalVenda?.toStringAsFixed(2) ?? '0.00'}",
+                        style: pw.TextStyle(
+                            fontSize: 10, fontWeight: pw.FontWeight.bold)),
+                  ),
+                  pw.SizedBox(height: 10),
+                  pw.Center(
+                    child: pw.Text("Gerado em: ${DateTime.now()}",
+                        style: pw.TextStyle(fontSize: 8)),
+                  ),
                 ],
-              );
-            }),
-            pw.SizedBox(height: 10),
-            // pw.Align é uma boa prática para garantir o alinhamento à direita
-            pw.Align(
-              alignment: pw.Alignment.centerRight,
-              child: pw.Text(
-                  "Valor Total: R\$ ${document.totalVenda?.toStringAsFixed(2) ?? '0.00'}",
-                  style: pw.TextStyle(
-                      fontSize: 10, fontWeight: pw.FontWeight.bold)),
+              ),
             ),
-            pw.SizedBox(height: 10),
-            pw.Center( // Centraliza o texto de "Gerado em"
-              child: pw.Text("Gerado em: ${DateTime.now()}",
-                  style: pw.TextStyle(fontSize: 8)),
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
 

@@ -225,7 +225,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                         if (novaLoja != null) {
                           setState(() => lojaSelecionada = novaLoja);
                           await SharedPrefsService.salvarLojaSelecionada(
-                              novaLoja.codigo);
+                              novaLoja.codigo, novaLoja.nome);
                         }
                       },
                       decoration: InputDecoration(border: OutlineInputBorder()),

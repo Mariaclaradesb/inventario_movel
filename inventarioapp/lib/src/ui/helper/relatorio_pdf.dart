@@ -67,7 +67,6 @@ Future<void> gerarRelatorioPDF(
 ) async {
   try {
     final pdf = pw.Document();
-    final font = await PdfGoogleFonts.robotoMonoRegular();
     final dadosFiltrados = dados.where((item) => item['divergencia'] != 0);
 
     pdf.addPage(

@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SharedPrefsService {
   static const String _backendUrlKey = 'backendUrl';
   static const String _lojaKey = 'codLojaSelecionada';
+  static const String _lojaNome = 'nomeLojaSelecionada';
 
   static const String _dbIpKey = 'dbIp';
   static const String _dbPortKey = 'dbPort';
@@ -22,14 +23,20 @@ class SharedPrefsService {
   }
 
   // --- Loja Selecionada ---
-  static Future<void> salvarLojaSelecionada(int codLoja) async {
+  static Future<void> salvarLojaSelecionada(int codLoja, String nomeLoja) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_lojaKey, codLoja);
+    await prefs.setString(_lojaNome, nomeLoja);
   }
 
   static Future<int?> obterLojaSelecionada() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getInt(_lojaKey);
+  }
+
+  static Future<String?> obterNomeLojaSelecionada() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_lojaNome);
   }
 
   // --- Configurações do Banco de Dados da Loja ---

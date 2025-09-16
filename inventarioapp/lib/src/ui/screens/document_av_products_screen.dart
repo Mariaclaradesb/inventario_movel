@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:inventarioapp/src/models/document_av_get.dart';
+import 'package:inventarioapp/src/models/empresa.dart';
 import 'package:inventarioapp/src/models/item_document_av.dart';
 import 'package:inventarioapp/src/models/item_pre_venda.dart';
 import 'package:inventarioapp/src/services/dav/document_av_service.dart';
 import 'package:inventarioapp/src/services/dav/item_document_av_service.dart';
+import 'package:inventarioapp/src/services/shared_prefs_service.dart';
 import 'package:inventarioapp/src/ui/helper/dav_relatorio_pdf.dart';
 import 'package:inventarioapp/src/ui/widgets/drawer_widgets.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DocumentAVProductsScreen extends StatefulWidget {
   const DocumentAVProductsScreen({super.key});
@@ -26,7 +29,9 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
       final updatedDocument =
           await documentService.findById(document.codigoVenda!);
       final updatedItems = itemService.findAll(document.codigoVenda!);
-
+      final idLoja = await SharedPrefsService.obterLojaSelecionada();
+      final nomeLoja = await SharedPrefsService.obterNomeLojaSelecionada();
+      updatedDocument.loja = Empresa(idLoja!, nomeLoja!);
       setState(() {
         document = updatedDocument; 
         futureItems = updatedItems; 

@@ -14,16 +14,16 @@ import java.util.Optional;
 public interface VprodutosRepository extends JpaRepository<VProduto, VProdutoId> {
     Optional<VProduto> findById(VProdutoId codigo);
     
+    @Query("SELECT v FROM VProduto v WHERE " +
+           "(v.codigo.codigo = :codigoTermo OR v.cbarra = :stringTermo OR v.cbarra2 = :stringTermo OR v.cbarra3 = :stringTermo) " +
+           "AND v.codigo.codLoja = :codLoja")
+    List<VProduto> buscarPorCamposNumericos(@Param("codigoTermo") Long codigoTermo, @Param("stringTermo") String stringTermo, @Param("codLoja") Long codLoja);
+
     @Query("SELECT v FROM VProduto v WHERE ( " +
-    "LOWER(v.nome) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-    "OR LOWER(v.alternati) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-    "OR v.cbarra LIKE %:termo% " +
-    "OR v.cbarra2 LIKE %:termo% " +
-    "OR v.cbarra3 LIKE %:termo% " +  
-    "OR LOWER(v.original) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-    // "OR LOWER(v.unidade) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-    "OR LOWER(v.marca.nome) LIKE LOWER(CONCAT('%', :termo, '%')) ) " +
-    "AND v.codigo.codLoja = :codLoja")
-    List<VProduto> buscarPorTodosOsCampos(@Param("termo") String termo, @Param("codLoja") Long codLoja);
+           "LOWER(v.nome) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+           "OR LOWER(v.marca.nome) LIKE LOWER(CONCAT('%', :termo, '%')) ) " +
+           "AND v.codigo.codLoja = :codLoja")
+    List<VProduto> buscarPorCamposDeTexto(@Param("termo") String termo, @Param("codLoja") Long codLoja);
+
 
 }

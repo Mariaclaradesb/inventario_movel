@@ -4,7 +4,8 @@ import 'package:inventarioapp/src/models/funcionario.dart';
 import 'package:inventarioapp/src/services/dav/document_av_service.dart';
 import 'package:inventarioapp/src/services/funcionario_service.dart';
 
-Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataService documentService) async {
+Future<bool> showMenuAddDocumentAV(
+    BuildContext context, DocumentAVDataService documentService) async {
   final funcionarioService = FuncionarioDataService();
   final formKey = GlobalKey<FormState>();
   final clienteController = TextEditingController();
@@ -15,49 +16,53 @@ Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataService d
     barrierDismissible: false,
     builder: (context) {
       return AlertDialog(
-        backgroundColor: const Color(0xFF00838F),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        contentPadding: const EdgeInsets.all(24),
-        title: const Text(
-          'Novo Documento',
-          style: TextStyle(color: Colors.white, fontSize: 18),
+        backgroundColor: const Color(0xFF006989),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Row(
+          children: [
+            Icon(Icons.post_add, color: Colors.white),
+            SizedBox(width: 10),
+            Text(
+              'Novo Documento',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ],
         ),
         content: Form(
           key: formKey,
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text("Vendedor:", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-              const SizedBox(height: 8),
-
               DropdownSearch<FuncionarioData>(
                 asyncItems: (String filter) => funcionarioService.findAll(),
-                itemAsString: (FuncionarioData f) => f.nome ?? 'Nome não disponível',
+                itemAsString: (FuncionarioData f) =>
+                    f.nome ?? 'Nome não disponível',
                 popupProps: PopupProps.menu(
                   showSearchBox: true,
-                  searchFieldProps: TextFieldProps(
+                  searchFieldProps: const TextFieldProps(
                     decoration: InputDecoration(
-                      hintText: "Pesquisar funcionário...",
+                      hintText: "Pesquisar vendedor...",
                       filled: true,
-                      fillColor: Colors.white.withOpacity(0.9),
+                      fillColor: Colors.white,
                     ),
                   ),
                   menuProps: MenuProps(
-                    backgroundColor: Colors.white.withOpacity(0.9),
+                    backgroundColor: Colors.white.withOpacity(0.95),
                   ),
-                  loadingBuilder: (context, searchEntry) => const Center(child: CircularProgressIndicator()),
-                  errorBuilder: (context, searchEntry, exception) => const Center(child: Text('Erro ao carregar dados!')),
+                  loadingBuilder: (context, searchEntry) =>
+                      const Center(child: CircularProgressIndicator()),
+                  errorBuilder: (context, searchEntry, exception) =>
+                      const Center(child: Text('Erro ao carregar vendedores!')),
                 ),
                 dropdownDecoratorProps: DropDownDecoratorProps(
                   dropdownSearchDecoration: InputDecoration(
-                    hintText: "Selecione o funcionário",
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                      borderSide: BorderSide.none,
+                    labelText: "Vendedor",
+                    labelStyle: const TextStyle(color: Colors.white70),
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white54),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.white, width: 2),
                     ),
                   ),
                 ),
@@ -65,28 +70,27 @@ Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataService d
                   vendedorSelecionado = funcionario;
                 },
                 validator: (FuncionarioData? item) {
-                  if (item == null) return "Campo obrigatório";
+                  if (item == null) return "Selecione um vendedor";
                   return null;
                 },
               ),
-              const SizedBox(height: 20),
-
-              const Text("Cliente", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: clienteController,
+                autofocus: true,
+                style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                  hintText: "Digite o nome do cliente",
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                    borderSide: BorderSide.none,
+                  labelText: "Nome do Cliente",
+                  labelStyle: const TextStyle(color: Colors.white70),
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white54),
                   ),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white, width: 2),
+                  ),
                 ),
                 validator: (value) {
-                  if (value == null || value.trim().isEmpty){
+                  if (value == null || value.trim().isEmpty) {
                     return "Campo obrigatório";
                   }
                   return null;
@@ -95,35 +99,35 @@ Future<bool> showMenuAddDocumentAV(BuildContext context, DocumentAVDataService d
             ],
           ),
         ),
-        actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
-        actionsAlignment: MainAxisAlignment.spaceBetween,
         actions: [
-          ElevatedButton(
+          TextButton(
             onPressed: () => Navigator.of(context).pop(false),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFD32F2F),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-            ),
-            child: const Text("Cancelar", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child: const Text('Cancelar', style: TextStyle(color: Colors.white)),
           ),
           ElevatedButton(
             onPressed: () async {
               if (formKey.currentState!.validate()) {
-                int? codVendedor = vendedorSelecionado?.codigo;
-                String nomeCliente = clienteController.text;
-                if (codVendedor != null && nomeCliente.isNotEmpty) {
-                  await documentService.create(codVendedor, nomeCliente);
+                try {
+                  await documentService.create(
+                      vendedorSelecionado!.codigo, clienteController.text);
                   Navigator.of(context).pop(true);
+                } catch (e) {
+                  Navigator.of(context).pop(false);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text('Erro: $e'), backgroundColor: Colors.red),
+                  );
                 }
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF0D47A1),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+              backgroundColor: const Color(0xFF013A63),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
-            child: const Text("Adicionar", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+            child:
+                const Text("Adicionar", style: TextStyle(color: Colors.white)),
           ),
         ],
       );

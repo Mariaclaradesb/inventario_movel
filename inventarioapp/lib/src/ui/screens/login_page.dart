@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                   //Username campo
                   MyTextField(
                     controller: usernameController,
-                    hintText: 'Usuario',
+                    hintText: 'Usuário',
                     obscureText: false,
                     validator: (value) {
                       if (value == null || value.isEmpty) return 'Digite o usuário';

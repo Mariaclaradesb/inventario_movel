@@ -5,7 +5,6 @@ import 'package:inventarioapp/src/ui/widgets/app_bar.dart';
 import 'package:inventarioapp/src/ui/widgets/document_av_menu_add_widgets.dart';
 import 'package:inventarioapp/src/ui/widgets/drawer_widgets.dart';
 
-
 class DocumentListScreen extends StatefulWidget {
   const DocumentListScreen({super.key});
 
@@ -13,7 +12,7 @@ class DocumentListScreen extends StatefulWidget {
   State<DocumentListScreen> createState() => _DocumentListScreenState();
 }
 
-class _DocumentListScreenState extends State<DocumentListScreen>{
+class _DocumentListScreenState extends State<DocumentListScreen> {
   final DocumentAVDataService service = DocumentAVDataService();
   late Future<List<DocumentAvGet>> futureDocuments;
 
@@ -23,7 +22,7 @@ class _DocumentListScreenState extends State<DocumentListScreen>{
     futureDocuments = service.findAll();
   }
 
-  Future<void> _reloadData() async{
+  Future<void> _reloadData() async {
     setState(() {
       futureDocuments = service.findAll();
     });
@@ -34,114 +33,83 @@ class _DocumentListScreenState extends State<DocumentListScreen>{
     return Scaffold(
       appBar: MyAppBar(),
       drawer: CustomDrawer(),
-      body: FutureBuilder<List<DocumentAvGet>>(future: futureDocuments, builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting){
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.hasError) {
-          return Center(child: Text('Erro ao carregar documentos: ${snapshot.error}'));
-        }
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('Nenhum documento encontrado'));
-        }
+      body: FutureBuilder<List<DocumentAvGet>>(
+          future: futureDocuments,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if (snapshot.hasError) {
+              return Center(
+                  child: Text('Erro ao carregar documentos: ${snapshot.error}'));
+            }
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text('Nenhum documento encontrado'));
+            }
 
-        final documents = snapshot.data;
-        return ListView.builder(
-          itemCount: documents!.length,
-          itemBuilder: (context, index) {
-            final document = documents[index];
-            return Card(
-              margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-              child: ListTile(
-                leading: const Icon(Icons.description),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(document.nomeCli ?? 'Sem usuário'),
-                    Text(document.vendedor?.nome ?? 'Sem vendedor'),
-                  ],
-                ),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(document.emissao?.toLocal().toString().split(' ').first ?? ''),
-                    Text(document.hora ?? ''),
-                  ],
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 14),
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            final documents = snapshot.data;
+            return ListView.builder(
+              itemCount: documents!.length,
+              itemBuilder: (context, index) {
+                final document = documents[index];
+                return Card(
+                  elevation: 2,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 16),
+                    leading: CircleAvatar(
+                      backgroundColor: const Color(0xFF00838F),
+                      child:
+                          const Icon(Icons.description, color: Colors.white),
                     ),
-                    builder: (context) {
-                      return Container(
-                        padding: const EdgeInsets.all(16),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Center(
-                              child: Text(
-                                "Documento ${document.codigoVenda} + ${document.sequencia?.sequencia ?? ''}",
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(document.emissao?.toLocal().toString().split(' ').first ?? ''),
-                                Text(document.hora ?? ''),
-                              ],
-                            ),
-                            const SizedBox(height: 12),
-                            Text("Vendedor: ${document.vendedor?.nome ?? 'Não informado'}"),
-                            Text("Cliente: ${document.nomeCli ?? 'Não informado'}"),
-                            const SizedBox(height: 16),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text("Cancelar"),
-                                ),
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    Navigator.pushNamed(context, '/documentsProductsScreen', arguments: document,);
-                                  },
-                                  icon: const Icon(Icons.grid_view_rounded, size: 18),
-                                  label: const Text("Ver Produtos"),
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.teal,
-                                    foregroundColor: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
+                    title: Text(
+                      document.nomeCli ?? 'Cliente não informado',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 4),
+                        Text(
+                            "Vendedor: ${document.vendedor?.nome ?? 'N/A'}"),
+                        const SizedBox(height: 4),
+                        // --- ALTERAÇÃO REALIZADA AQUI ---
+                        Text(
+                            "DAV: ${document.codigoVenda}/${document.sequencia?.sequencia ?? ''}"),
+                        const SizedBox(height: 2),
+                        Text(
+                            "Emissão: ${document.emissao?.toLocal().toString().split(' ').first ?? ''} ${document.hora ?? ''}"),
+                      ],
+                    ),
+                    trailing: const Icon(Icons.arrow_forward_ios,
+                        size: 16, color: Colors.grey),
+                    onTap: () {
+                      Navigator.pushNamed(context, '/documentsProductsScreen',
+                          arguments: document);
                     },
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             );
-          },
-        );
-      }),
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await showMenuAddDocumentAV(context, service);
-          if (result == true){
+          if (result == true) {
             _reloadData();
           }
-      },
+        },
         backgroundColor: const Color(0xFF00838F),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-        child: const Icon(Icons.add, color: Colors.white,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
         ),
       ),
     );

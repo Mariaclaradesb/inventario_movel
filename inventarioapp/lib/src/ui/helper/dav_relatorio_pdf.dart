@@ -12,7 +12,8 @@ import 'package:sunmi_printer_plus/core/enums/enums.dart';
 import 'package:sunmi_printer_plus/core/styles/sunmi_text_style.dart';
 import 'package:sunmi_printer_plus/core/sunmi/sunmi_printer.dart';
 
-/// Gera uma string de texto plano formatada para o relatório do DAV.
+// As outras funções (gerarRelatorioDavTexto, imprimirDavNaMaquininha) permanecem iguais.
+
 String gerarRelatorioDavTexto(
     DocumentAvGet document, List<ItemPreVenda> items) {
   final buffer = StringBuffer();
@@ -39,23 +40,19 @@ String gerarRelatorioDavTexto(
   return buffer.toString();
 }
 
-/// Imprime o relatório do DAV na maquininha Sunmi.
 Future<void> imprimirDavNaMaquininha(
     DocumentAvGet document, List<ItemPreVenda> items) async {
   final conteudo = gerarRelatorioDavTexto(document, items);
-
-  // Divide o conteúdo em linhas e imprime uma por uma
   for (var linha in conteudo.split('\n')) {
     await SunmiPrinter.printText(
       linha,
       style: SunmiTextStyle(
         fontSize: 20,
-        bold: true, // Tamanho de fonte ajustado para caber
+        bold: true,
         align: SunmiPrintAlign.LEFT,
       ),
     );
   }
-  // Adiciona espaço no final e corta o papel
   await SunmiPrinter.lineWrap(3);
   await SunmiPrinter.cutPaper();
 }
@@ -73,7 +70,9 @@ Future<void> gerarRelatorioDavPdf(
       pw.Page(
         pageFormat: PdfPageFormat.roll80,
         build: (context) => pw.Column(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          // --- ALTERAÇÃO PRINCIPAL E ÚNICA AQUI ---
+          // Mude de .start para .stretch para forçar a coluna a ocupar toda a largura.
+          crossAxisAlignment: pw.CrossAxisAlignment.stretch,
           children: [
             pw.Text("Documento Auxiliar de Venda",
                 style: pw.TextStyle(fontSize: 10)),
@@ -97,21 +96,37 @@ Future<void> gerarRelatorioDavPdf(
                 children: [
                   pw.Text(item.descricaoProduto,
                       style: pw.TextStyle(fontSize: 9)),
-                  pw.Text(
-                      'Qtd: ${item.quantidade} | Vlr. Unit.: R\$ ${item.valorUnitario.toStringAsFixed(2)} | Total: R\$ ${item.valorTotal.toStringAsFixed(2)}',
-                      style: pw.TextStyle(fontSize: 9)),
+                  pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                    children: [
+                      pw.Text(
+                        'Qtd: ${item.quantidade} | Vlr. Unit.: R\$ ${item.valorUnitario.toStringAsFixed(2)}',
+                        style: pw.TextStyle(fontSize: 9),
+                      ),
+                      pw.Text(
+                        'Total: R\$ ${item.valorTotal.toStringAsFixed(2)}',
+                        style: pw.TextStyle(fontSize: 9),
+                      ),
+                    ],
+                  ),
                   pw.Divider(thickness: 1, height: 4),
                 ],
               );
             }),
             pw.SizedBox(height: 10),
-            pw.Text(
-                "Valor Total: R\$ ${document.totalVenda?.toStringAsFixed(2) ?? '0.00'}",
-                style:
-                    pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
+            // pw.Align é uma boa prática para garantir o alinhamento à direita
+            pw.Align(
+              alignment: pw.Alignment.centerRight,
+              child: pw.Text(
+                  "Valor Total: R\$ ${document.totalVenda?.toStringAsFixed(2) ?? '0.00'}",
+                  style: pw.TextStyle(
+                      fontSize: 10, fontWeight: pw.FontWeight.bold)),
+            ),
             pw.SizedBox(height: 10),
-            pw.Text("Gerado em: ${DateTime.now()}",
-                style: pw.TextStyle(fontSize: 8)),
+            pw.Center( // Centraliza o texto de "Gerado em"
+              child: pw.Text("Gerado em: ${DateTime.now()}",
+                  style: pw.TextStyle(fontSize: 8)),
+            ),
           ],
         ),
       ),
@@ -136,7 +151,6 @@ Future<void> gerarRelatorioDavPdf(
                 await Printing.layoutPdf(onLayout: (_) => pdf.save());
               },
             ),
-            // --- NOVA OPÇÃO ADICIONADA ---
             ListTile(
               leading: const Icon(Icons.receipt_long),
               title: const Text('Imprimir na maquininha'),

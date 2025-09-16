@@ -73,4 +73,25 @@ class DocumentAVDataService {
       rethrow;
     }
   }
+
+    Future<DocumentAvGet> findById(int codigoVenda) async {
+    final String baseUrl = await ApiUrlProvider.getConfiguredUrl();
+    final uri = Uri.parse('$baseUrl/pre-vendas/$codigoVenda');
+
+    try {
+      final response = await _apiClient.get(uri);
+
+      if (response.statusCode != 200) {
+        throw Exception(
+            'Erro ao carregar o documento: ${response.statusCode} - ${response.body}');
+      }
+
+      final Map<String, dynamic> data =
+          json.decode(utf8.decode(response.bodyBytes));
+      return DocumentAvGet.fromJson(data);
+    } on Exception catch (e) {
+      print('Erro ao carregar DocumentAV $codigoVenda: $e');
+      rethrow;
+    }
+  }
 }

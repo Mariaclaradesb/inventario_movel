@@ -24,6 +24,13 @@ public class PreVendaController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PreVenda> getById(@PathVariable Long id) {
+        return service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @PostMapping
     public ResponseEntity<PreVenda> insert(@RequestBody PreVendaInsert preVenda) {
         var obj = service.save(preVenda);

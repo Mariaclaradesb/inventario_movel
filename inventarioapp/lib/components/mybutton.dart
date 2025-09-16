@@ -20,7 +20,7 @@ class MyButton extends StatelessWidget {
             padding: const EdgeInsets.all(25),
             child: const Center(
               child: Text(
-                "Logar",
+                "Entrar",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

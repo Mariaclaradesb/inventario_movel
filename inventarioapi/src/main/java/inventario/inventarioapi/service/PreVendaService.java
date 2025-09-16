@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PreVendaService {
@@ -73,5 +74,9 @@ public class PreVendaService {
     public List<PreVenda> getAll(Long codLoja) {
         var dataInicial = LocalDateTime.of(2025, 9, 9, 0,0);
         return repository.getAllOrdered(codLoja, dataInicial);
+    }
+
+    public Optional<PreVenda> findById(Long id) {
+        return repository.findById(id);
     }
 }

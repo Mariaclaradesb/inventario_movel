@@ -158,77 +158,120 @@ class _ConsultapPageState extends State<ConsultapPage> {
     );
   }
 
-  // --- MÉTODO CORRIGIDO ---
-  void _showAddItemModal(BuildContext context, VProduto produto, DocumentAvGet documento) {
-    final quantidadeController = TextEditingController();
+  void _showAddItemModal(
+    BuildContext context, VProduto produto, DocumentAvGet documento) {
+  final quantidadeController = TextEditingController();
 
-    showDialog(
-      context: context,
-      builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          backgroundColor: const Color(0xFF00838F),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildInfoRow("Nome Produto:", produto.nome),
-              const SizedBox(height: 16),
-              _buildInputRow("Quantidade:", "Digite a quantidade", quantidadeController),
-              const SizedBox(height: 16),
-              _buildInfoRow("Preço Unitário:", "R\$ ${produto.pcoRemarFormatado}"),
-            ],
-          ),
-          actions: [
-            Center(
-              child: ElevatedButton(
-                onPressed: () async {
-                  final quantidade = int.tryParse(quantidadeController.text);
-                  if (quantidade == null || quantidade <= 0) {
-                    ScaffoldMessenger.of(dialogContext).showSnackBar(
-                      SnackBar(content: Text("Quantidade inválida!"), backgroundColor: Colors.orange)
-                    );
-                    return;
-                  }
-                  
-                  try {
-                    // Cria o objeto correto para a API
-                    final item = ItemDocumentAvCreate(
-                      codProduto: produto.codigo.codigo,
-                      codVendedor: documento.vendedor!.codigo!,
-                      codLoja: documento.loja!.codigo,
-                      quantidade: quantidade,
-                    );
-                    
-                    // Chama o serviço REAL
-                    await itemDocumentAvService.create(documento.codigoVenda!, item);
-
-                    Navigator.of(dialogContext).pop(); // Fecha o dialog
-                    if (mounted) Navigator.of(context).pop(true); // Retorna 'true' para a tela anterior
-
-                  } catch (e) {
-                    if (mounted) {
-                      Navigator.of(dialogContext).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text("Erro ao adicionar item: $e"), backgroundColor: Colors.red),
-                      );
-                    }
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF0D47A1),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+  showDialog(
+    context: context,
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        // --- ESTILOS ATUALIZADOS ---
+        backgroundColor: const Color(0xFF006989),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        title: const Row(
+          children: [
+            Icon(Icons.add_shopping_cart, color: Colors.white),
+            SizedBox(width: 10),
+            Text(
+              'Adicionar Produto',
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              produto.nome, // Nome do produto
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "Preço Unitário: R\$ ${produto.pcoRemarFormatado}",
+              style: const TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+            const SizedBox(height: 16),
+            TextField(
+              controller: quantidadeController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              autofocus: true,
+              style: const TextStyle(color: Colors.white),
+              decoration: InputDecoration(
+                labelText: "Quantidade",
+                labelStyle: const TextStyle(color: Colors.white70),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white54),
                 ),
-                child: const Text("Adicionar Item", style: TextStyle(color: Colors.white)),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white, width: 2),
+                ),
               ),
             ),
-            const SizedBox(height: 10),
           ],
-        );
-      },
-    );
-  }
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child:
+                const Text('Cancelar', style: TextStyle(color: Colors.white)),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              final quantidade = int.tryParse(quantidadeController.text);
+              if (quantidade == null || quantidade <= 0) {
+                ScaffoldMessenger.of(dialogContext).showSnackBar(const SnackBar(
+                    content: Text("Quantidade inválida!"),
+                    backgroundColor: Colors.orange));
+                return;
+              }
+
+              try {
+                final item = ItemDocumentAvCreate(
+                  codProduto: produto.codigo.codigo,
+                  codVendedor: documento.vendedor!.codigo!,
+                  codLoja: documento.loja!.codigo,
+                  quantidade: quantidade,
+                );
+
+                await itemDocumentAvService.create(
+                    documento.codigoVenda!, item);
+
+                Navigator.of(dialogContext).pop(); // Fecha o dialog
+                if (mounted) {
+                  Navigator.of(context)
+                      .pop(true);
+                } // Retorna 'true' para a tela anterior
+              } catch (e) {
+                if (mounted) {
+                  Navigator.of(dialogContext).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text("Erro ao adicionar item: $e"),
+                        backgroundColor: Colors.red),
+                  );
+                }
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF013A63),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: const Text("Adicionar",
+                style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      );
+    },
+  );
+}
 
   Widget _buildInfoRow(String label, String value) {
     return Row(

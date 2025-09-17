@@ -93,6 +93,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
 
   void _adicionarProdutoACotacao(BuildContext context, VProduto produto) {
     final TextEditingController quantidadeController = TextEditingController();
+    final scaffoldMessenger =  ScaffoldMessenger.of(context);
 
     showDialog(
       context: context,
@@ -135,7 +136,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
                 Navigator.of(dialogContext).pop(); // Fecha o dialog primeiro
 
                 if (quantidade == null || quantidade <= 0) {
-                  ScaffoldMessenger.of(context).showSnackBar(
+                  scaffoldMessenger.showSnackBar(
                     const SnackBar(
                         content: Text("Quantidade inválida!"),
                         backgroundColor: Colors.orange),
@@ -149,7 +150,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
                     quantidade,
                   );
                   if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    scaffoldMessenger.showSnackBar(
                       const SnackBar(
                           content: Text("Produto adicionado à cotação!"),
                           backgroundColor: Colors.green),
@@ -157,7 +158,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
                   }
                 } catch (e) {
                   if (mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
+                    scaffoldMessenger.showSnackBar(
                       SnackBar(
                           content: Text(
                               "Erro ao adicionar: ${e.toString().replaceAll("Exception: ", "")}"),
@@ -261,7 +262,7 @@ class _ConsultapPageState extends State<ConsultapPage> {
                   );
 
                   await itemDocumentAvService.create(
-                      documento.codigoVenda!, item);
+                      documento.codigoVenda!, item, documento);
 
                   if (mounted) {
                     Navigator.of(context).pop(true);

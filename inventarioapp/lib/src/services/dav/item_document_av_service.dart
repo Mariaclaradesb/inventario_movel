@@ -2,16 +2,19 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:http/http.dart';
+import 'package:inventarioapp/src/models/document_av_get.dart';
 import 'package:inventarioapp/src/models/item_document_av.dart';
 import 'package:inventarioapp/src/models/item_document_av_create.dart';
 import 'package:inventarioapp/src/services/api_url_provider.dart';
+import 'package:inventarioapp/src/services/dav/document_av_service.dart';
 import 'package:inventarioapp/src/services/http_client.dart';
 
 class ItemDocumentAvService {
   final ApiClient _apiClient = ApiClient();
+  final DocumentAVDataService documentAvService = DocumentAVDataService();
 
   
-  Future<ItemDocumentAv> create(int codigoVenda, ItemDocumentAvCreate item) async {
+  Future<ItemDocumentAv> create(int codigoVenda, ItemDocumentAvCreate item, DocumentAvGet documento) async {
     final String baseUrl = await ApiUrlProvider.getConfiguredUrl();
     final uri = Uri.parse('$baseUrl/pre-vendas/$codigoVenda/itens');
 
@@ -25,6 +28,7 @@ class ItemDocumentAvService {
 
       final Map<String, dynamic> data = json.decode(utf8.decode(response.bodyBytes));
       return ItemDocumentAv.fromJson(data);
+      updateDocument(documento);
     } on Exception catch (e) {
       print('Erro ao criar item na venda $codigoVenda: $e');
       rethrow;
@@ -101,5 +105,9 @@ class ItemDocumentAvService {
       print('Erro ao deletar item: $e');
       rethrow;
     }
+  }
+  
+  Future<void> updateDocument(DocumentAvGet documento) async {
+    documento = await documentAvService.findById(documento.codigoVenda!);
   }
 }

@@ -26,16 +26,17 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
 
   Future<void> _reloadData() async {
     try {
-      final updatedDocument =
-          await documentService.findById(document.codigoVenda!);
+      final updatedDocument = await documentService.findById(document.codigoVenda!);
       final updatedItems = itemService.findAll(document.codigoVenda!);
       final idLoja = await SharedPrefsService.obterLojaSelecionada();
       final nomeLoja = await SharedPrefsService.obterNomeLojaSelecionada();
       updatedDocument.loja = Empresa(idLoja!, nomeLoja!);
-      setState(() {
-        document = updatedDocument; 
-        futureItems = updatedItems; 
-      });
+      if(mounted) {
+        setState(() {
+          document = updatedDocument; 
+          futureItems = updatedItems; 
+        });
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Erro ao recarregar dados: $e')),

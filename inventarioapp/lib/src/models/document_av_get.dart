@@ -3,7 +3,7 @@ import 'package:inventarioapp/src/models/sequencia_dav.dart';
 import 'empresa.dart';
 
 class DocumentAvGet {
-  int? codigoVenda;
+  int codigoVenda;
   Empresa? loja;
   DateTime? emissao;
   FuncionarioData? vendedor;
@@ -16,7 +16,7 @@ class DocumentAvGet {
   Sequencia? sequencia;
 
   DocumentAvGet({
-    this.codigoVenda,
+    required this.codigoVenda,
     this.loja,
     this.emissao,
     this.vendedor,
@@ -48,7 +48,7 @@ class DocumentAvGet {
 
   factory DocumentAvGet.fromJson(Map<String, dynamic> json) {
     return DocumentAvGet(
-      codigoVenda: json['codigoVenda'] as int?,
+      codigoVenda: json['codigoVenda'] as int,
       loja: json['codLoja'] != null ? Empresa(json['codLoja'] as int, '') : null,
       emissao: json['emissao'] != null ? DateTime.parse(json['emissao']) : null,
       vendedor: json['vendedor'] != null ? FuncionarioData.fromJson(json['vendedor']) : null,

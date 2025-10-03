@@ -34,9 +34,9 @@ class SharedPrefsService {
     return prefs.getInt(_lojaKey);
   }
 
-  static Future<String?> obterNomeLojaSelecionada() async {
+  static Future<String> obterNomeLojaSelecionada() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_lojaNome);
+    return prefs.getString(_lojaNome) ?? "Sem nome";
   }
 
   // --- Configurações do Banco de Dados da Loja ---

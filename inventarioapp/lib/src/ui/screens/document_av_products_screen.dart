@@ -26,11 +26,11 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
 
   Future<void> _reloadData() async {
     try {
-      final updatedDocument = await documentService.findById(document.codigoVenda!);
-      final updatedItems = itemService.findAll(document.codigoVenda!);
-      final idLoja = await SharedPrefsService.obterLojaSelecionada();
+      final updatedDocument = await documentService.findById(document.codigoVenda);
+      final updatedItems = itemService.findAll(document.codigoVenda);
+      final idLoja = await SharedPrefsService.obterLojaSelecionada() as int;
       final nomeLoja = await SharedPrefsService.obterNomeLojaSelecionada();
-      updatedDocument.loja = Empresa(idLoja!, nomeLoja!);
+      updatedDocument.loja = Empresa(idLoja, nomeLoja);
       if(mounted) {
         setState(() {
           document = updatedDocument; 
@@ -123,8 +123,7 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
                   }
 
                   final items = snapshot.data!;
-                  // --- CÁLCULO DO VALOR TOTAL DOS ITENS ---
-                  final double valorTotalDocumento = document.totalVenda ?? 0.0;
+                  late double valorTotalDocumento = document.totalVenda ?? 0.0;
 
                   return Column(
                     children: [
@@ -211,7 +210,7 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
             },
           );
 
-          if (result == true) {
+          if (result == true && mounted) {
             _reloadData();
           }
         },

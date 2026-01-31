@@ -51,7 +51,7 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
     futureItems = itemService.findAll(document.codigoVenda!);
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -60,11 +60,10 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
         title: const Text('Produtos do DAV',
             style: TextStyle(color: Colors.white)),
         actions: [
-          IconButton( // Alterado para IconButton para um visual mais limpo
+          IconButton(
             onPressed: () async {
               try {
                 final items = await futureItems;
-                // Convert the list of ItemDocumentAv to a list of ItemPreVenda for the report
                 final reportItems = items
                     .map((item) => ItemPreVenda(
                           codProduto: item.codProduto ?? 0,
@@ -83,14 +82,14 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
               }
             },
             icon: const Icon(Icons.picture_as_pdf, color: Colors.white),
-            tooltip: 'Gerar Relatório', // Adicionado tooltip para acessibilidade
+            tooltip: 'Gerar Relatório',
           ),
           const SizedBox(width: 10),
         ],
       ),
       drawer: CustomDrawer(),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 16, 8, 0), // Ajuste no padding
+        padding: const EdgeInsets.fromLTRB(8, 16, 8, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -101,7 +100,39 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.grey.shade700),
               ),
             ),
-            const SizedBox(height: 16),
+            
+            // --- TOTAL DO DOCUMENTO MOVIDO PARA CÁ (DEPOIS DO TÍTULO) ---
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'TOTAL DO DOCUMENTO:',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black54,
+                    ),
+                  ),
+                  Text(
+                    'R\$ ${(document.totalVenda ?? 0.0).toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF013A63),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            
+            const SizedBox(height: 8),
             Expanded(
               child: FutureBuilder<List<ItemDocumentAv>>(
                 future: futureItems,
@@ -123,75 +154,28 @@ class _DocumentAVProductsScreenState extends State<DocumentAVProductsScreen> {
                   }
 
                   final items = snapshot.data!;
-                  late double valorTotalDocumento = document.totalVenda ?? 0.0;
 
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            final item = items[index];
-                            final total = (item.quantidade ?? 0) *
-                                (item.pcoRemar ?? 0.0);
-                            return Card(
-                              elevation: 2,
-                              margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                              child: ListTile(
-                                contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                                title: Text(item.descricao ?? 'Produto sem nome', style: const TextStyle(fontWeight: FontWeight.bold)),
-                                subtitle: Text(
-                                    'Qtd: ${item.quantidade} | Vlr. Unit: R\$ ${item.pcoRemar?.toStringAsFixed(2) ?? "0.00"}'),
-                                trailing: Text('R\$ ${total.toStringAsFixed(2)}',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold, fontSize: 15)),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      // --- WIDGET DO VALOR TOTAL ADICIONADO AQUI ---
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                        decoration: BoxDecoration(
-                          color: Colors.grey.shade200,
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(16),
-                            topRight: Radius.circular(16),
-                          ),
-                          boxShadow: [
-                             BoxShadow(
-                               color: Colors.black.withOpacity(0.1),
-                               spreadRadius: 1,
-                               blurRadius: 5,
-                               offset: const Offset(0, -3),
-                             )
-                          ]
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'TOTAL DO DOCUMENTO:',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            Text(
-                              'R\$ ${valorTotalDocumento.toStringAsFixed(2)}',
+                  return ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (context, index) {
+                      final item = items[index];
+                      final total = (item.quantidade ?? 0) *
+                          (item.pcoRemar ?? 0.0);
+                      return Card(
+                        elevation: 2,
+                        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        child: ListTile(
+                          contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                          title: Text(item.descricao ?? 'Produto sem nome', style: const TextStyle(fontWeight: FontWeight.bold)),
+                          subtitle: Text(
+                              'Qtd: ${item.quantidade} | Vlr. Unit: R\$ ${item.pcoRemar?.toStringAsFixed(2) ?? "0.00"}'),
+                          trailing: Text('R\$ ${total.toStringAsFixed(2)}',
                               style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF013A63),
-                              ),
-                            ),
-                          ],
+                                  fontWeight: FontWeight.bold, fontSize: 15)),
                         ),
-                      )
-                    ],
+                      );
+                    },
                   );
                 },
               ),

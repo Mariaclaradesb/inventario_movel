@@ -157,16 +157,13 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
     }
   }
 
-  // NOVA FUNÇÃO DE SALVAR: Apenas salva os dados localmente
-  Future<void> _salvarConfiguracoes() async {
+Future<void> _salvarConfiguracoes() async {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() => _isLoading = true);
 
-      // Salva a URL do backend
       await SharedPrefsService.salvarBackendUrl(
           _backendUrlController.text.trim());
 
-      // Salva as credenciais do banco de dados da loja
       await SharedPrefsService.salvarConfiguracaoCompleta(
         dbIp: _dbIpController.text.trim(),
         dbPort: _dbPortController.text.trim(),
@@ -175,19 +172,43 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
         dbPassword: _dbSenhaController.text.trim(),
       );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Configurações salvas com sucesso!'),
-          backgroundColor: Colors.green,
-        ),
-      );
+      try {
 
-      // Tenta recarregar as lojas para validar a nova configuração
-      await _carregarLojas();
-      setState(() => _isLoading = false);
+        final lojas = await getLojas(); 
+
+        setState(() {
+          _lojas = lojas;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Configurações salvas e conexão estabelecida!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      } catch (e) {
+
+        if (e.toString().contains('500')) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('ERRO: Senha do banco de dados incorreta ou falha no login!'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 5),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Erro de rede: Verifique o IP do servidor.'),
+              backgroundColor: Colors.orange,
+            ),
+          );
+        }
+      } finally {
+        setState(() => _isLoading = false);
+      }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -209,7 +230,7 @@ class _ConfiguracoesPageState extends State<ConfiguracoesPage> {
                       controller: _backendUrlController,
                       decoration: InputDecoration(
                           labelText: "URL do Servidor",
-                          hintText: "http://192.168.0.100:8080",
+                          hintText: "http://192.168.0.100:9090",
                           border: OutlineInputBorder()),
                       validator: (v) =>
                           v!.isEmpty ? "Campo obrigatório" : null,
